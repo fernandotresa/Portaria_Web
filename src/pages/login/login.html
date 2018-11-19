@@ -1,0 +1,41 @@
+<ion-content class="login-content wrapper-page text-center black-opct-1 ani-fade-out">  
+
+  <div padding>
+
+        <ion-row class="logo-img mgb-30 mgt-20 ani-left-to-right">
+          <img class="mg-auto" src="assets/imgs/logo.png" alt="">
+        </ion-row>
+        <ion-list class="ani-bottom-to-top">
+          <ion-item class="text-white white-opct bdra-20">
+            <ion-input type="text" placeholder="{{dataInfo.titleEmail}}" [(ngModel)]="username"></ion-input>
+          </ion-item>
+        </ion-list>
+        <ion-list class="ani-bottom-to-top">
+          <ion-item class="text-white white-opct bdra-20">
+            <ion-input type="password" placeholder="{{dataInfo.titlePassword}}" [(ngModel)]="password"></ion-input>
+          </ion-item>
+        </ion-list>
+        
+        <button ion-button block outline round color="light" class="green mgt-20 stroke-2 stroke-white text-white uppercase fw-600 spacing-1 ani-bottom-to-top" (click)="loginUser()">{{dataInfo.titleLogin}}</button>
+  
+        <ion-row>
+          <button ion-button block outline round icon-left color="light" class="indigo ani-fade-out stroke-2 stroke-white text-white uppercase fw-600 spacing-1" (click)="loginUser()">
+            <ion-icon name="logo-facebook"></ion-icon>
+            {{dataInfo.titleFacebook}}
+          </button>
+  
+
+          <button ion-button block outline round icon-left color="light" class="red ani-bottom-to-top stroke-2 stroke-white text-white uppercase fw-600 spacing-1" (click)="onCallbackEvent('onGoogleLogin')">
+            <ion-icon name="logo-google"></ion-icon>
+            {{dataInfo.titleGoogle}}
+          </button>
+        </ion-row>
+        
+        <div class="mgt-30">
+          <button ion-button color="light" clear small class="ani-fade-out mgb--5 pull-left text-white" (click)="goToSignup()">{{dataInfo.titleRegister}}</button>    
+          <button ion-button color="light" clear small class="ani-fade-out mgb--5 pull-right text-white" (click)="goToResetPassword()">{{dataInfo.titleForgotPassword}}</button>
+        </div>
+
+  </div>                
+      
+</ion-content>

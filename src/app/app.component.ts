@@ -6,8 +6,8 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { FuncionariosPage } from '../pages/funcionarios/funcionarios';
-import { VisitantesPage } from '../pages/visitantes/visitantes';
+import { EmployeePage } from '../pages/employee/employee';
+import { GuestPage } from '../pages/guest/guest';
 
 @Component({
   templateUrl: 'app.html'
@@ -87,19 +87,19 @@ export class MyApp {
 		this.options.push({
 			iconName: 'home',
 			displayText: 'Colaboradores',
-			component: FuncionariosPage			
+			component: EmployeePage			
 		});
 
 		this.options.push({
 			iconName: 'home',
 			displayText: 'Visitantes',
-			component: VisitantesPage
+			component: GuestPage
 		});	
   
     this.options.push({
 			iconName: 'home',
 			displayText: 'Acessos',
-			component: VisitantesPage
+			component: GuestPage
 		});	
     
 		this.options.push({

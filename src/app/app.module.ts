@@ -8,6 +8,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 
 import { LoginPageModule } from '../pages/login/login.module';
+import { EmployeePageModule } from '../pages/employee/employee.module';
+import { GuestPageModule } from '../pages/guest/guest.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -35,7 +37,9 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
   ],
 
   exports: [
-    LoginPageModule
+    LoginPageModule,
+    EmployeePageModule,
+    GuestPageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

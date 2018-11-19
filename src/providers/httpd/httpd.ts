@@ -28,4 +28,16 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAuth", myData, {headers: headers})
   }
+
+  getEmployees(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getEmployees", myData, {headers: headers})
+  }
+
+  getEmployeesByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getEmployeesByName", myData, {headers: headers})
+  }
 }

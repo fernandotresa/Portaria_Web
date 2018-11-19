@@ -41,6 +41,9 @@ export class DataInfoProvider {
   titleGoogle: string = 'Logar com Google'
   titleLogin: string = 'Logar'
 
+  titleEmployeers: string = 'Colaboradores'
+  titleGuests: string = 'Visitantes'
+  titlePermissions: string = "Permissões"
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."

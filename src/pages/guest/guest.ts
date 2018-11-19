@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the FuncionariosPage page.
+ * Generated class for the GuestPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,16 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-funcionarios',
-  templateUrl: 'funcionarios.html',
+  selector: 'page-guest',
+  templateUrl: 'guest.html',
 })
-export class FuncionariosPage {
+export class GuestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FuncionariosPage');
+    console.log('ionViewDidLoad GuestPage');
   }
 
 }

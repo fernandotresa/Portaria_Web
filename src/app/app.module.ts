@@ -9,6 +9,7 @@ import { HomePage } from '../pages/home/home';
 
 import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
+import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module';
 import { GuestPageModule } from '../pages/guest/guest.module';
 import { PermissionsPageModule } from '../pages/permissions/permissions.module';
 import { PermissionGroupsPageModule } from '../pages/permission-groups/permission-groups.module';
@@ -43,7 +44,8 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
     EmployeePageModule,
     GuestPageModule,
     PermissionsPageModule,
-    PermissionGroupsPageModule
+    PermissionGroupsPageModule,
+    EmployeeAddPageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

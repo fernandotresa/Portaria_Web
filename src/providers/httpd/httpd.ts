@@ -29,6 +29,36 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAuth", myData, {headers: headers})
   }
 
+  getWorkFunctions(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getWorkFunctions", myData, {headers: headers})
+  }
+
+  getEmployeeTypes(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getEmployeeTypes", myData, {headers: headers})
+  }
+
+  getSectors(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getSectors", myData, {headers: headers})
+  }
+
+  getCompanies(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getCompanies", myData, {headers: headers})
+  }
+
+  getOffices(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getOffices", myData, {headers: headers})
+  }
+
   getEmployees(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
@@ -40,7 +70,6 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getEmployeesByName", myData, {headers: headers})
   }
-
  
   getAccessGroups(){
     let myData = JSON.stringify({id: this.dataInfo.userId});

@@ -39,20 +39,57 @@
   
     <ion-item>
         <ion-label>Data final</ion-label>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="dateEnd"></ion-datetime>
+        <ion-datetime displayFormat="DD MM YYYY" pickerFormat="DD MM YYYY" [(ngModel)]="dateEnd"></ion-datetime>
     </ion-item>
 
     <ion-list-header color="primary"> Horários </ion-list-header>  
 
     <ion-item>
       <ion-label>Horário de entrada</ion-label>
-      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="dateStart"></ion-datetime>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="timeStart"></ion-datetime>
     </ion-item>
   
     <ion-item>
         <ion-label>Horário de saída</ion-label>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="dateEnd"></ion-datetime>
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="timeEnd"></ion-datetime>
     </ion-item>
+
+    <ion-list-header color="primary"> Dias da semana </ion-list-header>  
+
+    <ion-item>
+        <ion-label>Segunda</ion-label>
+        <ion-checkbox [(ngModel)]="monday"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Terça</ion-label>
+        <ion-checkbox [(ngModel)]="sausage"></ion-checkbox>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Quarta</ion-label>
+        <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Quinta</ion-label>
+        <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Sexta</ion-label>
+        <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>Sábado</ion-label>
+          <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Domingo</ion-label>
+            <ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>
+          </ion-item>
 
   </ion-list>
     

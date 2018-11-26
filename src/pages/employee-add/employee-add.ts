@@ -33,6 +33,8 @@ export class EmployeeAddPage {
   employeeCompany: any;
   employeeOffice: any;
 
+  informations: any;
+
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
@@ -41,11 +43,19 @@ export class EmployeeAddPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EmployeeAddPage');    
+    console.log('ionViewDidLoad EmployeeAddPage');        
     this.startInterface()
+    
+    console.log(this.informations)
+    console.log(this.informations.id)
+
+    if(this.informations)
+      this.loadModel()
   }
 
   startInterface(){
+
+    this.informations = this.navParams.get('informations')
 
     this.workFunctions = this.httpd.getWorkFunctions()
     this.workFunctions.subscribe(data => {
@@ -72,6 +82,23 @@ export class EmployeeAddPage {
       console.log(data)
     })
 
+  }
+
+  loadModel(){
+    console.log("Carregando informações")
+
+    this.name = this.informations.name
+    this.commumName = this.informations.name_comum
+    this.rg = this.informations.rg
+    this.cpf = this.informations.cpf
+    this.district = this.informations.bairro
+    this.tel = this.informations.telefone
+    this.ramal = this.informations.ramal
+    this.registration = this.informations.matricula
+    this.badge = this.informations.CRACHA
+    this.employeeType = this.informations.FUNCIONARIO_TIPO
+
+    console.log(this.informations.FUNCIONARIO_TIPO, this.employeeType)
   }
 
   

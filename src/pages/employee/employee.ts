@@ -6,6 +6,7 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
+import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
 
 
 @IonicPage()
@@ -47,5 +48,13 @@ export class EmployeePage {
   setFilteredItems(){
     this.employees = this.httpd.getEmployeesByName(this.searchTerm)    
   } 
+
+  goPageAdd(){
+    this.navCtrl.push(EmployeeAddPage)
+  }
+
+  goPageEdit(employee){
+    this.navCtrl.push(EmployeeAddPage, {informations: employee})
+  }
 
 }

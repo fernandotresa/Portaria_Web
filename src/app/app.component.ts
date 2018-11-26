@@ -7,9 +7,10 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EmployeePage } from '../pages/employee/employee';
-import { EmployeeAddPage } from '../pages/employee-add/employee-add';
 import { GuestPage } from '../pages/guest/guest';
 import { PermissionsPage } from '../pages/permissions/permissions';
+
+//import { EmployeeAddPage } from '../pages/employee-add/employee-add';
 //import { PermissionGroupsPage } from '../pages/permission-groups/permission-groups';
 
 @Component({
@@ -19,7 +20,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = EmployeeAddPage;
+  rootPage:any = EmployeePage;
 
   public options: Array<SideMenuOption>;
 

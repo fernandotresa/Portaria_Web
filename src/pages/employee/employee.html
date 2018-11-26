@@ -49,7 +49,7 @@
         </ion-col>
 
         <ion-col>
-          <button ion-button icon-start clear small (click)="goPageUserDetails(worker)">
+          <button ion-button icon-start clear small (click)="goPageEdit(employee)">
             <ion-icon name="cog" color="primary"></ion-icon>
             <div>Editar</div>
           </button>
@@ -68,5 +68,9 @@
     </ion-card>
     
   </ion-list>
+
+  <ion-fab bottom right >
+    <button ion-fab (click)="goPageAdd()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
 
 </ion-content>

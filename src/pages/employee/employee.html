@@ -20,49 +20,53 @@
 
     <ion-list>
 
-      <ion-card class="trip card" text-wrap *ngFor="let worker of (usersWorkers | async)?.success" no-lines>
+      <ion-card class="trip card" text-wrap *ngFor="let employee of (employees | async)?.success" no-lines>
         
       <ion-item>
           <ion-avatar item-start>
-            <img src="./assets/imgs/default-user.png" *ngIf="! worker.photo" (click)="goPageUserDetails(worker)">
-            <img src="{{worker.photo}}" *ngIf="worker.photo" (click)="goPageUserDetails(worker)">
+            <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo" (click)="goPageUserDetails(worker)">
+            <img src="{{employee.photo}}" *ngIf="employee.photo" (click)="goPageUserDetails(worker)">
           </ion-avatar>
   
-          <h2>{{worker.name}}</h2>
-          <p><b> Perfil:</b> {{worker.status}} </p>
+          <h2>{{employee.name}}</h2>
+          <p *ngIf="! employee.FUNCIONARIO_TIPO"><b> Tipo:</b> Não informado </p>
+          <p *ngIf="employee.FUNCIONARIO_TIPO"><b> Tipo:</b> {{employee.FUNCIONARIO_TIPO}} </p>
+          <p *ngIf="! employee.matricula"><b> Matricula:</b> Não informado  </p>
+          <p *ngIf="employee.matricula"><b> Matricula:</b> {{employee.matricula}} </p>
       </ion-item>
   
-      <ion-card-content class="mgt-10"> 
-        <p><b> Ranking:</b> {{worker.ranking}} </p>
-        <p><b> Trabalhos realizados:</b> {{worker.total_works}} </p>
-        <p><b>Indicações:</b> {{worker.total_indications}} </p>
-        <p><b>Descrição:</b> {{worker.description}} </p>
+      <ion-card-content class="mgt-10 top-default"> 
+        <p><b>Crachá:</b> {{employee.CRACHA}} </p>
+        <p><b>Cargo:</b> {{employee.CARGO}} </p>
+        <p><b>Empresa:</b> {{employee.EMPRESA}} </p>        
       </ion-card-content>                  
             
       <ion-row>
+
         <ion-col>
           <button ion-button icon-start clear small> 
-              <ion-icon name="medal" color="gold" *ngIf="worker.id_ranking === 1"></ion-icon>
-              <ion-icon name="medal" color="gray" *ngIf="worker.id_ranking === 2"></ion-icon>
-              <ion-icon name="medal" color="bronze" *ngIf="worker.id_ranking === 3"></ion-icon>
-              <ion-icon name="star" color="gold" *ngIf="worker.id_ranking === 4"></ion-icon>
-            <div>{{worker.ranking}}</div>
+              <ion-icon name="calendar" color="primary"></ion-icon>
+            <div>Agendamentos</div>
           </button>
         </ion-col>
+
         <ion-col>
           <button ion-button icon-start clear small (click)="goPageUserDetails(worker)">
-            <ion-icon name="checkmark-circle" color="secondary" *ngIf="worker.id_status === 1"></ion-icon>
-            <ion-icon name="checkmark-circle" color="gold" *ngIf="worker.id_status === 2"></ion-icon>
-            <div>{{worker.status}}</div>
+            <ion-icon name="cog" color="primary"></ion-icon>
+            <div>Configurações</div>
           </button>
         </ion-col>
-        <ion-col center text-center>
-          <ion-note>
-            13 Km distância
-          </ion-note>
+
+        <ion-col>
+          <button ion-button icon-start clear small (click)="goPageUserDetails(worker)">
+              <ion-icon name="alert" color="primary"></ion-icon>
+              <div>Mensagens e Alertas</div>
+          </button>
         </ion-col>
+
       </ion-row>
         
+
     </ion-card>
     
   </ion-list>

@@ -8,6 +8,8 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EmployeePage } from '../pages/employee/employee';
 import { GuestPage } from '../pages/guest/guest';
+import { PermissionsPage } from '../pages/permissions/permissions';
+import { PermissionGroupsPage } from '../pages/permission-groups/permission-groups';
 
 @Component({
   templateUrl: 'app.html'
@@ -16,7 +18,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = LoginPage;
+  rootPage:any = PermissionGroupsPage;
 
   public options: Array<SideMenuOption>;
 
@@ -99,7 +101,7 @@ export class MyApp {
     this.options.push({
 			iconName: 'home',
 			displayText: 'Acessos',
-			component: GuestPage
+			component: PermissionsPage
 		});	
     
 		this.options.push({
@@ -111,4 +113,5 @@ export class MyApp {
 		});
 	}	
 }
+
 

@@ -43,7 +43,8 @@ export class DataInfoProvider {
 
   titleEmployeers: string = 'Colaboradores'
   titleGuests: string = 'Visitantes'
-  titlePermissions: string = "Permissões"
+  titlePermissions: string = "Acessos"
+  titlePermissionsAccess: string = "Grupos de acesso"
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."
@@ -61,6 +62,7 @@ export class DataInfoProvider {
   titleContinue: string = "Continuar"
   titleAuthErrorSignUp: string = "Falha ao se cadastrar, email já existe"
   titleMenu: string = "Menu"
+  
   
   welcomeMsg: string = "Seja bem vindo ";  
   appDesc: string = "Agende uma faxina online"

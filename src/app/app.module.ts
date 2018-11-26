@@ -10,6 +10,8 @@ import { HomePage } from '../pages/home/home';
 import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
 import { GuestPageModule } from '../pages/guest/guest.module';
+import { PermissionsPageModule } from '../pages/permissions/permissions.module';
+import { PermissionGroupsPageModule } from '../pages/permission-groups/permission-groups.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -28,8 +30,8 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
-    IonicStorageModule.forRoot()
-  ],
+    IonicStorageModule.forRoot()    
+    ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
@@ -39,7 +41,9 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
   exports: [
     LoginPageModule,
     EmployeePageModule,
-    GuestPageModule
+    GuestPageModule,
+    PermissionsPageModule,
+    PermissionGroupsPageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

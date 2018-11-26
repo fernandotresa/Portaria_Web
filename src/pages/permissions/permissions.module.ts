@@ -7,7 +7,7 @@ import { PermissionsPage } from './permissions';
     PermissionsPage,
   ],
   imports: [
-    IonicPageModule.forChild(PermissionsPage),
+    IonicPageModule.forChild(PermissionsPage)
   ],
 })
 export class PermissionsPageModule {}

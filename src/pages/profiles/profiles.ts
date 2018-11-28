@@ -7,13 +7,12 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
 
-
 @IonicPage()
 @Component({
-  selector: 'page-permissions',
-  templateUrl: 'permissions.html',
+  selector: 'page-profiles',
+  templateUrl: 'profiles.html',
 })
-export class PermissionsPage {
+export class ProfilesPage {
 
   accessGroups: Observable<any>;
 
@@ -22,7 +21,6 @@ export class PermissionsPage {
   searchControl: FormControl;
 
   date: string;
-  type: 'string'; 
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -60,7 +58,7 @@ export class PermissionsPage {
   }
 
   addPermissionGroups(){
-    this.navCtrl.push('PermissionGroupsPage')  
+    this.navCtrl.push('ProfilesAddPage')  
   }
 
 }

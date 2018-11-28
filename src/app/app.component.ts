@@ -8,10 +8,8 @@ import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { EmployeePage } from '../pages/employee/employee';
 import { GuestPage } from '../pages/guest/guest';
-import { PermissionsPage } from '../pages/permissions/permissions';
-
-//import { EmployeeAddPage } from '../pages/employee-add/employee-add';
-//import { PermissionGroupsPage } from '../pages/permission-groups/permission-groups';
+import { ProfilesPage } from '../pages/profiles/profiles';
+import { ProfilesAddPage } from '../pages/profiles-add/profiles-add';
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +18,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = EmployeePage;
+  rootPage:any = ProfilesAddPage;
 
   public options: Array<SideMenuOption>;
 
@@ -89,21 +87,21 @@ export class MyApp {
 		});						
 
 		this.options.push({
-			iconName: 'home',
+			iconName: 'contacts',
 			displayText: 'Colaboradores',
 			component: EmployeePage			
 		});
 
 		this.options.push({
-			iconName: 'home',
+			iconName: 'people',
 			displayText: 'Visitantes',
 			component: GuestPage
 		});	
   
     this.options.push({
-			iconName: 'home',
+			iconName: 'unlock',
 			displayText: 'Acessos',
-			component: PermissionsPage
+			component: ProfilesPage
 		});	
     
 		this.options.push({

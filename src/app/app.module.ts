@@ -11,8 +11,8 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
 import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module';
 import { GuestPageModule } from '../pages/guest/guest.module';
-import { PermissionsPageModule } from '../pages/permissions/permissions.module';
-import { PermissionGroupsPageModule } from '../pages/permission-groups/permission-groups.module';
+import { ProfilesPageModule } from '../pages/profiles/profiles.module';
+import { ProfilesAddPageModule } from '../pages/profiles-add/profiles-add.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -20,6 +20,7 @@ import { UiUtilsProvider } from '../providers/ui-utils/ui-utils';
 import { AuthProvider } from '../providers/auth/auth';
 
 import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-content.component';
+import { NgCalendarModule  } from 'ionic2-calendar';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
     SideMenuContentComponent    
   ],
   imports: [
+    NgCalendarModule,
     BrowserModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule,
@@ -43,8 +45,8 @@ import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-
     LoginPageModule,
     EmployeePageModule,
     GuestPageModule,
-    PermissionsPageModule,
-    PermissionGroupsPageModule,
+    ProfilesPageModule,
+    ProfilesAddPageModule,
     EmployeeAddPageModule
   ],
   providers: [

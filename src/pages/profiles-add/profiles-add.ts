@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -13,67 +13,55 @@ import * as moment from 'moment';
 })
 export class ProfilesAddPage {
 
+  calendarDisabled: Boolean = false
+
+  name: string;
+  desc: string;
+
   eventSource = [];
   viewTitle: string;
   selectedDay = new Date();
- 
-  calendar = {
-    mode: 'month',
-    currentDate: new Date()
-  };
 
+  monday: string;
+  tuesday: string;
+  wednesday: string;
+  thursday: string;
+  friday: string;
+  saturday: string;
+  sunday: string;   
   accessTypes: Observable<any>;
   selectedAccessType: string
   lastSelectedAccessType = new Date();
-
   dateStart: any
   dateEnd: any
+
+  calendar = {
+    mode: 'month',
+    currentDate: new Date()            
+  };
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
-    private modalCtrl: ModalController, 
     private alertCtrl: AlertController,
     public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad PermissionGroupsPage');
-
     this.accessTypes = this.httpd.getAccessControlTypes()
     this.accessTypes.subscribe(data => {
       console.log(data)
     })
   }
-
-  addEvent() {
-    let modal = this.modalCtrl.create('EventModalPage', {selectedDay: this.selectedDay});
-    modal.present();
-    modal.onDidDismiss(data => {
-      if (data) {
-        let eventData = data;
- 
-        eventData.startTime = new Date(data.startTime);
-        eventData.endTime = new Date(data.endTime);
- 
-        let events = this.eventSource;
-        events.push(eventData);
-        this.eventSource = [];
-        setTimeout(() => {
-          this.eventSource = events;
-        });
-      }
-    });
-  }
- 
+  
   onViewTitleChanged(title) {
-    console.log(title)
+    console.log('onViewTitleChanged', title)
     this.viewTitle = title;
   }
  
   onEventSelected(event) {
-    console.log(event)
+    //console.log(event)
 
     let start = moment(event.startTime).format('LLLL');
     let end = moment(event.endTime).format('LLLL');
@@ -86,41 +74,71 @@ export class ProfilesAddPage {
     alert.present();
   }
  
-  onTimeSelected(ev) {
-    console.log(ev)      
+  onTimeSelected(ev) {    
+    
+    if(! this.calendarDisabled){
 
-    this.selectedDay = ev.selectedTime;
+      this.selectedDay = ev.selectedTime;
 
-    if(this.lastSelectedAccessType == this.selectedDay){
-      console.log('clicou 2x')
-      this.confirmExpiration(ev)
-    } 
-
-    this.lastSelectedAccessType = this.selectedDay
+      if(this.lastSelectedAccessType == this.selectedDay){
+        this.confirmExpiration(ev)    
+      }
+        
+      this.lastSelectedAccessType = this.selectedDay
+    }    
   }
 
   confirmExpiration(ev){
+
+    let startOrEnd = this.eventSource.length === 0
+    let msg = startOrEnd ? "Confirmar data inicial?" : "Confirmar data final?"
         
-    this.uiUtils.showConfirm('Selecionar', "Confirmar data inicial?").then(data => {
-      console.log(data)
+    this.uiUtils.showConfirm('Selecionar', msg).then(data => {      
 
       if(data){
-        this.createExpirationStart(ev)
+        if(startOrEnd)
+          this.addExpirationStart(ev)        
+        
+        else
+          this.addExpirationEnd(ev)                     
       }
     })
   }
 
-  createExpirationStart(ev){
-    //let selected = moment(ev.selectedTime).format('LL');
-    let event = { startTime: new Date().toISOString(), endTime: new Date().toISOString(), allDay: false };
+  addExpirationStart(ev){        
+    let date = moment(ev.selectedTime).format()
+    console.log(ev.currentDate)    
+    this.markCalendar(date)    
+  }
+
+  addExpirationEnd(ev){    
+    let date = moment(ev.selectedTime).format()
+    console.log(ev.currentDate)    
+    this.markCalendar(date)    
+  }
+
+  markCalendar(date){    
+    this.calendarDisabled = true
+    let event = { startTime: new Date(date), endTime: new Date(date), allDay: true };
+
+    console.log(event)
 
     let events = this.eventSource;
-        events.push(event);
-        
-        this.eventSource = [];
-        setTimeout(() => {
-          this.eventSource = events;
-        });
+    events.push(event);    
+    this.eventSource = [];
+
+    setTimeout(() => {    
+      this.eventSource = events;
+
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+    });
+  }
+
+
+  addProfile(){
+    console.log(this.name, this.desc, this.selectedAccessType)
   }
 
 }

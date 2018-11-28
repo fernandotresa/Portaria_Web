@@ -44,11 +44,7 @@ export class EmployeeAddPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EmployeeAddPage');        
-    this.startInterface()
-    
-    console.log(this.informations)
-    console.log(this.informations.id)
+    this.startInterface()    
 
     if(this.informations)
       this.loadModel()

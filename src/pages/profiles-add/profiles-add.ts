@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -44,7 +44,6 @@ export class ProfilesAddPage {
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
-    private alertCtrl: AlertController,
     public navParams: NavParams) {
   }
 
@@ -54,26 +53,7 @@ export class ProfilesAddPage {
       console.log(data)
     })
   }
-  
-  onViewTitleChanged(title) {
-    console.log('onViewTitleChanged', title)
-    this.viewTitle = title;
-  }
- 
-  onEventSelected(event) {
-    //console.log(event)
-
-    let start = moment(event.startTime).format('LLLL');
-    let end = moment(event.endTime).format('LLLL');
-    
-    let alert = this.alertCtrl.create({
-      title: '' + event.title,
-      subTitle: 'From: ' + start + '<br>To: ' + end,
-      buttons: ['OK']
-    })
-    alert.present();
-  }
- 
+     
   onTimeSelected(ev) {    
     
     if(! this.calendarDisabled){
@@ -90,7 +70,18 @@ export class ProfilesAddPage {
 
   confirmExpiration(ev){
 
-    let startOrEnd = this.eventSource.length === 0
+    let total = this.eventSource.length
+
+    if(total >= 2)
+      this.uiUtils.showAlert("Atenção", "Favor desmarcar os dias selecionados").present()      
+    else 
+      this.confirmExpirationFinish(ev)
+        
+  }
+
+  confirmExpirationFinish(ev){
+    let total = this.eventSource.length
+    let startOrEnd =  total === 0
     let msg = startOrEnd ? "Confirmar data inicial?" : "Confirmar data final?"
         
     this.uiUtils.showConfirm('Selecionar', msg).then(data => {      
@@ -107,21 +98,17 @@ export class ProfilesAddPage {
 
   addExpirationStart(ev){        
     let date = moment(ev.selectedTime).format()
-    console.log(ev.currentDate)    
     this.markCalendar(date)    
   }
 
   addExpirationEnd(ev){    
     let date = moment(ev.selectedTime).format()
-    console.log(ev.currentDate)    
     this.markCalendar(date)    
   }
 
   markCalendar(date){    
     this.calendarDisabled = true
     let event = { startTime: new Date(date), endTime: new Date(date), allDay: true };
-
-    console.log(event)
 
     let events = this.eventSource;
     events.push(event);    
@@ -136,9 +123,53 @@ export class ProfilesAddPage {
     });
   }
 
-
   addProfile(){
-    console.log(this.name, this.desc, this.selectedAccessType)
+    if(this.selectedAccessType == 'Vencimento')
+      this.addProfileExpire()
+  }
+
+  addProfileExpire(){    
+    let start = this.eventSource[0].startTime
+    let end = this.eventSource[1].endTime
+
+    let startF = moment(start)
+    let endF = moment(end)
+
+    if(endF.isBefore(startF)){
+      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart).present()      
+      this.restartCalendar()
+
+    } else {
+
+      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+      
+      this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end)    
+      .subscribe( () => {
+
+        loading.dismiss()
+
+        this.uiUtils.showAlert("Sucesso", "Perfil criado").present()
+        .then( () => {        
+          //this.navCtrl.pop()        
+        })
+      })
+    }    
+  }
+
+  restartCalendar(){    
+      this.calendarDisabled = true
+      this.eventSource.splice(0, this.eventSource.length)            
+      let events = this.eventSource;      
+      this.eventSource = [];
+
+      setTimeout(() => {    
+        this.eventSource = events;      
+        
+        setTimeout( () => {
+          this.calendarDisabled = false
+        }, 1000)
+      });
   }
 
 }

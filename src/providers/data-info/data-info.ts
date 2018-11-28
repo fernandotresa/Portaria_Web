@@ -48,11 +48,11 @@ export class DataInfoProvider {
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."
+  titleDateendGreaterDateStart: string = "Data final não pode ser maior que a inicial"
   titleRanking: string = 'Ranking'
   titleProfile: string = "Perfil"
   titleShare: string = 'Compartilhar'    
   titleShareDescripton: string = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
-  titleWorkers: string = 'Prestadores de serviço'
   titleBack: string = "Voltar"
   titleCheckInfoAndConfirm: string = "Verifique os dados e confirme a ação"
   titleAccept: string = "Aceitar"

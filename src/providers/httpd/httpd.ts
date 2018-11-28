@@ -77,9 +77,7 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getGuests", myData, {headers: headers})
   }
 
-  getGuestsByName(name_){
-
-    
+  getGuestsByName(name_){    
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getGuestsByName", myData, {headers: headers})
@@ -97,9 +95,11 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAccessControlTypes", myData, {headers: headers})
   }
 
-  addAccessProfile(username_, password_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, username: username_, password: password_});
+  addAccessProfileExpire(name_, desc_, type_, start_, end_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
+      desc: desc_, start: start_, end: end_, type: type_});
+
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/getAuth", myData, {headers: headers})
+    return this.http.post(this.address  + "/addAccessProfileExpire", myData, {headers: headers})
   }
 }

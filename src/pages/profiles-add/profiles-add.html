@@ -37,7 +37,8 @@
       </ion-select>
     </ion-item>
 
-    <ion-list-header color="primary" *ngIf="selectedAccessType !== 'Dias da Semana + horários'"> Calendário </ion-list-header>  
+
+    <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> Calendário </ion-list-header>  
 
     <calendar [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
@@ -45,9 +46,8 @@
         [showEventDetail]="false"
         (onTimeSelected)="onTimeSelected($event)"        
         [step]="30"
-        formatWeekViewDayHeader="EEE"
         class="has-header"
-        *ngIf="selectedAccessType !== 'Dias da Semana + horários'">
+        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
       </calendar>           
 
   <ion-list-header color="primary" *ngIf="selectedAccessType == 'Dias da Semana + horários'"> Dias da semana </ion-list-header>  
@@ -87,15 +87,21 @@
           <ion-checkbox [(ngModel)]="sunday"></ion-checkbox>
       </ion-item>      
       
+      
+      <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Vencimento'">Horários</ion-list-header>  
 
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'">
-        <ion-label>Horário de entrada</ion-label>
+      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Vencimento'">
+        <ion-label>Entrada</ion-label>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="timeStart"></ion-datetime>
       </ion-item>
     
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'">
-          <ion-label>Horário de saída</ion-label>
+      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Vencimento'">
+          <ion-label>Saída</ion-label>
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="timeEnd"></ion-datetime>
+      </ion-item>
+
+      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Vencimento'">
+        <button ion-button full (click)="applyTime()">Aplicar marcados</button>
       </ion-item>
     
 </ion-list>
@@ -104,5 +110,5 @@
 </ion-content>
 
 <ion-footer *ngIf="name && selectedAccessType">
-  <button ion-button full color="secondary" (click)="addProfile()">Salvar</button>
+  <button ion-button full (click)="addProfile()">Salvar</button>
 </ion-footer>

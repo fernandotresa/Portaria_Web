@@ -18,7 +18,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = ProfilesAddPage;
+  rootPage:any = LoginPage;
 
   public options: Array<SideMenuOption>;
 

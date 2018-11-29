@@ -110,4 +110,12 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addAccessProfileDatetime", myData, {headers: headers})
   }
+
+  addAccessProfileDayweek(name_, desc_, type_, events_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
+      desc: desc_, events: events_, type: type_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addAccessProfileDayweek", myData, {headers: headers})
+  }
 }

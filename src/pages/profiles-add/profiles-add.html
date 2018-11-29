@@ -53,76 +53,99 @@
 
   <ion-list-header color="primary" *ngIf="selectedAccessType == 'Dias da Semana + horários'"> Dias da semana </ion-list-header>  
 
-      <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+      <ion-item no-lines item-end>
+          <ion-checkbox [(ngModel)]="monday"></ion-checkbox>
+          <ion-label>Segunda-Feira</ion-label>  
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="monday">            
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="monday">
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
+      </ion-item>     
+    </ion-item>
+
+    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+      <ion-item no-lines item-end>
+        
+          <ion-checkbox [(ngModel)]="tuesday"></ion-checkbox>
+          <ion-label>Terça-Feira</ion-label>  
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="tuesday">            
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="tuesdayStart"></ion-datetime>
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="tuesday">
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="tuesdayEnd"></ion-datetime>                    
+      </ion-item>     
+    </ion-item>
+
+  <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+    <ion-item no-lines item-end>
+        <ion-checkbox [(ngModel)]="wednesday"></ion-checkbox>
+        <ion-label>Quarta-Feira</ion-label>  
+    </ion-item>
+    <ion-item no-lines item-end *ngIf="wednesday">            
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="wednesdayStart"></ion-datetime>
+    </ion-item>
+    <ion-item no-lines item-end *ngIf="wednesday">
+        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="wednesdayEnd"></ion-datetime>                    
+    </ion-item>     
+  </ion-item>
+
+  <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+      <ion-item no-lines item-end>
+          <ion-checkbox [(ngModel)]="thursday"></ion-checkbox>
+          <ion-label>Quinta-Feira</ion-label>  
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="thursday">            
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="thursdayStart"></ion-datetime>
+      </ion-item>
+      <ion-item no-lines item-end *ngIf="thursday">
+          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="thursdayEnd"></ion-datetime>                    
+      </ion-item>     
+    </ion-item>
+
+    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
         <ion-item no-lines item-end>
-            <ion-label>Segunda-Feira</ion-label>  
-            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
+            <ion-checkbox [(ngModel)]="friday"></ion-checkbox>
+            <ion-label>Sexta-Feira</ion-label>  
         </ion-item>
-        <ion-item no-lines item-end>
-            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
+        <ion-item no-lines item-end *ngIf="friday">            
+            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fridayStart"></ion-datetime>
+        </ion-item>
+        <ion-item no-lines item-end *ngIf="friday">
+            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fridayEnd"></ion-datetime>                    
         </ion-item>     
       </ion-item>
 
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
-              <ion-label>Terça-Feira</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
-
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
-              <ion-label>Quarta-Feira</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
-
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
-              <ion-label>Quinta-Feira</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
-
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
-              <ion-label>Sexta-Feira</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
-
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
+      <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+          <ion-item no-lines item-end>
+              <ion-checkbox [(ngModel)]="saturday"></ion-checkbox>
               <ion-label>Sábado</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
+          </ion-item>
+          <ion-item no-lines item-end *ngIf="saturday">            
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayStart"></ion-datetime>
+          </ion-item>
+          <ion-item no-lines item-end *ngIf="saturday">
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayEnd"></ion-datetime>                    
+          </ion-item>     
+        </ion-item>
 
-      <ion-item *ngIf="selectedAccessType == 'Dias da Semana + horários'" no-lines>                 
-          <ion-item item-end no-lines>
+      <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+          <ion-item no-lines item-end>
+              <ion-checkbox  checked="false"  [(ngModel)]="sunday"></ion-checkbox>
               <ion-label>Domingo</ion-label>  
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
-          </ion-item>  
-          <ion-item item-end no-lines>
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
-          </ion-item>       
-      </ion-item>
-      
+          </ion-item>
+          
+          <ion-item no-lines item-end *ngIf="sunday">            
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="sundayStart"></ion-datetime>
+          </ion-item>
+          <ion-item no-lines item-end *ngIf="sunday">
+              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="sundayEnd"></ion-datetime>                    
+          </ion-item>     
+        </ion-item>
+            
     <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">Horários</ion-list-header>  
 
       <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">

@@ -23,6 +23,9 @@ export class ProfilesAddPage {
   selectedDay = new Date();
 
   monday: string;
+  mondayStart: string = new Date().toISOString();
+  mondayEnd: string = new Date().toISOString();
+
   tuesday: string;
   wednesday: string;
   thursday: string;
@@ -94,10 +97,31 @@ export class ProfilesAddPage {
       this.confirmExpirationFinish(ev)
           
   }
+  
+  confirmExpirationFinish(ev){
+    let total = this.eventSource.length
+    let startOrEnd =  total === 0
+    let msg = startOrEnd ? "Confirmar data inicial?" : "Confirmar data final?"
+        
+    this.uiUtils.showConfirm('Selecionar', msg).then(data => {      
+
+      if(data){
+        this.addExpiration(ev)                 
+      }
+    })
+  }
+
+  addExpiration(ev){        
+    console.log('addExpiration', ev)
+    this.addEvent()
+  }  
 
   confirmDatetime(ev){    
     console.log('confirmDatetime', ev)
-    
+    this.addEvent()    
+  }
+
+  addEvent(){
     this.calendarDisabled = true
     
     let modal = this.modalCtrl.create('EventModalPage', {selectedDay: this.selectedDay});
@@ -123,38 +147,6 @@ export class ProfilesAddPage {
       }
     });
   }
-
-  confirmExpirationFinish(ev){
-    let total = this.eventSource.length
-    let startOrEnd =  total === 0
-    let msg = startOrEnd ? "Confirmar data inicial?" : "Confirmar data final?"
-        
-    this.uiUtils.showConfirm('Selecionar', msg).then(data => {      
-
-      if(data){
-        this.addExpiration(ev)                 
-      }
-    })
-  }
-
-  addExpiration(ev){        
-    let date = moment(ev.selectedTime).format()
-    
-    this.calendarDisabled = true
-    let event = { startTime: new Date(date), endTime: new Date(date), allDay: true };
-
-    let events = this.eventSource;
-    events.push(event);    
-    this.eventSource = [];
-
-    setTimeout(() => {    
-      this.eventSource = events;
-
-      setTimeout( () => {
-        this.calendarDisabled = false
-      }, 1000)
-    });
-  }  
 
   addProfile(){
     if(this.selectedAccessType == 'Vencimento')

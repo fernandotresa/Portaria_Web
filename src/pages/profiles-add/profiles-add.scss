@@ -3,4 +3,8 @@ page-profiles-add {
     swiper-slide {
         align-items: unset !important;
     }
+
+    .item-datetime ion-datetime {
+        position: initial;
+      }
 }

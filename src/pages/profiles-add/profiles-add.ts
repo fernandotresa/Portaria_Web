@@ -250,12 +250,10 @@ export class ProfilesAddPage {
 
         loading.dismiss()
         
-
         this.uiUtils.showAlert("Sucesso", "Perfil criado").present()
         .then( () => {        
           //this.navCtrl.pop()        
         })
-
       })
   }
 

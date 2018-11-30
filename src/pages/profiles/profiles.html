@@ -2,14 +2,12 @@
 <ion-header>
 
   <ion-navbar text-center no-border-bottom color="primary">  
+    <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title> 
 
-
-  <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title> 
-
-  <ion-buttons end>
-      <button ion-button menuToggle color="white_">
+    <ion-buttons end>
+        <button ion-button menuToggle color="white_">
         <ion-icon name="menu"></ion-icon></button>
-   </ion-buttons>   
+    </ion-buttons>   
    
  </ion-navbar>  
 
@@ -27,9 +25,21 @@
 <ion-content padding>
 
   <ion-list>          
-    <button ion-item item-start text-wrap *ngFor="let group of (accessGroups | async)?.success" no-lines (click)="goPermissionGroups(group)">     
-        {{group.name}}    
-    </button>            
+    <ion-item-sliding #item *ngFor="let group of (accessGroups | async)?.success">
+
+        <button ion-item item-start text-wrap no-lines (click)="goPermissionGroups(group)">     
+            {{group.name}} - {{group.type}} 
+        </button>      
+        
+        <ion-item-options>
+            <button ion-button color="danger" (click)="remove(group)"><ion-icon name="trash"></ion-icon>Remover</button>
+            <button ion-button (click)="edit(group)"><ion-icon name="create"></ion-icon>Editar</button>            
+            <button ion-button color="secondary" (click)="copy(group)"><ion-icon name="copy"></ion-icon>Duplicar</button>
+          </ion-item-options>
+
+
+    </ion-item-sliding>
+    
 </ion-list>
 
 <ion-fab bottom right >

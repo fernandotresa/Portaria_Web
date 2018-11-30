@@ -11,6 +11,7 @@ import { GuestPage } from '../pages/guest/guest';
 import { ProfilesPage } from '../pages/profiles/profiles';
 import { ProfilesAddPage } from '../pages/profiles-add/profiles-add';
 
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,7 +19,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = LoginPage;
+  rootPage:any = ProfilesPage;
 
   public options: Array<SideMenuOption>;
 

@@ -36,8 +36,7 @@ export class ProfilesPage {
       });      
   }  
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PermissionsPage');
+  ionViewDidLoad() {    
     this.getAccessGroups()
   }
 
@@ -59,6 +58,35 @@ export class ProfilesPage {
 
   addPermissionGroups(){
     this.navCtrl.push('ProfilesAddPage')  
+  }
+
+  remove(group){
+    
+    console.log('remove', group)
+
+    this.uiUtils.showConfirm("Remover Perfil", "Deseja realmente remover? A ação não poderá ser refeita.")
+    .then(res => {
+      if(res){
+        this.removeContinue(group)
+      }
+    })    
+  }
+
+  removeContinue(group){
+    this.httpd.delAccessGroups(group).subscribe(data => {
+      this.uiUtils.showAlert("Sucesso", "Perfil removido com sucesso").present()
+        .then( () => {        
+          this.getAccessGroups()
+        })
+    })
+  }
+
+  edit(group){
+    console.log('edit', group)
+  }
+
+  copy(group){
+    console.log('copy', group)
   }
 
 }

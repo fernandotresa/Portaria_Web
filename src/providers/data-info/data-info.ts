@@ -26,6 +26,7 @@ export class DataInfoProvider {
     
 
   titleSave: string = "Salvar"
+  titleRegister: string = "Cadastrar"
   titleApp: string = "Portaria"
   titleForgotPassword: string = 'Esqueci a senha'
   titleOr: string = 'Ou'
@@ -54,6 +55,7 @@ export class DataInfoProvider {
   titleProfileDayweek: string = 'Dias da Semana + horários'
   titleSuccess: string = "Sucesso"
   titleProfileCreated: string = "Perfil criado"
+  titleProfileUpdated: string = "Perfil atualizado"
   titleProfile: string = "Perfil"
   titleName: string = "Nome"
   titleDescription: string = "Descrição"
@@ -64,7 +66,7 @@ export class DataInfoProvider {
   titleWednesday: string = "Quarta-Feira"
   titleThursday: string = "Quinta-Feira"
   titleFriday: string = "Sexta-Feira"
-  titleSaturnday: string = "Sábado"
+  titleSaturday: string = "Sábado"
   titleSunday: string = "Domingo"
   titleEntrace: string = "Entrada"
   titleExit: string = "Saída"

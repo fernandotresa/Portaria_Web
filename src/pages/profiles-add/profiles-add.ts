@@ -340,7 +340,7 @@ export class ProfilesAddPage {
     }    
   }
 
-  addProfileDayWeek(){
+  populateDayweekData(){
     let data = []
 
     if(this.monday)
@@ -364,7 +364,11 @@ export class ProfilesAddPage {
     if(this.monday)
       data.push({id: 1, startTime: this.mondayStart, endTime: this.mondayEnd})
 
+    return data
+  }
 
+  addProfileDayWeek(){
+    let data = this.populateDayweekData()
     this.addProfileDayWeekContinue(data)      
   }
 
@@ -382,6 +386,83 @@ export class ProfilesAddPage {
           //this.navCtrl.pop()        
         })
       })
+  }
+
+  updateProfile(){
+    if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
+      this.updateProfileExpire()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
+      this.updateProfileDateTimes()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
+      this.updateProfileDayWeek()
+  }
+
+  updateProfileExpire(){
+    let start = this.eventSource[0].startTime
+    let end = this.eventSource[1].endTime
+
+    let startF = moment(start)
+    let endF = moment(end)
+
+    if(endF.isBefore(startF)){
+      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart).present()      
+      this.restartCalendar()
+
+    } else {
+
+      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+      
+      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end, this.profile.id)    
+      .subscribe( () => {
+
+        loading.dismiss()
+
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
+        .then( () => {        
+          //this.navCtrl.pop()        
+        })
+      })
+    }
+  }
+
+  updateProfileDateTimes(){
+    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+      
+      this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
+      .subscribe( () => {
+
+        loading.dismiss()
+
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
+        .then( () => {        
+          //this.navCtrl.pop()        
+        })
+      })
+  }
+
+  updateProfileDayWeek(){
+    console.log('updateProfileDayWeek')
+    
+    let data = this.populateDayweekData()
+
+    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+    loading.present()
+
+    this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data, this.profile.id)
+      .subscribe( () => {
+
+        loading.dismiss()
+        
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
+        .then( () => {        
+          //this.navCtrl.pop()        
+        })
+      })
+
   }
 
   restartCalendar(){    

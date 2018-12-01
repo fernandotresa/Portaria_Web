@@ -115,6 +115,15 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addAccessProfileExpire", myData, {headers: headers})
   }
 
+  updateAccessProfileExpire(name_, desc_, type_, start_, end_, idProfile_){
+
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
+      desc: desc_, start: start_, end: end_, type: type_, idProfile: idProfile_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/updateAccessProfileExpire", myData, {headers: headers})
+  }
+
   addAccessProfileDatetime(name_, desc_, type_, events_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
       desc: desc_, events: events_, type: type_});
@@ -123,11 +132,27 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addAccessProfileDatetime", myData, {headers: headers})
   }
 
+  updateAccessProfileDatetime(name_, desc_, type_, events_, idProfile_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, idProfile: idProfile_,
+      desc: desc_, events: events_, type: type_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/updateAccessProfileDatetime", myData, {headers: headers})
+  }
+
   addAccessProfileDayweek(name_, desc_, type_, events_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
       desc: desc_, events: events_, type: type_});
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addAccessProfileDayweek", myData, {headers: headers})
+  }
+
+  updateAccessProfileDayweek(name_, desc_, type_, events_, idProfile_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
+      desc: desc_, events: events_, type: type_, idProfile: idProfile_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/updateAccessProfileDayweek", myData, {headers: headers})
   }
 }

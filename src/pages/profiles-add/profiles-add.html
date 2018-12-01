@@ -124,6 +124,7 @@
               <ion-checkbox [(ngModel)]="saturday"></ion-checkbox>
               <ion-label>{{dataInfo.titleSaturday}}</ion-label>  
           </ion-item>
+
           <ion-item no-lines item-end *ngIf="saturday">            
               <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayStart"></ion-datetime>
           </ion-item>
@@ -168,5 +169,8 @@
 </ion-content>
 
 <ion-footer *ngIf="name && selectedAccessType">
-  <button ion-button full (click)="addProfile()">{{dataInfo.titleSave}}</button>
+  <button ion-button full (click)="addProfile()" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
+
+
+  <button ion-button full (click)="updateProfile()" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
 </ion-footer>

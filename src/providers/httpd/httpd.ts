@@ -95,6 +95,12 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/delAccessGroups", myData, {headers: headers})
   }  
 
+  getProfileInfo(idProfile_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idProfile: idProfile_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getProfileInfo", myData, {headers: headers})
+  }  
+
   getAccessControlTypes(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});

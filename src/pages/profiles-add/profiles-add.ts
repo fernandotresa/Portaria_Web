@@ -14,9 +14,11 @@ import * as moment from 'moment';
 export class ProfilesAddPage {
 
   calendarDisabled: Boolean = false
+  profile: any
 
   name: string;
   desc: string;
+  loadProfile: Boolean = false
 
   eventSource = [];
   viewTitle: string;
@@ -69,15 +71,140 @@ export class ProfilesAddPage {
     public navParams: NavParams) {        
   }
 
-  ionViewDidLoad() {
+  ionViewDidLoad() {      
+    this.loadProfile = this.navParams.get('loadProfile')
+    this.profile = this.navParams.get('profile')
+    this.getAccessTypes()          
+  }
+
+  getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
-    this.accessTypes.subscribe(data => {
-      console.log(data)
+    this.accessTypes.subscribe(data => {    
 
+      if(this.loadProfile)
+        this.loadProfileInfo()      
     })
+  }
 
-    this.name = "Teste"
-    this.desc = "Desc Teste"    
+  loadProfileInfo(){
+    
+    console.log(this.profile)
+
+    this.name = this.profile.name
+    this.desc = this.profile.description
+    this.selectedAccessType = this.profile.type    
+
+    let type = this.profile.id_type
+
+    if(type < 3)
+      this.loadDatesProfile()
+
+    else   
+      this.loadWeekdaysProfile()    
+  }
+
+  loadDatesProfile(){    
+    let idProfile = this.profile.id
+
+    this.httpd.getProfileInfo(idProfile).subscribe(data => {
+      this.loadDatesProfileContinue(data)
+    })
+  }
+
+  loadDatesProfileContinue(data){    
+    
+    this.calendarDisabled = true     
+    let events = this.eventSource;
+
+    data.success.forEach(element => {
+
+      let datetime_start = new Date(element.datetime_start)
+      let datetime_end = new Date(element.datetime_end)
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}
+      
+      events.push(event);
+    });  
+    
+    this.eventSource = []
+
+    setTimeout(() => {
+      this.eventSource = events;
+      
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+    });
+  }
+
+  loadWeekdaysProfile(){
+
+    let idProfile = this.profile.id
+
+    this.httpd.getProfileInfo(idProfile).subscribe(data => {
+      this.loadWeekdaysProfileContinue(data)
+    })
+  }
+
+  loadWeekdaysProfileContinue(data){
+
+    this.calendarDisabled = true     
+
+    data.success.forEach(element => {
+      this.populateDaysweek(element)      
+    });    
+
+    setTimeout( () => {
+      this.calendarDisabled = false
+    }, 1000);
+
+  }
+
+  populateDaysweek(element){
+    let datetime_start = new Date(element.datetime_start)
+    let datetime_end = new Date(element.datetime_end)
+    let idDay = element.id_day
+
+    if(idDay === 1){
+      this.sunday = true
+      this.sundayStart = new Date(datetime_start).toISOString()
+      this.sundayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 2){
+      this.monday = true
+      this.mondayStart = new Date(datetime_start).toISOString()
+      this.mondayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 3){
+      this.tuesday = true
+      this.tuesdayStart = new Date(datetime_start).toISOString()
+      this.tuesdayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 4){
+      this.wednesday = true
+      this.wednesdayStart = new Date(datetime_start).toISOString()
+      this.wednesdayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 5){
+      this.thursday = true
+      this.thursdayStart = new Date(datetime_start).toISOString()
+      this.thursdayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 6){
+      this.friday = true
+      this.fridayStart = new Date(datetime_start).toISOString()
+      this.fridayEnd = new Date(datetime_end).toISOString()
+    }
+
+    if(idDay === 7){
+      this.saturday = true
+      this.saturdayStart = new Date(datetime_start).toISOString()
+      this.saturdayEnd = new Date(datetime_end).toISOString()
+    }        
   }
      
   onTimeSelected(ev) {    
@@ -94,17 +221,18 @@ export class ProfilesAddPage {
   }
 
   checkAccessType(ev){
-    if(this.selectedAccessType === 'Vencimento')
+    if(this.selectedAccessType === this.dataInfo.titleProfileExpire)
       this.confirmExpiration(ev)    
 
-    else if(this.selectedAccessType == 'Datas específicas + horários')
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.confirmDatetime(ev)    
   }
 
   confirmExpiration(ev){
     let total = this.eventSource.length
+
     if(total >= 2)
-      this.uiUtils.showAlert("Atenção", "Favor desmarcar os dias selecionados").present()      
+      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).present()      
     else 
       this.confirmExpirationFinish(ev)          
   }
@@ -112,13 +240,12 @@ export class ProfilesAddPage {
   confirmExpirationFinish(ev){
     let total = this.eventSource.length
     let startOrEnd =  total === 0
-    let msg = startOrEnd ? "Confirmar data inicial?" : "Confirmar data final?"
+    let msg = startOrEnd ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
         
-    this.uiUtils.showConfirm('Selecionar', msg).then(data => {      
+    this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
 
-      if(data){
-        this.addExpiration(ev)                 
-      }
+      if(data)
+        this.addExpiration(ev)     
     })
   }
 
@@ -158,13 +285,13 @@ export class ProfilesAddPage {
   }  
 
   addProfile(){
-    if(this.selectedAccessType == 'Vencimento')
+    if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
       this.addProfileExpire()
 
-    else if(this.selectedAccessType == 'Datas específicas + horários')
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.addProfileDateTimes()
 
-    else if(this.selectedAccessType == 'Dias da Semana + horários')
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
       this.addProfileDayWeek()
   }
 
@@ -177,7 +304,7 @@ export class ProfilesAddPage {
 
         loading.dismiss()
 
-        this.uiUtils.showAlert("Sucesso", "Perfil criado").present()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
         .then( () => {        
           //this.navCtrl.pop()        
         })
@@ -205,7 +332,7 @@ export class ProfilesAddPage {
 
         loading.dismiss()
 
-        this.uiUtils.showAlert("Sucesso", "Perfil criado").present()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
         .then( () => {        
           //this.navCtrl.pop()        
         })
@@ -250,7 +377,7 @@ export class ProfilesAddPage {
 
         loading.dismiss()
         
-        this.uiUtils.showAlert("Sucesso", "Perfil criado").present()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
         .then( () => {        
           //this.navCtrl.pop()        
         })

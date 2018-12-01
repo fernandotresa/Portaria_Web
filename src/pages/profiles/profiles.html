@@ -32,12 +32,10 @@
         </button>      
         
         <ion-item-options>
-            <button ion-button color="danger" (click)="remove(group)"><ion-icon name="trash"></ion-icon>Remover</button>
-            <button ion-button (click)="edit(group)"><ion-icon name="create"></ion-icon>Editar</button>            
-            <button ion-button color="secondary" (click)="copy(group)"><ion-icon name="copy"></ion-icon>Duplicar</button>
+            <button ion-button color="danger" (click)="remove(group)"><ion-icon name="trash"></ion-icon>{{dataInfo.titleRemove}}</button>
+            <button ion-button (click)="edit(group)"><ion-icon name="create"></ion-icon>{{dataInfo.titleEdit}}</button>            
+            <button ion-button color="secondary" (click)="copy(group)"><ion-icon name="copy"></ion-icon>{{dataInfo.titleCopy}}</button>
           </ion-item-options>
-
-
     </ion-item-sliding>
     
 </ion-list>

@@ -62,9 +62,7 @@ export class ProfilesPage {
 
   remove(group){
     
-    console.log('remove', group)
-
-    this.uiUtils.showConfirm("Remover Perfil", "Deseja realmente remover? A ação não poderá ser refeita.")
+    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
         this.removeContinue(group)
@@ -74,7 +72,7 @@ export class ProfilesPage {
 
   removeContinue(group){
     this.httpd.delAccessGroups(group).subscribe(data => {
-      this.uiUtils.showAlert("Sucesso", "Perfil removido com sucesso").present()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.getAccessGroups()
         })
@@ -82,7 +80,7 @@ export class ProfilesPage {
   }
 
   edit(group){
-    console.log('edit', group)
+    this.navCtrl.push('ProfilesAddPage', {loadProfile: true, profile: group})
   }
 
   copy(group){

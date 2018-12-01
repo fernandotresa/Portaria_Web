@@ -18,20 +18,20 @@
 
 <ion-list no-lines>
 
-  <ion-list-header color="primary">Perfil</ion-list-header>  
+  <ion-list-header color="primary">{{dataInfo.titleProfile}}</ion-list-header>  
 
   <ion-item>
-    <ion-label>Nome do Perfil</ion-label>
+    <ion-label>{{dataInfo.titleName}}</ion-label>
     <ion-input type="text" [(ngModel)]="name"></ion-input>
   </ion-item>
 
   <ion-item>
-      <ion-label>Descrição</ion-label>
+      <ion-label>{{dataInfo.titleDescription}}</ion-label>
       <ion-input type="text" [(ngModel)]="desc"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Tipo acesso</ion-label>   
+      <ion-label>{{dataInfo.titleAccessType}}</ion-label>   
        
       <ion-select [(ngModel)]="selectedAccessType">
         <ion-option  *ngFor="let type of (accessTypes | async)?.success" no-lines>{{type.name}}</ion-option>        
@@ -51,12 +51,12 @@
         *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
       </calendar>           
 
-  <ion-list-header color="primary" *ngIf="selectedAccessType == 'Dias da Semana + horários'"> Dias da semana </ion-list-header>  
+  <ion-list-header color="primary" *ngIf="selectedAccessType == 'Dias da Semana + horários'">{{dataInfo.titleDaysWeek}}</ion-list-header>  
 
     <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
       <ion-item no-lines item-end>
           <ion-checkbox [(ngModel)]="monday"></ion-checkbox>
-          <ion-label>Segunda-Feira</ion-label>  
+          <ion-label>{{dataInfo.titleMonday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="monday">            
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
@@ -70,7 +70,7 @@
       <ion-item no-lines item-end>
         
           <ion-checkbox [(ngModel)]="tuesday"></ion-checkbox>
-          <ion-label>Terça-Feira</ion-label>  
+          <ion-label>{{dataInfo.titleTuesday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="tuesday">            
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="tuesdayStart"></ion-datetime>
@@ -83,7 +83,7 @@
   <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
     <ion-item no-lines item-end>
         <ion-checkbox [(ngModel)]="wednesday"></ion-checkbox>
-        <ion-label>Quarta-Feira</ion-label>  
+        <ion-label>{{dataInfo.titleWednesday}}</ion-label>  
     </ion-item>
     <ion-item no-lines item-end *ngIf="wednesday">            
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="wednesdayStart"></ion-datetime>
@@ -96,7 +96,7 @@
   <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
       <ion-item no-lines item-end>
           <ion-checkbox [(ngModel)]="thursday"></ion-checkbox>
-          <ion-label>Quinta-Feira</ion-label>  
+          <ion-label>{{dataInfo.titleThursday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="thursday">            
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="thursdayStart"></ion-datetime>
@@ -109,7 +109,7 @@
     <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
         <ion-item no-lines item-end>
             <ion-checkbox [(ngModel)]="friday"></ion-checkbox>
-            <ion-label>Sexta-Feira</ion-label>  
+            <ion-label>{{dataInfo.titleFriday}}</ion-label>  
         </ion-item>
         <ion-item no-lines item-end *ngIf="friday">            
             <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fridayStart"></ion-datetime>
@@ -122,7 +122,7 @@
       <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
           <ion-item no-lines item-end>
               <ion-checkbox [(ngModel)]="saturday"></ion-checkbox>
-              <ion-label>Sábado</ion-label>  
+              <ion-label>{{dataInfo.titleSaturday}}</ion-label>  
           </ion-item>
           <ion-item no-lines item-end *ngIf="saturday">            
               <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayStart"></ion-datetime>
@@ -135,7 +135,7 @@
       <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
           <ion-item no-lines item-end>
               <ion-checkbox  checked="false"  [(ngModel)]="sunday"></ion-checkbox>
-              <ion-label>Domingo</ion-label>  
+              <ion-label>{{dataInfo.titleSunday}}</ion-label>  
           </ion-item>
           
           <ion-item no-lines item-end *ngIf="sunday">            
@@ -149,17 +149,17 @@
     <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">Horários</ion-list-header>  
 
       <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <ion-label>Entrada</ion-label>
+        <ion-label>{{dataInfo.titleEntrace}}</ion-label>
         <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="timeStart"></ion-datetime>
       </ion-item>
     
       <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-          <ion-label>Saída</ion-label>
+          <ion-label>{{dataInfo.titleExit}}</ion-label>
           <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="timeEnd"></ion-datetime>
       </ion-item>
 
       <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <button ion-button full (click)="applyTime()">Aplicar marcados</button>
+        <button ion-button full (click)="applyTime()">{{dataInfo.titleApplyChecked}}</button>
       </ion-item>
     
 </ion-list>
@@ -168,5 +168,5 @@
 </ion-content>
 
 <ion-footer *ngIf="name && selectedAccessType">
-  <button ion-button full (click)="addProfile()">Salvar</button>
+  <button ion-button full (click)="addProfile()">{{dataInfo.titleSave}}</button>
 </ion-footer>

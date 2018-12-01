@@ -16,18 +16,12 @@ export class DataInfoProvider {
   longitude: number = 0
   userType: number = 2
   
-  appName: string = 'Limpa Fácil'
+  appName: string = 'Portaria Web'
   isAdmin: Boolean = true;
   addressServer: string = "localhost"
-
-  clientLogo: string = "assets/imgs/100x100.png"
-  clientStamp: string = "assets/imgs/100x100.png"
+  
   clientPicDefault: string = "assets/imgs/100x100.png"
   imgDefaultBackground: string = "assets/imgs/background.jpg"
-  imgDefaultBackgroundClient: string = "assets/imgs/clientes.jpg"
-  imgDefaultBackgroundHousekeeper: string = "assets/imgs/housekeeping.jpg"
-  imgCanceledBackground: string = "assets/imgs/cancelada.png"
-  imgWaitingOk: string = "assets/imgs/slideHome1.jpeg"
   imgDefaultClient: string = "assets/img/avatar-leia.png"
     
 
@@ -36,7 +30,6 @@ export class DataInfoProvider {
   titleForgotPassword: string = 'Esqueci a senha'
   titleOr: string = 'Ou'
   titleHelp: string = "Ajuda"
-  titleQuestionMark: string = "???"
   titleFacebook: string = 'Logar com Facebook'
   titleGoogle: string = 'Logar com Google'
   titleLogin: string = 'Logar'
@@ -48,36 +41,56 @@ export class DataInfoProvider {
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."
-  titleDateendGreaterDateStart: string = "Data final não pode ser maior que a inicial"
-  titleRanking: string = 'Ranking'
-  titleProfile: string = "Perfil"
-  titleShare: string = 'Compartilhar'    
-  titleShareDescripton: string = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.'
+  titleDateendGreaterDateStart: string = "Data final não pode ser maior que a inicial"  
   titleBack: string = "Voltar"
-  titleCheckInfoAndConfirm: string = "Verifique os dados e confirme a ação"
-  titleAccept: string = "Aceitar"
   titleAuthError: string = "Falha ao autenticar"
   titleAuthRecoveryError: string = "E-mail incorreto"
   titleCheckMailbox: string = "Verifique sua caixa de e-mails"
   titleContinue: string = "Continuar"
   titleAuthErrorSignUp: string = "Falha ao se cadastrar, email já existe"
   titleMenu: string = "Menu"
+  titleProfileExpire: string = 'Vencimento'
+  titleProfileDatetime: string = 'Datas específicas + horários'
+  titleProfileDayweek: string = 'Dias da Semana + horários'
+  titleSuccess: string = "Sucesso"
+  titleProfileCreated: string = "Perfil criado"
+  titleProfile: string = "Perfil"
+  titleName: string = "Nome"
+  titleDescription: string = "Descrição"
+  titleAccessType: string = "Tipo acesso"
+  titleDaysWeek: string = "Dias da semana"
+  titleMonday: string = "Segunda-Feira"
+  titleTuesday: string = "Terça-Feira"
+  titleWednesday: string = "Quarta-Feira"
+  titleThursday: string = "Quinta-Feira"
+  titleFriday: string = "Sexta-Feira"
+  titleSaturnday: string = "Sábado"
+  titleSunday: string = "Domingo"
+  titleEntrace: string = "Entrada"
+  titleExit: string = "Saída"
+  titleApplyChecked: string = "Aplicar marcados"  
+  titleWarning: string = "Atenção"  
+  titlePleaseUnselect: string = "Favor desmarcar os dias selecionados"
+  titleConfirmStart: string = "Confirmar data inicial?"
+  titleConfirmEnd: string = "Confirmar data final?"
+  titleSelect: string = 'Selecionar'
+  titleRemoveProfile: string = "Remover Perfil"
+  titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
+  titleOperationSuccess: string = "Operação realizada com sucesso!"
+  titleRemove: string = "Remover"
+  titleEdit: string = "Editar"
+  titleCopy: string = "Duplicar"
   
-  
-  welcomeMsg: string = "Seja bem vindo ";  
-  appDesc: string = "Agende uma faxina online"
   pleaseWait: string = "Favor aguarde";
   uploading: string = "Enviando foto";
-  atention: string = "Atenção"
-  finishRegister: string = "Favor preencher seus dados"  
-  sucess: string = "Sucesso"
+  
   erro: string = "Erro"
   notAvailable: string = "Não acessível do browser"
   added: string = "Adicionado"
     
   titleAreYouSure: string = "Tem certeza disso?"  
-  titleWarning: string = "Aviso"    
   titleUsernameMinLenght: string = "Usuário deve ter apartir de 6 caracteres"    
+
   titlePasswordMinLenght: string = "Senha deve ter apartir de 6 caracteres"    
 
   constructor(public platform: Platform) {    

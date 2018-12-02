@@ -19,6 +19,7 @@ export class ProfilesAddPage {
   name: string;
   desc: string;
   loadProfile: Boolean = false
+  copyProfile: Boolean = false
 
   eventSource = [];
   viewTitle: string;
@@ -74,6 +75,7 @@ export class ProfilesAddPage {
   ionViewDidLoad() {      
     this.loadProfile = this.navParams.get('loadProfile')
     this.profile = this.navParams.get('profile')
+    this.copyProfile = this.navParams.get('copyProfile')
     this.getAccessTypes()          
   }
 
@@ -82,14 +84,28 @@ export class ProfilesAddPage {
     this.accessTypes.subscribe(data => {    
 
       if(this.loadProfile)
-        this.loadProfileInfo()      
+        this.loadProfileInfo()  
+        
+      if(this.copyProfile)
+        this.copyProfileInfo()
     })
   }
 
-  loadProfileInfo(){
-    
-    console.log(this.profile)
+  copyProfileInfo(){
+    this.name = this.profile.name + this.dataInfo.titleCopyProfile
+    this.desc = this.profile.description + this.dataInfo.titleCopyProfile
+    this.selectedAccessType = this.profile.type    
 
+    let type = this.profile.id_type
+
+    if(type < 3)
+      this.loadDatesProfile()
+    else   
+      this.loadWeekdaysProfile() 
+  }
+
+  loadProfileInfo(){
+  
     this.name = this.profile.name
     this.desc = this.profile.description
     this.selectedAccessType = this.profile.type    
@@ -98,7 +114,6 @@ export class ProfilesAddPage {
 
     if(type < 3)
       this.loadDatesProfile()
-
     else   
       this.loadWeekdaysProfile()    
   }
@@ -297,7 +312,7 @@ export class ProfilesAddPage {
 
   addProfileDateTimes() {    
     let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-      loading.present()
+    loading.present()
       
       this.httpd.addAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource)    
       .subscribe( () => {

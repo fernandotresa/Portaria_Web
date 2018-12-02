@@ -84,7 +84,7 @@ export class ProfilesPage {
   }
 
   copy(group){
-    console.log('copy', group)
+    this.navCtrl.push('ProfilesAddPage', {loadProfile: false, profile: group, copyProfile: true})
   }
 
 }

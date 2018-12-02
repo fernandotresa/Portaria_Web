@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Config, Nav, Platform, MenuController, AlertController } from 'ionic-angular';
+import { Nav, Platform, MenuController, AlertController } from 'ionic-angular';
 import { SideMenuSettings } from './../shared/side-menu-content/models/side-menu-settings';
 import { SideMenuOption } from './../shared/side-menu-content/models/side-menu-option';
 import { SideMenuContentComponent } from './../shared/side-menu-content/side-menu-content.component';
@@ -9,8 +9,7 @@ import { HomePage } from '../pages/home/home';
 import { EmployeePage } from '../pages/employee/employee';
 import { GuestPage } from '../pages/guest/guest';
 import { ProfilesPage } from '../pages/profiles/profiles';
-import { ProfilesAddPage } from '../pages/profiles-add/profiles-add';
-
+import { SectorsPage } from '../pages/sectors/sectors';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,8 +18,8 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-  rootPage:any = ProfilesPage;
-
+	rootPage:any = SectorsPage;
+	
   public options: Array<SideMenuOption>;
 
 	public sideMenuSettings: SideMenuSettings = {

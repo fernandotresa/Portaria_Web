@@ -13,6 +13,8 @@ import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module
 import { GuestPageModule } from '../pages/guest/guest.module';
 import { ProfilesPageModule } from '../pages/profiles/profiles.module';
 import { ProfilesAddPageModule } from '../pages/profiles-add/profiles-add.module';
+import { ProfilesLinkPageModule } from '../pages/profiles-link/profiles-link.module';
+import { SectorsPageModule } from '../pages/sectors/sectors.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -47,7 +49,9 @@ import { NgCalendarModule  } from 'ionic2-calendar';
     GuestPageModule,
     ProfilesPageModule,
     ProfilesAddPageModule,
-    EmployeeAddPageModule
+    EmployeeAddPageModule,
+    ProfilesLinkPageModule,
+    SectorsPageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

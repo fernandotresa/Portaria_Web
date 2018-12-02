@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -24,7 +24,8 @@ export class EmployeePage {
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
-    public uiUtils: UiUtilsProvider,    
+    public uiUtils: UiUtilsProvider,   
+    public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
     public navParams: NavParams) {
 
@@ -56,5 +57,16 @@ export class EmployeePage {
   goPageEdit(employee){
     this.navCtrl.push(EmployeeAddPage, {informations: employee})
   }
+
+  addEvent(employee){    
+    let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        console.log(data)
+
+      }
+    });
+  }   
 
 }

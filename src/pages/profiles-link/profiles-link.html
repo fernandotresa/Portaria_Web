@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Associar acesso</ion-title>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content>
+  <ion-list>            
+      <ion-item no-lines *ngFor="let group of callbackProfiles">
+          <ion-checkbox (click)="profileSelected(group)" [checked]=group.checked></ion-checkbox>
+          <ion-label>{{group.name}} - {{group.type}}</ion-label>  
+      </ion-item>
+  </ion-list>
+ 
+  <button ion-button full icon-left (click)="save()">
+    <ion-icon name="checkmark"></ion-icon> Associar
+  </button>
+</ion-content>

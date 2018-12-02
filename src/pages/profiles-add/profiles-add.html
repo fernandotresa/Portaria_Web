@@ -170,7 +170,5 @@
 
 <ion-footer *ngIf="name && selectedAccessType">
   <button ion-button full (click)="addProfile()" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
-
-
   <button ion-button full (click)="updateProfile()" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
 </ion-footer>

@@ -26,6 +26,8 @@ export class DataInfoProvider {
     
 
   titleSave: string = "Salvar"
+  titleSelectSectorAndProfiles: string = "Selecionar setor e profiles"
+  titleSelectEmployees: string = "Selecionar colaboradores"
   titleRegister: string = "Cadastrar"
   titleApp: string = "Portaria"
   titleForgotPassword: string = 'Esqueci a senha'
@@ -37,6 +39,9 @@ export class DataInfoProvider {
 
   titleEmployeers: string = 'Colaboradores'
   titleGuests: string = 'Visitantes'
+  titleCopyProfile: string = " - Copia"
+  titleSelectAll: string = "Selecionar todos"
+  titleDeselectAll: string = "Deselecionar todos"
   titlePermissions: string = "Acessos"
   titlePermissionsAccess: string = "Grupos de acesso"
   titleInstagram: string = 'Instagram'
@@ -76,6 +81,8 @@ export class DataInfoProvider {
   titleConfirmStart: string = "Confirmar data inicial?"
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
+  titleMultipleUpdate: string = "Atualização múltipla"
+  titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
   titleOperationSuccess: string = "Operação realizada com sucesso!"

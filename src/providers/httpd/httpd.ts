@@ -155,4 +155,30 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/updateAccessProfileDayweek", myData, {headers: headers})
   }
+
+  saveAccessProfileEmployee(profiles_, employeeId_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, employeeId: employeeId_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAccessProfileEmployee", myData, {headers: headers})
+  }
+
+  getAccessProfileEmployee(idEmployee_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessProfileEmployee", myData, {headers: headers})
+  }
+
+  getEmployeesBySector(idSector_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idSector: idSector_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getEmployeesBySector", myData, {headers: headers})
+  }
+
+  saveAccessProfileSector(profiles_, employees_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, employees: employees_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAccessProfileSector", myData, {headers: headers})
+  }
 }

@@ -16,6 +16,7 @@ export class SectorsPage {
   employeesSectors: Observable<any>;
   profiles: Observable<any>;
 
+  employeeSector: string;
   selectedProfiles: any = []
   selectedEmployees: any = []
   allEmployees: any = []
@@ -29,8 +30,6 @@ export class SectorsPage {
   }
 
   ionViewDidLoad() {
-
-    console.log('ionViewDidLoad SectorsPage');
     this.getSectors()
     this.getProfiles()
   }
@@ -51,14 +50,12 @@ export class SectorsPage {
   }
 
   selectSector(sector){
-    console.log(sector)
-
     this.employeesSectors = this.httpd.getEmployeesBySector(sector.id)
 
     this.employeesSectors.subscribe(data => {      
-      this.allEmployees = data.success
+      this.allEmployees = data.success      
     })
-  }
+  }  
 
   employeeSelected(employee){
     for( var i = 0; i < this.selectedEmployees.length; i++){ 
@@ -123,6 +120,16 @@ export class SectorsPage {
     
     this.selectedProfiles.push(group.id)
     group.checked = true
+    this.loadProfilesSector(group.id)
+  }
+
+  loadProfilesSector(idProfile){
+    console.log('loadProfilesSector', idProfile, this.employeeSector)
+
+    this.httpd.getAccessProfileEmployeeBySector(this.employeeSector, idProfile)
+    .subscribe(data => {
+      console.log(data)
+    })
   }
 
 }

@@ -89,6 +89,12 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAccessGroups", myData, {headers: headers})
   }
 
+  getAccessGroupsByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessGroupsByName", myData, {headers: headers})
+  }
+
   delAccessGroups(group){
     let myData = JSON.stringify({id: this.dataInfo.userId, profile: group});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
@@ -180,5 +186,11 @@ export class HttpdProvider {
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/saveAccessProfileSector", myData, {headers: headers})
+  }
+
+  getAccessProfileEmployeeBySector(idSector_, idProfile_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idSector: idSector_, idProfile: idProfile_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessProfileEmployeeBySector", myData, {headers: headers})
   }
 }

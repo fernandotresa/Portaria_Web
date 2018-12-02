@@ -41,7 +41,8 @@ export class ProfilesPage {
   }
 
   setFilteredItems(){
-    this.accessGroups = this.httpd.getEmployeesByName(this.searchTerm)    
+    
+    this.accessGroups = this.httpd.getAccessGroupsByName(this.searchTerm)    
   }
   
   getAccessGroups(){

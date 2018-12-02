@@ -65,6 +65,11 @@ export class DataInfoProvider {
   titleName: string = "Nome"
   titleDescription: string = "Descrição"
   titleAccessType: string = "Tipo acesso"
+  titleType: string = "Tipo"
+  titleRegistration: string = "Matricula"
+  titleBadge: string = "Crachá"
+  titleOffice: string = "Cargo"
+  titleCompany: string = "Empresa"
   titleDaysWeek: string = "Dias da semana"
   titleMonday: string = "Segunda-Feira"
   titleTuesday: string = "Terça-Feira"
@@ -82,12 +87,15 @@ export class DataInfoProvider {
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
   titleMultipleUpdate: string = "Atualização múltipla"
+  titleAccessRules: string = "Regras de acesso"
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
   titleOperationSuccess: string = "Operação realizada com sucesso!"
   titleRemove: string = "Remover"
   titleEdit: string = "Editar"
+  titleMessageAndAlerts: string = "Mensagens e alertas"
+  titleNotInformed: string = "Não informado"
   titleCopy: string = "Duplicar"
   
   pleaseWait: string = "Favor aguarde";

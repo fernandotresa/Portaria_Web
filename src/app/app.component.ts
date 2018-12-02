@@ -80,11 +80,11 @@ export class MyApp {
 			}			
 		});								
 		
-		this.options.push({
+		/*this.options.push({
 			iconName: 'md-person-add',
 			displayText: 'Perfil',
 			component: HomePage			
-		});						
+		});*/				
 
 		this.options.push({
 			iconName: 'contacts',
@@ -97,12 +97,22 @@ export class MyApp {
 			displayText: 'Visitantes',
 			component: GuestPage
 		});	
-  
-    this.options.push({
-			iconName: 'unlock',
-			displayText: 'Acessos',
-			component: ProfilesPage
-		});	
+
+		this.options.push({
+		displayText: 'Acessos e permissões',
+		suboptions: [
+			{
+				iconName: 'unlock',
+				displayText: 'Acessos',
+				component: ProfilesPage
+			},		
+			{
+				iconName: 'folder-open',
+				displayText: 'Setores',
+				component: SectorsPage,				
+			}
+		]
+		});	  
     
 		this.options.push({
 			iconName: 'log-out',

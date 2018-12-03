@@ -67,6 +67,8 @@ export class DataInfoProvider {
   titleAccessType: string = "Tipo acesso"
   titleType: string = "Tipo"
   titleRegistration: string = "Matricula"
+  titleCPF: string = "CPF"
+  titleRG: string = "RG"
   titleBadge: string = "Crachá"
   titleOffice: string = "Cargo"
   titleCompany: string = "Empresa"

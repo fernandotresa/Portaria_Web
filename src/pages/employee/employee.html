@@ -22,8 +22,8 @@
         
       <ion-item>
           <ion-avatar item-start>
-            <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo" (click)="goPageUserDetails(worker)">
-            <img src="{{employee.photo}}" *ngIf="employee.photo" (click)="goPageUserDetails(worker)">
+            <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo">
+            <img src="{{employee.photo}}" *ngIf="employee.photo">
           </ion-avatar>
   
           <h2>{{employee.name}}</h2>
@@ -56,7 +56,7 @@
         </ion-col>
 
         <ion-col>
-          <button ion-button icon-start clear small (click)="goPageUserDetails(worker)">
+          <button ion-button icon-start clear small>
               <ion-icon name="alert" color="primary"></ion-icon>
               <div>{{dataInfo.titleMessageAndAlerts}}</div>
           </button>

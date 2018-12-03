@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar text-center no-border-bottom color="primary">
-    <ion-title> {{dataInfo.titleGuests}} </ion-title>                
+    <ion-title>{{dataInfo.titleGuests}}</ion-title>                
   </ion-navbar>
 
   <ion-toolbar no-border color="primary">
@@ -22,8 +22,8 @@
       
     <ion-item>
         <ion-avatar item-start>
-          <img src="./assets/imgs/default-user.png" *ngIf="! guest.photo" (click)="goPageUserDetails(worker)">
-          <img src="{{guest.photo}}" *ngIf="guest.photo" (click)="goPageUserDetails(worker)">
+          <img src="./assets/imgs/default-user.png" *ngIf="! guest.photo">
+          <img src="{{guest.photo}}" *ngIf="guest.photo">
         </ion-avatar>
 
         <h2>{{guest.name}}</h2>
@@ -31,32 +31,32 @@
     </ion-item>
 
     <ion-card-content class="mgt-10 top-default"> 
-      <p><b>RG:</b> {{guest.rg}} </p>      
-      <p><b>CPF:</b> {{guest.cpf}} </p>        
-      <p><b>Crachá:</b> {{guest.CRACHA}} </p>      
-      <p><b>Empresa:</b> {{guest.EMPRESA}} </p>      
+      <p><b>{{dataInfo.titleRG}}</b> {{guest.rg}} </p>      
+      <p><b>{{dataInfo.titleCPF}}</b> {{guest.cpf}} </p>        
+      <p><b>{{dataInfo.titleBadge}}</b> {{guest.CRACHA}} </p>      
+      <p><b>{{dataInfo.titleCompany}}</b> {{guest.EMPRESA}} </p>      
     </ion-card-content>                  
           
     <ion-row>
 
       <ion-col>
-        <button ion-button icon-start clear small> 
+        <button ion-button icon-start clear small (click)="addEvent(guest)"> 
             <ion-icon name="calendar" color="primary"></ion-icon>
-          <div>Regras de acesso</div>
+          <div>{{dataInfo.titleAccessRules}}</div>
         </button>
       </ion-col>
 
       <ion-col>
         <button ion-button icon-start clear small (click)="goPageEdit(guest)">
           <ion-icon name="cog" color="primary"></ion-icon>
-          <div>Editar</div>
+          <div>{{dataInfo.titleEdit}}</div>
         </button>
       </ion-col>
 
       <ion-col>
-        <button ion-button icon-start clear small (click)="goPageUserDetails(worker)">
+        <button ion-button icon-start clear small>
             <ion-icon name="alert" color="primary"></ion-icon>
-            <div>Mensagens e Alertas</div>
+            <div>{{dataInfo.titleMessageAndAlerts}}</div>
         </button>
       </ion-col>
 

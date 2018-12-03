@@ -18,7 +18,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 
-	rootPage:any = SectorsPage;
+	rootPage:any = HomePage;
 	
   public options: Array<SideMenuOption>;
 
@@ -78,13 +78,7 @@ export class MyApp {
 			custom: {
 				isHome: true
 			}			
-		});								
-		
-		/*this.options.push({
-			iconName: 'md-person-add',
-			displayText: 'Perfil',
-			component: HomePage			
-		});*/				
+		});											
 
 		this.options.push({
 			iconName: 'contacts',

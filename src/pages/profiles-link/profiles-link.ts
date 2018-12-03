@@ -48,7 +48,20 @@ export class ProfilesLinkPage {
   }
 
   getProfileUserinfo(){
+    if(this.userType == 1)
+      this.getAccessProfileEmployee()  
+    else
+      this.getAccessProfileGuests()    
+  }
+
+  getAccessProfileEmployee(){
     this.httpd.getAccessProfileEmployee(this.userInfo.id).subscribe(data => {      
+      this.getProfileUserinfoContinue(data)
+    })
+  }
+
+  getAccessProfileGuests(){
+    this.httpd.getAccessProfileGuests(this.userInfo.id).subscribe(data => {      
       this.getProfileUserinfoContinue(data)
     })
   }
@@ -66,7 +79,6 @@ export class ProfilesLinkPage {
     this.callbackProfiles.forEach(element => {
       
       if(element.id == id_profile){
-        console.log(element)
         element.checked = true
       }
     });
@@ -86,14 +98,31 @@ export class ProfilesLinkPage {
   }
 
   save(){
+    if(this.userType == 1)
+      this.saveProfileEmployee()  
+    else
+      this.saveProfileGust()    
+  }
+
+  saveProfileEmployee(){
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
     this.httpd.saveAccessProfileEmployee(this.selectedProfiles, this.userInfo.id)
-    .subscribe(data => {
+    .subscribe( () => {
       loading.dismiss() 
-      this.viewCtrl.dismiss(this.selectedProfiles);
-      
+      this.viewCtrl.dismiss(this.selectedProfiles);      
+    })    
+  }
+
+  saveProfileGust(){
+    let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
+    loading.present() 
+
+    this.httpd.saveAccessProfileGuest(this.selectedProfiles, this.userInfo.id)
+    .subscribe( () => {
+      loading.dismiss() 
+      this.viewCtrl.dismiss(this.selectedProfiles);      
     })    
   }
 

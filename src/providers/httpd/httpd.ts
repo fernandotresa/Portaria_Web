@@ -169,6 +169,13 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/saveAccessProfileEmployee", myData, {headers: headers})
   }
 
+  saveAccessProfileGuest(profiles_, guestId_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, guestId: guestId_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAccessProfileGuest", myData, {headers: headers})
+  }
+
   getAccessProfileEmployee(idEmployee_){
     let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
@@ -192,5 +199,11 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, idSector: idSector_, idProfile: idProfile_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessProfileEmployeeBySector", myData, {headers: headers})
+  }
+
+  getAccessProfileGuests(idGuest_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idGuest: idGuest_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessProfileGuests", myData, {headers: headers})
   }
 }

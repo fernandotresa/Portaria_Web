@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -25,6 +25,7 @@ export class GuestPage {
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
+    public modalCtrl: ModalController,
     public navParams: NavParams) {
 
       this.searchControl = new FormControl();
@@ -53,7 +54,17 @@ export class GuestPage {
   }
 
   goPageEdit(guest){
-    console.log(guest )
+    console.log(guest)
   }
+
+  addEvent(guest){    
+    let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: guest, userType: 2});
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        console.log(data)
+      }
+    });
+  }   
 
 }

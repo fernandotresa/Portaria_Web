@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -26,6 +26,7 @@ export class ProfilesPage {
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
+    public events: Events,
     public navParams: NavParams) {
 
       this.searchControl = new FormControl();
@@ -33,17 +34,23 @@ export class ProfilesPage {
       this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
         this.searching = false;
         this.setFilteredItems();
-      });      
+      });  
+      
+      this.events.subscribe('refreshProfiles', () => {
+        this.getAccessGroups() 
+      });
   }  
 
   ionViewDidLoad() {    
-    this.getAccessGroups()
-    
+    this.getAccessGroups()    
     this.uiUtils.showToast("Arraste para o lado esquerdo para mais opções")
   }
 
-  setFilteredItems(){
-    
+  ngOnDestroy() {    
+    this.events.unsubscribe('refreshProfiles');		
+  }
+
+  setFilteredItems(){    
     this.accessGroups = this.httpd.getAccessGroupsByName(this.searchTerm)    
   }
   

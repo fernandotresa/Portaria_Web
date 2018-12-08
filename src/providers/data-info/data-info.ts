@@ -24,6 +24,13 @@ export class DataInfoProvider {
   imgDefaultBackground: string = "assets/imgs/background.jpg"
   imgDefaultClient: string = "assets/img/avatar-leia.png"
     
+  titleCheckMonday: string = "Verificar horários de segunda-feira"
+  titleCheckTuesday: string = "Verificar horários de terça-feira"
+  titleCheckWednesday: string =  "Verificar horários de quarta-feira"
+  titleCheckThursday: string = "Verificar horários de quinta-feira"
+  titleCheckFriday: string = "Verificar horários de sexta-feira"
+  titleCheckSaturnday: string = "Verificar horários de sábado"
+  titleCheckSunday: string = "Verificar horários de domingo"
 
   titleSave: string = "Salvar"
   titleSelectSectorAndProfiles: string = "Selecionar setor e profiles"
@@ -38,6 +45,7 @@ export class DataInfoProvider {
   titleLogin: string = 'Logar'
   titleCleanCal: string = "Limpar calendário"
   titleEmployeers: string = 'Colaboradores'
+  titleDateEndBeforeDateStart = 'Horário final não pode ser mair que o horário inicial'
   titleGuests: string = 'Visitantes'
   titleCopyProfile: string = " - Copia"
   titleSelectAll: string = "Selecionar todos"

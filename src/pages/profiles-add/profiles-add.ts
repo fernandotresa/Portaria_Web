@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -24,6 +24,8 @@ export class ProfilesAddPage {
   eventSource = [];
   viewTitle: string;
   selectedDay = new Date();
+
+  datesWeek = []
 
   monday: Boolean = false;
   mondayStart: string = new Date().toISOString();
@@ -69,6 +71,7 @@ export class ProfilesAddPage {
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
     public modalCtrl: ModalController,
+    public events: Events,
     public navParams: NavParams) {        
   }
 
@@ -270,10 +273,11 @@ export class ProfilesAddPage {
     if(! this.calendarDisabled){
 
       this.selectedDay = ev.selectedTime;
+      let refresh = true
 
       if(this.lastSelectedAccessType == this.selectedDay){
 
-        let dayClicked = new Date(this.selectedDay)        
+        let dayClicked = new Date(this.selectedDay)                
 
         for(let i = 0; i < this.eventSource.length; ++i){
           
@@ -281,16 +285,16 @@ export class ProfilesAddPage {
           let isSame = moment(day).isSame(dayClicked, 'day')    
 
           if(isSame){
-            console.log('Removendo igual', day)
-
             this.calendarDisabled = true
             this.eventSource.splice(i, 1);
-            this.refreshCalendar()
-            return;
+            refresh = false
+            this.refreshCalendar()     
+
           }
         }
-
-        this.checkAccessType(ev)
+        
+        if(refresh)
+          this.checkAccessType(ev)
       }        
         
       this.lastSelectedAccessType = this.selectedDay
@@ -307,7 +311,6 @@ export class ProfilesAddPage {
 
   confirmExpiration(ev){
     let total = this.eventSource.length
-    console.log('total', total)
 
     if(total >= 2)
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).present()      
@@ -318,14 +321,29 @@ export class ProfilesAddPage {
   confirmExpirationFinish(ev){
     let total = this.eventSource.length
     let startOrEnd =  total === 0
+    let checkOk = true;
 
-    let msg = startOrEnd ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
+    if(!startOrEnd){
+      let date0 = this.eventSource[0].startTime
+      let isBefore = moment(this.selectedDay).isBefore(moment(date0))
+
+      if(isBefore){
+        checkOk = false
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateEndBeforeDateStart).present()
+      }
+    }
+
+    if(checkOk){
+
+      let msg = startOrEnd ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
         
-    this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
-
-      if(data)
-        this.addExpiration(ev)     
-    })
+      this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
+  
+        if(data)
+          this.addExpiration(ev)     
+      })
+    }
+    
   }
 
   addExpiration(ev){        
@@ -384,6 +402,7 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
+        this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
   } 
@@ -416,41 +435,108 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
+        this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
     }    
   }
 
   populateDayweekData(){
-    let data = []
+    this.datesWeek = []
 
-    if(this.monday)
-      data.push({id: 2, startTime: this.mondayStart, endTime: this.mondayEnd})
+    if(this.monday){
+      
+      let mondayIsBefore = moment(this.mondayEnd).isBefore(moment(this.mondayStart))      
+
+      if(mondayIsBefore){        
+          this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckMonday).present()
+          return false
+
+      } else {
+        this.datesWeek.push({id: 2, startTime: this.mondayStart, endTime: this.mondayEnd})
+      }
+    }      
     
-    if(this.tuesday)
-      data.push({id: 3, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})
+    if(this.tuesday){
+      let tuesdayIsBefore = moment(this.tuesdayEnd).isBefore(moment(this.tuesdayStart))
 
-    if(this.wednesday)
-      data.push({id: 4, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})
+      if(tuesdayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckTuesday).present()
+        return false
 
-    if(this.thursday)
-      data.push({id: 5, startTime: this.thursdayStart, endTime: this.thursdayEnd})
+      } else {
+        this.datesWeek.push({id: 3, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})
+      }
+    }
+      
+    if(this.wednesday){
+      let wednesdayIsBefore = moment(this.wednesdayEnd).isBefore(moment(this.wednesdayStart))
 
-    if(this.friday)
-      data.push({id: 6, startTime: this.fridayStart, endTime: this.fridayEnd})
+      if(wednesdayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckWednesday).present()
+        return false
 
-    if(this.saturday)
-      data.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})
+      } else {
+        this.datesWeek.push({id: 4, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})
+      }
+    }      
 
-    if(this.monday)
-      data.push({id: 1, startTime: this.mondayStart, endTime: this.mondayEnd})
+    if(this.thursday){
+      let thursdayIsBefore = moment(this.thursdayEnd).isBefore(moment(this.thursdayStart))
 
-    return data
+      if(thursdayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckThursday).present()
+        return false
+
+      } else {
+        this.datesWeek.push({id: 5, startTime: this.thursdayStart, endTime: this.thursdayEnd})
+      }
+    }
+      
+    if(this.friday){
+
+      let fridayIsBefore = moment(this.fridayEnd).isBefore(moment(this.fridayStart))
+
+      if(fridayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckFriday).present()
+        return false
+
+      } else {
+        this.datesWeek.push({id: 6, startTime: this.fridayStart, endTime: this.fridayEnd})
+      }
+    }
+      
+    if(this.saturday){
+
+      let saturdayIsBefore = moment(this.saturdayEnd).isBefore(moment(this.saturdayStart))
+
+      if(saturdayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckSaturnday).present()
+        return false
+
+      } else {
+        this.datesWeek.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
+      }
+    }
+     
+    if(this.sunday){
+
+      let sundayIsBefore = moment(this.sundayEnd).isBefore(moment(this.sundayStart))
+
+      if(sundayIsBefore){        
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckSunday).present()
+        return false
+      } else {
+        this.datesWeek.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
+      }
+    }
+
+    return true
   }
 
   addProfileDayWeek(){
-    let data = this.populateDayweekData()
-    this.addProfileDayWeekContinue(data)      
+    if(this.populateDayweekData())
+      this.addProfileDayWeekContinue(this.datesWeek)      
   }
 
   addProfileDayWeekContinue(data){
@@ -462,6 +548,7 @@ export class ProfilesAddPage {
 
         loading.dismiss()
         this.navCtrl.pop()
+        this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
   }
@@ -507,6 +594,7 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
+        this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
       })
     }
@@ -522,26 +610,27 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
+        this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
       })
   }
 
-  updateProfileDayWeek(){
-    console.log('updateProfileDayWeek', this.profile.id)
-    
-    let data = this.populateDayweekData()
+  updateProfileDayWeek(){        
 
-    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-    loading.present()
+    if(this.populateDayweekData()){
 
-    this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data, this.profile.id)
-      .subscribe( () => {
-
-        loading.dismiss()        
-        this.navCtrl.pop()
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
-      })
-
+      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+  
+      this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, this.datesWeek, this.profile.id)
+        .subscribe( () => {
+  
+          loading.dismiss()        
+          this.navCtrl.pop()
+          this.events.publish('refreshProfiles', 1);
+          this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
+        })
+    }    
   }
 
   restartCalendar(){    

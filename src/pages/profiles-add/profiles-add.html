@@ -145,30 +145,14 @@
           <ion-item no-lines item-end *ngIf="sunday">
               <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="sundayEnd"></ion-datetime>                    
           </ion-item>     
-        </ion-item>
-            
-    <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">Horários</ion-list-header>  
-
-      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <ion-label>{{dataInfo.titleEntrace}}</ion-label>
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h:mm A" [(ngModel)]="timeStart"></ion-datetime>
-      </ion-item>
-    
-      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-          <ion-label>{{dataInfo.titleExit}}</ion-label>
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="timeEnd"></ion-datetime>
-      </ion-item>
-
-      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <button ion-button full (click)="applyTime()">{{dataInfo.titleApplyChecked}}</button>
-      </ion-item>
+        </ion-item>                
     
 </ion-list>
   
-
 </ion-content>
 
 <ion-footer *ngIf="name && selectedAccessType">
+  <button ion-button full (click)="restartCalendar()" *ngIf="eventSource.length > 0">{{dataInfo.titleCleanCal}}</button>
   <button ion-button full (click)="addProfile()" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
   <button ion-button full (click)="updateProfile()" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
 </ion-footer>

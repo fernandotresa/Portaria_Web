@@ -36,7 +36,7 @@ export class DataInfoProvider {
   titleFacebook: string = 'Logar com Facebook'
   titleGoogle: string = 'Logar com Google'
   titleLogin: string = 'Logar'
-
+  titleCleanCal: string = "Limpar calendário"
   titleEmployeers: string = 'Colaboradores'
   titleGuests: string = 'Visitantes'
   titleCopyProfile: string = " - Copia"

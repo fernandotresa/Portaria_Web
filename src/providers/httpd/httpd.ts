@@ -4,12 +4,14 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { AuthProvider } from '../../providers/auth/auth';
 import 'rxjs/add/operator/map';
 
+
 @Injectable()
 export class HttpdProvider {
 
   data:any = {};
   
   address : string = 'http://localhost:8085'    
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
@@ -113,18 +115,21 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAccessControlTypes", myData, {headers: headers})
   }
 
-  addAccessProfileExpire(name_, desc_, type_, start_, end_){
+  addAccessProfileExpire(name_, desc_, type_, start0_, end0_, start1_, end1_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
-      desc: desc_, start: start_, end: end_, type: type_});
+      desc: desc_, start0: start0_, end0: end0_, start1: start1_, end1: end1_, type: type_});
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addAccessProfileExpire", myData, {headers: headers})
   }
 
-  updateAccessProfileExpire(name_, desc_, type_, start_, end_, idProfile_){
+  updateAccessProfileExpire(name_, desc_, type_, start0_, end0_, idProfile_, start1_, end1_){
 
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
-      desc: desc_, start: start_, end: end_, type: type_, idProfile: idProfile_});
+      desc: desc_, start0: start0_, end0: end0_, start1: start1_, end1: end1_, 
+      type: type_, idProfile: idProfile_});
+
+    console.log(myData)      
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/updateAccessProfileExpire", myData, {headers: headers})

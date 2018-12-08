@@ -98,10 +98,13 @@ export class ProfilesAddPage {
 
     let type = this.profile.id_type
 
-    if(type < 3)
-      this.loadDatesProfile()
+    if(type === 1)
+      this.loadDatesProfileExpire()
+    else if(type === 2)
+    
+      this.loadDatesProfileDatetime()      
     else   
-      this.loadWeekdaysProfile() 
+      this.loadWeekdaysProfile()    
   }
 
   loadProfileInfo(){
@@ -111,22 +114,59 @@ export class ProfilesAddPage {
     this.selectedAccessType = this.profile.type    
 
     let type = this.profile.id_type
+    console.log(type)
 
-    if(type < 3)
-      this.loadDatesProfile()
+    if(type === 1)
+      this.loadDatesProfileExpire()
+    else if(type === 2)
+      this.loadDatesProfileDatetime()      
     else   
       this.loadWeekdaysProfile()    
   }
 
-  loadDatesProfile(){    
+  loadDatesProfileExpire(){    
     let idProfile = this.profile.id
 
     this.httpd.getProfileInfo(idProfile).subscribe(data => {
-      this.loadDatesProfileContinue(data)
+      this.loadDatesProfileExpireContinue(data)
     })
   }
 
-  loadDatesProfileContinue(data){    
+  loadDatesProfileExpireContinue(data){    
+    
+    this.calendarDisabled = true     
+    let events = this.eventSource;
+
+    data.success.forEach(element => {
+
+      let datetime_start = new Date(element.datetime_start)
+      let datetime_end = new Date(element.datetime_end)
+
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}
+      
+      events.push(event);
+    });  
+    
+    this.eventSource = []
+
+    setTimeout(() => {
+      this.eventSource = events;
+      
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+    });
+  }
+
+  loadDatesProfileDatetime(){    
+    let idProfile = this.profile.id
+
+    this.httpd.getProfileInfo(idProfile).subscribe(data => {
+      this.loadDatesProfileDatetimeContinue(data)
+    })
+  }
+
+  loadDatesProfileDatetimeContinue(data){    
     
     this.calendarDisabled = true     
     let events = this.eventSource;
@@ -154,6 +194,8 @@ export class ProfilesAddPage {
   loadWeekdaysProfile(){
 
     let idProfile = this.profile.id
+    
+    console.log(idProfile)
 
     this.httpd.getProfileInfo(idProfile).subscribe(data => {
       this.loadWeekdaysProfileContinue(data)
@@ -162,7 +204,8 @@ export class ProfilesAddPage {
 
   loadWeekdaysProfileContinue(data){
 
-    this.calendarDisabled = true     
+    this.calendarDisabled = true
+    console.log(data)     
 
     data.success.forEach(element => {
       this.populateDaysweek(element)      
@@ -222,14 +265,33 @@ export class ProfilesAddPage {
     }        
   }
      
-  onTimeSelected(ev) {    
+  onTimeSelected(ev) {     
     
     if(! this.calendarDisabled){
 
       this.selectedDay = ev.selectedTime;
 
-      if(this.lastSelectedAccessType == this.selectedDay)
-        this.checkAccessType(ev)                      
+      if(this.lastSelectedAccessType == this.selectedDay){
+
+        let dayClicked = new Date(this.selectedDay)        
+
+        for(let i = 0; i < this.eventSource.length; ++i){
+          
+          let day = new Date(this.eventSource[i].startTime)
+          let isSame = moment(day).isSame(dayClicked, 'day')    
+
+          if(isSame){
+            console.log('Removendo igual', day)
+
+            this.calendarDisabled = true
+            this.eventSource.splice(i, 1);
+            this.refreshCalendar()
+            return;
+          }
+        }
+
+        this.checkAccessType(ev)
+      }        
         
       this.lastSelectedAccessType = this.selectedDay
     }    
@@ -245,6 +307,7 @@ export class ProfilesAddPage {
 
   confirmExpiration(ev){
     let total = this.eventSource.length
+    console.log('total', total)
 
     if(total >= 2)
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).present()      
@@ -255,6 +318,7 @@ export class ProfilesAddPage {
   confirmExpirationFinish(ev){
     let total = this.eventSource.length
     let startOrEnd =  total === 0
+
     let msg = startOrEnd ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
         
     this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
@@ -319,21 +383,25 @@ export class ProfilesAddPage {
 
         loading.dismiss()
 
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
+        this.navCtrl.pop()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
   } 
 
   addProfileExpire(){    
-    let start = this.eventSource[0].startTime
-    let end = this.eventSource[1].endTime
+    let start0 = this.eventSource[0].startTime
+    let end0 = this.eventSource[0].endTime
 
-    let startF = moment(start)
-    let endF = moment(end)
+    let start1 = this.eventSource[1].startTime
+    let end1 = this.eventSource[1].endTime
 
-    if(endF.isBefore(startF)){
+    let start0F = moment(start0)
+    let end0F = moment(end0)
+
+    let start1F = moment(start1)
+    let end1F = moment(end1)
+
+    if(start1F.isBefore(start0F)){
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart).present()      
       this.restartCalendar()
 
@@ -342,15 +410,13 @@ export class ProfilesAddPage {
       let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
       loading.present()
       
-      this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end)    
+      this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start0F, end0F, start1F, end1F)    
       .subscribe( () => {
 
         loading.dismiss()
 
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
+        this.navCtrl.pop()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
     }    
   }
@@ -395,15 +461,14 @@ export class ProfilesAddPage {
       .subscribe( () => {
 
         loading.dismiss()
-        
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
+        this.navCtrl.pop()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
       })
   }
 
   updateProfile(){
+    console.log('updateProfile', this.selectedAccessType)
+
     if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
       this.updateProfileExpire()
 
@@ -415,14 +480,19 @@ export class ProfilesAddPage {
   }
 
   updateProfileExpire(){
-    let start = this.eventSource[0].startTime
-    let end = this.eventSource[1].endTime
+    let start0 = this.eventSource[0].startTime
+    let end0 = this.eventSource[0].endTime
 
-    let startF = moment(start)
-    let endF = moment(end)
+    let start1 = this.eventSource[1].startTime
+    let end1 = this.eventSource[1].endTime
 
-    if(endF.isBefore(startF)){
-      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart).present()      
+    let start0F = moment(start0)
+    let start1F = moment(start1)
+
+    if(start1F.isBefore(start0F)){
+      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart)
+      .present()      
+
       this.restartCalendar()
 
     } else {
@@ -430,15 +500,14 @@ export class ProfilesAddPage {
       let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
       loading.present()
       
-      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end, this.profile.id)    
+      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, 
+        start0, end0, this.profile.id, start1, end1)    
       .subscribe( () => {
 
         loading.dismiss()
 
+        this.navCtrl.pop()
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
       })
     }
   }
@@ -452,15 +521,13 @@ export class ProfilesAddPage {
 
         loading.dismiss()
 
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
+        this.navCtrl.pop()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
       })
   }
 
   updateProfileDayWeek(){
-    console.log('updateProfileDayWeek')
+    console.log('updateProfileDayWeek', this.profile.id)
     
     let data = this.populateDayweekData()
 
@@ -470,12 +537,9 @@ export class ProfilesAddPage {
     this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data, this.profile.id)
       .subscribe( () => {
 
-        loading.dismiss()
-        
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
-        .then( () => {        
-          //this.navCtrl.pop()        
-        })
+        loading.dismiss()        
+        this.navCtrl.pop()
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
       })
 
   }
@@ -483,16 +547,20 @@ export class ProfilesAddPage {
   restartCalendar(){    
       this.calendarDisabled = true
       this.eventSource.splice(0, this.eventSource.length)            
-      let events = this.eventSource;      
-      this.eventSource = [];
+      this.refreshCalendar()   
+  }
 
-      setTimeout(() => {    
-        this.eventSource = events;      
-        
-        setTimeout( () => {
-          this.calendarDisabled = false
-        }, 1000)
-      });
+  refreshCalendar(){
+    let events = this.eventSource;      
+    this.eventSource = [];
+
+    setTimeout(() => {    
+      this.eventSource = events;      
+      
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+    });
   }
 
   applyTime(){

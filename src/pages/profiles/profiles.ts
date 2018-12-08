@@ -38,6 +38,8 @@ export class ProfilesPage {
 
   ionViewDidLoad() {    
     this.getAccessGroups()
+    
+    this.uiUtils.showToast("Arraste para o lado esquerdo para mais opções")
   }
 
   setFilteredItems(){

@@ -16,7 +16,8 @@ import { SectorsPage } from '../pages/sectors/sectors';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
+	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
+	
 
 	rootPage:any = HomePage;
 	

@@ -27,16 +27,16 @@
           </ion-avatar>
   
           <h2>{{employee.name}}</h2>
-          <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}</b>{{dataInfo.titleNotInformed}}</p>
-          <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}</b>{{employee.FUNCIONARIO_TIPO}}</p>
-          <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegister}}</b>{{dataInfo.titleNotInformed}}</p>
-          <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegister}}</b>{{employee.matricula}}</p>
+          <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
+          <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
+          <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
+          <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>
       </ion-item>
   
       <ion-card-content class="mgt-10 top-default"> 
-        <p><b>{{dataInfo.titleBadge}}:</b>{{employee.CRACHA}} </p>
-        <p><b>{{dataInfo.titleOffice}}</b>{{employee.CARGO}} </p>
-        <p><b>{{dataInfo.titleCompany}}</b> {{employee.EMPRESA}} </p>        
+        <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
+        <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>
+        <p><b>{{dataInfo.titleCompany}}: </b> {{employee.EMPRESA}}</p>        
       </ion-card-content>                  
             
       <ion-row>

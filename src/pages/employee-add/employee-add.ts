@@ -4,6 +4,7 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
+import { timestamp } from 'rxjs-compat/operator/timestamp';
 
 
 @IonicPage()
@@ -44,10 +45,7 @@ export class EmployeeAddPage {
   }
 
   ionViewDidLoad() {
-    this.startInterface()    
-
-    if(this.informations)
-      this.loadModel()
+    this.startInterface()        
   }
 
   startInterface(){
@@ -56,34 +54,49 @@ export class EmployeeAddPage {
 
     this.workFunctions = this.httpd.getWorkFunctions()
     this.workFunctions.subscribe(data => {
-      console.log(data)
+      
+      if(this.loadModel){
+        this.employeeFunction = this.informations.FUNCAO
+      }
     })
 
     this.employeeTypes = this.httpd.getEmployeeTypes()
     this.employeeTypes.subscribe(data => {
-      console.log(data)
+
+      if(this.loadModel){
+        this.employeeType = this.informations.FUNCIONARIO_TIPO
+      }              
     })
 
     this.sectors = this.httpd.getSectors()
     this.sectors.subscribe(data => {
-      console.log(data)
+
+      if(this.loadModel){
+        this.employeeSector = this.informations.SETOR
+      }
     })
 
     this.companies = this.httpd.getCompanies()
     this.companies.subscribe(data => {
-      console.log(data)
+
+      if(this.loadModel){
+        this.employeeCompany = this.informations.EMPRESA
+      }
     })
 
     this.offices = this.httpd.getOffices()
     this.offices.subscribe(data => {
-      console.log(data)
+      
+      if(this.loadModel){
+        this.employeeOffice = this.informations.CARGO
+      }
     })
 
+    if(this.informations)
+      this.loadModel()
   }
 
   loadModel(){
-    console.log("Carregando informações")
-
     this.name = this.informations.name
     this.commumName = this.informations.name_comum
     this.rg = this.informations.rg
@@ -92,12 +105,7 @@ export class EmployeeAddPage {
     this.tel = this.informations.telefone
     this.ramal = this.informations.ramal
     this.registration = this.informations.matricula
-    this.badge = this.informations.CRACHA
-    this.employeeType = this.informations.FUNCIONARIO_TIPO
-
-    console.log(this.informations.FUNCIONARIO_TIPO, this.employeeType)
+    this.badge = this.informations.CRACHA        
   }
-
-  
 
 }

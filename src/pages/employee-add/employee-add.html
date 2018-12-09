@@ -20,82 +20,83 @@
 <ion-list>
 
   <ion-item>
-    <ion-label>Nome</ion-label>
+    <ion-label>{{dataInfo.titleName}}</ion-label>
     <ion-input type="text" [(ngModel)]="name"></ion-input>
   </ion-item>
 
   <ion-item>
-      <ion-label>Nome comum</ion-label>
+      <ion-label>{{dataInfo.titleComumName}}</ion-label>
       <ion-input type="text" [(ngModel)]="commumName"></ion-input>
     </ion-item>
 
     
     <ion-item>
-      <ion-label>RG</ion-label>
+      <ion-label>{{dataInfo.titleRG}}</ion-label>
       <ion-input type="text" [(ngModel)]="rg"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>CPF</ion-label>
+      <ion-label>{{dataInfo.titleCPF}}</ion-label>
       <ion-input type="text" [(ngModel)]="cpf"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Bairro</ion-label>
+      
+      <ion-label>{{dataInfo.titleDistrict}}</ion-label>
       <ion-input type="text" [(ngModel)]="district"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Telefone</ion-label>
+      <ion-label>{{dataInfo.titleTel}}</ion-label>
       <ion-input type="text" [(ngModel)]="tel"></ion-input>
     </ion-item>
 
 
     <ion-item>
-      <ion-label>Ramal</ion-label>
+      <ion-label>{{dataInfo.titleRamal}}</ion-label>
       <ion-input type="text" [(ngModel)]="ramal"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Matrícula</ion-label>
+      <ion-label>{{dataInfo.titleRegistration}}</ion-label>
       <ion-input type="text" [(ngModel)]="registration"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Crachá</ion-label>
+      <ion-label>{{dataInfo.titleBadge}}</ion-label>
       <ion-input type="text" [(ngModel)]="badge"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Tipo de funcionário</ion-label>      
+      <ion-label>{{dataInfo.titleType}}</ion-label>      
       <ion-select [(ngModel)]="employeeType">
         <ion-option  *ngFor="let type of (employeeTypes | async)?.success" no-lines>{{type.name}}</ion-option>        
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Função</ion-label>
+      <ion-label>{{dataInfo.titleOffice}}</ion-label>
       <ion-select [(ngModel)]="employeeFunction">
         <ion-option  *ngFor="let funct of (workFunctions | async)?.success" no-lines>{{funct.name}}</ion-option>        
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Setor</ion-label>      
+      <ion-label>{{dataInfo.titleSector}}</ion-label>      
       <ion-select [(ngModel)]="employeeSector">
         <ion-option  *ngFor="let sector of (sectors | async)?.success" no-lines>{{sector.name}}</ion-option>        
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Empresa</ion-label>      
+      <ion-label>{{dataInfo.titleCompany}}</ion-label>      
       <ion-select [(ngModel)]="employeeCompany">
         <ion-option  *ngFor="let company of (companies | async)?.success" no-lines>{{company.name}}</ion-option>        
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <ion-label>Cargos</ion-label>      
+      <ion-label>{{dataInfo.titleOffice}}</ion-label>      
       <ion-select [(ngModel)]="employeeOffice">
         <ion-option  *ngFor="let office of (offices | async)?.success" no-lines>{{office.name}}</ion-option>        
       </ion-select>

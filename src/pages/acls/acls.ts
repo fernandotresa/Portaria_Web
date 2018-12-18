@@ -53,7 +53,7 @@ export class AclsPage {
   getAcls(){
     this.allAcls = this.httpd.getAcls()
     this.allAcls.subscribe(data => {
-        console.log(data)
+        console.log(data)        
     })
   }
 

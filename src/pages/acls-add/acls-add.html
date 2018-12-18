@@ -26,15 +26,16 @@
   <ion-item>
     <ion-label>{{dataInfo.titlePermissionType}}</ion-label>
     <ion-select [(ngModel)]="permission">
-      <ion-option value="2">{{dataInfo.titleWrite}}</ion-option>
-      <ion-option value="4">{{dataInfo.titleRead}}</ion-option>      
+      
+      <ion-option>{{dataInfo.titleWrite}}</ion-option>
+      <ion-option>{{dataInfo.titleRead}}</ion-option>      
     </ion-select>
   </ion-item>
 
   <ion-list-header color="primary">{{dataInfo.titleSectores}}</ion-list-header>
 
   <ion-item>
-  <button ion-item no-lines *ngFor="let sector of (sectors | async)?.success"  detail-none (click)="selectedSectorClicked(sector)">
+  <button ion-item no-lines *ngFor="let sector of allSectors"  detail-none (click)="selectedSectorClicked(sector)">
     {{sector.name}}                     
       <ion-icon name="ios-checkmark-circle" item-end *ngIf="sector.isChecked" color="secondary"></ion-icon>
       <ion-icon name="ios-checkmark-circle" item-end *ngIf="! sector.isChecked"  color="danger"></ion-icon>
@@ -46,6 +47,8 @@
   
 </ion-content>
 
-<ion-footer *ngIf="name && permission && selectedArray.length > 0">
-    <button ion-button full (click)="save()">{{dataInfo.titleSave}}</button>
+<ion-footer>
+    <button ion-button full (click)="clearSectors()" *ngIf="selectedArray.length > 0">{{dataInfo.titleClearSectors}}</button>
+    <button ion-button full (click)="add()" *ngIf="!this.profile && name && permission && selectedArray.length > 0">{{dataInfo.titleAdd}}</button>
+    <button ion-button full (click)="save()" *ngIf="this.profile && name && permission && selectedArray.length > 0">{{dataInfo.titleSave}}</button>
 </ion-footer>

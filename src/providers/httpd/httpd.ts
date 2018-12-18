@@ -225,10 +225,23 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addAcl", myData, {headers: headers})
   }
 
+  saveAcl(idAcl_, name_, permission_, sectors_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, permission: permission_, sectors: sectors_, idAcl: idAcl_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAcl", myData, {headers: headers})
+  }
+
   delAcl(acl_){
     let myData = JSON.stringify({id: this.dataInfo.userId, acl: acl_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/delAcl", myData, {headers: headers})
-  }  
+  }
+  
+  getAclsSectorsById(idAcl_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idAcl: idAcl_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAclsSectorsById", myData, {headers: headers})
+  }
 
 }

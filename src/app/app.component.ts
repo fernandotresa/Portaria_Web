@@ -6,11 +6,6 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { EmployeePage } from '../pages/employee/employee';
-import { GuestPage } from '../pages/guest/guest';
-import { ProfilesPage } from '../pages/profiles/profiles';
-import { SectorsPage } from '../pages/sectors/sectors';
-import { AclsPage } from '../pages/acls/acls';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +14,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 	
-	rootPage:any = AclsPage;
+	rootPage:any = LoginPage;
 	
   public options: Array<SideMenuOption>;
 
@@ -45,8 +40,6 @@ export class MyApp {
 
 
 			} else if (option.custom && option.custom.isLogout) {
-
-				console.log('You\'ve clicked the logout option!');
 				this.nav.setRoot(LoginPage, { autoLogin: false })
 
 			} else if (option.custom && option.custom.isHome) {
@@ -93,13 +86,14 @@ export class MyApp {
 			component: 'GuestPage'
 		});	
 
+		
 		this.options.push({
 		displayText: 'Acessos e permissões',
 		suboptions: [
 			{
-				iconName: 'unlock',
+				iconName: 'hand',
 				displayText: 'ACLs',
-				component: 'ProfilesPage'
+				component: 'AclsPage'
 			},
 			{
 				iconName: 'unlock',

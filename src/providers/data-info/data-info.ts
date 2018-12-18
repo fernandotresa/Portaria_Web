@@ -76,7 +76,9 @@ export class DataInfoProvider {
   titleProfileDatetime: string = 'Datas específicas + horários'
   titleProfileDayweek: string = 'Dias da Semana + horários'
   titleSuccess: string = "Sucesso"
+
   titleSaveError: string = "Erro ao salvar"
+  titleAcl: string = "ACL"
   titleProfileCreated: string = "Perfil criado"
   titleProfileUpdated: string = "Perfil atualizado"
   titleProfile: string = "Perfil"
@@ -111,7 +113,7 @@ export class DataInfoProvider {
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
   titleMultipleUpdate: string = "Atualização múltipla"
-  titleAccessRules: string = "Regras de acesso"
+  titleAccessRules: string = "Perfis de acesso"
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."

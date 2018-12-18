@@ -69,4 +69,16 @@ export class EmployeePage {
     });
   }   
 
+  addAcl(employee){    
+    
+    let modal = this.modalCtrl.create('AclsLinkPage', {userInfo: employee, userType: 1});
+    modal.present();
+    modal.onDidDismiss(data => {
+      if (data) {
+        console.log(data)
+
+      }
+    });
+  }   
+
 }

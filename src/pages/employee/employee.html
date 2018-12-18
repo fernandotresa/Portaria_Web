@@ -46,21 +46,22 @@
               <ion-icon name="calendar" color="primary"></ion-icon>
             <div>{{dataInfo.titleAccessRules}}</div>
           </button>
-        </ion-col>
+        </ion-col>       
 
         <ion-col>
-          <button ion-button icon-start clear small (click)="goPageEdit(employee)">
-            <ion-icon name="cog" color="primary"></ion-icon>
-            <div>{{dataInfo.titleEdit}}</div>
+          <button ion-button icon-start clear small (click)="addAcl(employee)">
+              <ion-icon name="ios-hand" color="primary"></ion-icon>
+
+              <div>{{dataInfo.titleAcl}}</div>
           </button>
         </ion-col>
 
         <ion-col>
-          <button ion-button icon-start clear small>
-              <ion-icon name="alert" color="primary"></ion-icon>
-              <div>{{dataInfo.titleMessageAndAlerts}}</div>
-          </button>
-        </ion-col>
+            <button ion-button icon-start clear small (click)="goPageEdit(employee)">
+              <ion-icon name="cog" color="primary"></ion-icon>
+              <div>{{dataInfo.titleEdit}}</div>
+            </button>
+          </ion-col>
 
       </ion-row>
         

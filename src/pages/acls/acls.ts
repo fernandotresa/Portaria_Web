@@ -47,7 +47,7 @@ export class AclsPage {
   }
 
   setFilteredItems(){    
-    this.allAcls = this.httpd.getAccessGroupsByName(this.searchTerm)    
+    this.allAcls = this.httpd.getACLByName(this.searchTerm)    
   }
 
   getAcls(){

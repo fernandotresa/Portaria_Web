@@ -1,0 +1,51 @@
+
+<ion-header>
+
+  <ion-navbar text-center no-border-bottom color="primary">  
+  
+  <ion-title> {{dataInfo.titleAcls}} </ion-title> 
+
+  <ion-buttons end>
+      <button ion-button menuToggle color="white_">
+        <ion-icon name="menu"></ion-icon></button>
+   </ion-buttons>   
+   
+ </ion-navbar>  
+
+</ion-header>
+
+<ion-content padding>
+
+<ion-list>
+
+  <ion-item>
+    <ion-label>{{dataInfo.titleName}}</ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>    
+  
+  <ion-item>
+    <ion-label>{{dataInfo.titlePermissionType}}</ion-label>
+    <ion-select [(ngModel)]="permission">
+      <ion-option value="2">{{dataInfo.titleWrite}}</ion-option>
+      <ion-option value="4">{{dataInfo.titleRead}}</ion-option>      
+    </ion-select>
+  </ion-item>
+
+  <ion-list-header color="primary">{{dataInfo.titleSectores}}</ion-list-header>
+
+  <ion-item>
+  <button ion-item no-lines *ngFor="let sector of (sectors | async)?.success"  detail-none (click)="selectedSectorClicked(sector)">
+    {{sector.name}}                     
+      <ion-icon name="ios-checkmark-circle" item-end *ngIf="sector.isChecked" color="secondary"></ion-icon>
+      <ion-icon name="ios-checkmark-circle" item-end *ngIf="! sector.isChecked"  color="danger"></ion-icon>
+  </button>
+
+  </ion-item>         
+  
+</ion-list>
+  
+</ion-content>
+
+<ion-footer *ngIf="name && permission && selectedArray.length > 0">
+    <button ion-button full (click)="save()">{{dataInfo.titleSave}}</button>
+</ion-footer>

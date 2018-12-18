@@ -33,8 +33,13 @@ export class DataInfoProvider {
   titleCheckSunday: string = "Verificar horários de domingo"
 
   titleSave: string = "Salvar"
+  titleAcls: string = "ACLs"
+  titlePermissionType: string = "Tipos de permissões"
+  titleRead: string = "Verificar"
+  titleWrite: string = "Salvar"
   titleSelectSectorAndProfiles: string = "Selecionar setor e profiles"
   titleSector: string = "Setor"
+  titleSectores: string = "Selecionar setores "
   titleSelectEmployees: string = "Selecionar colaboradores"
   titleRegister: string = "Cadastrar"
   titleApp: string = "Portaria"

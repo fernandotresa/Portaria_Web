@@ -211,4 +211,18 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessProfileGuests", myData, {headers: headers})
   }
+
+  getAcls(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAcls", myData, {headers: headers})
+  }
+
+  addAcl(name_, permission_, sectors_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, permission: permission_, sectors: sectors_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addAcl", myData, {headers: headers})
+  }
+
 }

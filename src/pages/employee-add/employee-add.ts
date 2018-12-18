@@ -4,8 +4,6 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
-import { timestamp } from 'rxjs-compat/operator/timestamp';
-
 
 @IonicPage()
 @Component({

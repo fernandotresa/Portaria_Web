@@ -55,7 +55,6 @@ export class ProfilesPage {
   }
   
   getAccessGroups(){
-
     this.accessGroups = this.httpd.getAccessGroups()
       this.accessGroups.subscribe(data => {
         console.log(data)

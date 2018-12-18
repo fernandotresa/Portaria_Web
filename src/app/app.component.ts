@@ -10,6 +10,7 @@ import { EmployeePage } from '../pages/employee/employee';
 import { GuestPage } from '../pages/guest/guest';
 import { ProfilesPage } from '../pages/profiles/profiles';
 import { SectorsPage } from '../pages/sectors/sectors';
+import { AclsPage } from '../pages/acls/acls';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,8 +19,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 	
-
-	rootPage:any = HomePage;
+	rootPage:any = AclsPage;
 	
   public options: Array<SideMenuOption>;
 
@@ -84,13 +84,13 @@ export class MyApp {
 		this.options.push({
 			iconName: 'contacts',
 			displayText: 'Colaboradores',
-			component: EmployeePage			
+			component: 'EmployeePage'			
 		});
 
 		this.options.push({
 			iconName: 'people',
 			displayText: 'Visitantes',
-			component: GuestPage
+			component: 'GuestPage'
 		});	
 
 		this.options.push({
@@ -98,13 +98,18 @@ export class MyApp {
 		suboptions: [
 			{
 				iconName: 'unlock',
+				displayText: 'ACLs',
+				component: 'ProfilesPage'
+			},
+			{
+				iconName: 'unlock',
 				displayText: 'Acessos',
-				component: ProfilesPage
+				component: 'ProfilesPage'
 			},		
 			{
 				iconName: 'folder-open',
 				displayText: 'Setores',
-				component: SectorsPage,				
+				component: 'SectorsPage',				
 			}
 		]
 		});	  

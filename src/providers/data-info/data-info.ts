@@ -33,6 +33,7 @@ export class DataInfoProvider {
   titleCheckSunday: string = "Verificar horários de domingo"
 
   titleAdd: string = "Adicionar"
+
   titleClearSectors: string = "Limpar Setores"
   titleSave: string = "Salvar"
   titleAcls: string = "ACLs"
@@ -75,6 +76,7 @@ export class DataInfoProvider {
   titleProfileDatetime: string = 'Datas específicas + horários'
   titleProfileDayweek: string = 'Dias da Semana + horários'
   titleSuccess: string = "Sucesso"
+  titleSaveError: string = "Erro ao salvar"
   titleProfileCreated: string = "Perfil criado"
   titleProfileUpdated: string = "Perfil atualizado"
   titleProfile: string = "Perfil"
@@ -113,6 +115,7 @@ export class DataInfoProvider {
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
+  titleDoYouWantUpdate: string = "Deseja realmente atualizar? A ação não poderá ser refeita."
   titleOperationSuccess: string = "Operação realizada com sucesso!"
   titleRemove: string = "Remover"
   titleEdit: string = "Editar"

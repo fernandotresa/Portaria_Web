@@ -36,7 +36,7 @@ export class AclsPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('refreshProfiles', () => {
+      this.events.subscribe('refreshAcls', () => {        
         this.getAcls()
       });
   }

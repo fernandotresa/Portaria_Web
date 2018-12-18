@@ -27,7 +27,7 @@
   <ion-list>          
     <ion-item-sliding #item *ngFor="let acl of (allAcls | async)?.success">
 
-        <button ion-item item-start text-wrap no-lines (click)="goPermissionGroups(group)">     
+        <button ion-item item-start text-wrap no-lines>     
             {{acl.name}}  
         </button>      
         

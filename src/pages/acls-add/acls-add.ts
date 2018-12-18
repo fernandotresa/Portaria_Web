@@ -14,9 +14,14 @@ export class AclsAddPage {
 
   sectors: Observable<any>;
 
+  profile: any
+
   name: string
   selectedArray: any = []
-  permission: any
+  permission: any;
+
+  loadProfile: Boolean = false
+  copyProfile: Boolean = false
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -26,7 +31,10 @@ export class AclsAddPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AclsAddPage');
+
+    this.loadProfile = this.navParams.get('loadProfile')
+    this.profile = this.navParams.get('profile')
+    this.copyProfile = this.navParams.get('copyProfile')
     this.getSectors()    
   }
 
@@ -63,6 +71,18 @@ export class AclsAddPage {
       })
     })
   }
+
+  copyProfileInfo(){
+    this.name = this.profile.name + this.dataInfo.titleCopyProfile
+    this.permission = this.profile.permission    
+  }
+
+  loadProfileInfo(){
+  
+    this.name = this.profile.name
+    this.permission = this.profile.permission        
+  }
+
 
 }
 

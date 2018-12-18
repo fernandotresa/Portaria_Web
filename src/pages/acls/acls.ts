@@ -41,8 +41,8 @@ export class AclsPage {
       });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AclsPage');
+  ionViewDidLoad() {    
+    this.uiUtils.showToast("Arraste para o lado esquerdo para mais opções")
     this.getAcls()
   }
 
@@ -59,6 +59,33 @@ export class AclsPage {
 
   addAcl(){
     this.navCtrl.push('AclsAddPage')
+  }
+
+  remove(acl){
+    
+    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
+    .then(res => {
+      if(res){
+        this.removeContinue(acl)
+      }
+    })    
+  }
+
+  removeContinue(acl){
+    this.httpd.delAcl(acl).subscribe( () => {
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
+        .then( () => {        
+          this.getAcls()
+        })
+    })
+  }
+
+  edit(acl){
+    this.navCtrl.push('AclsAddPage', {loadProfile: true, profile: acl})
+  }
+
+  copy(acl){
+    this.navCtrl.push('AclsAddPage', {loadProfile: false, profile: acl, copyProfile: true})
   }
   
 

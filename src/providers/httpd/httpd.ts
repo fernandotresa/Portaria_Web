@@ -225,4 +225,10 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addAcl", myData, {headers: headers})
   }
 
+  delAcl(acl_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, acl: acl_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delAcl", myData, {headers: headers})
+  }  
+
 }

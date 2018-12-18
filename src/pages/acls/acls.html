@@ -25,16 +25,16 @@
 <ion-content padding>
 
   <ion-list>          
-    <ion-item-sliding #item *ngFor="let acl of (acls | async)?.success">
+    <ion-item-sliding #item *ngFor="let acl of (allAcls | async)?.success">
 
         <button ion-item item-start text-wrap no-lines (click)="goPermissionGroups(group)">     
             {{acl.name}}  
         </button>      
         
         <ion-item-options>
-            <button ion-button color="danger" (click)="remove(group)"><ion-icon name="trash"></ion-icon>{{dataInfo.titleRemove}}</button>
-            <button ion-button (click)="edit(group)"><ion-icon name="create"></ion-icon>{{dataInfo.titleEdit}}</button>            
-            <button ion-button color="secondary" (click)="copy(group)"><ion-icon name="copy"></ion-icon>{{dataInfo.titleCopy}}</button>
+            <button ion-button color="danger" (click)="remove(acl)"><ion-icon name="trash"></ion-icon>{{dataInfo.titleRemove}}</button>
+            <button ion-button (click)="edit(acl)"><ion-icon name="create"></ion-icon>{{dataInfo.titleEdit}}</button>            
+            <button ion-button color="secondary" (click)="copy(acl)"><ion-icon name="copy"></ion-icon>{{dataInfo.titleCopy}}</button>
           </ion-item-options>
     </ion-item-sliding>
     

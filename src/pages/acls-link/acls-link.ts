@@ -5,7 +5,6 @@ import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
 
-
 @IonicPage()
 @Component({
   selector: 'page-acls-link',
@@ -13,11 +12,10 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AclsLinkPage {
 
-  sectors: Observable<any>;
-  selectedArray: any = []
-  allSectors: any = []
-  
-  profile: any
+  allAcls: Observable<any>;
+  acls: any = []    
+  userInfo: any
+  userType: number  = 0
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -28,54 +26,76 @@ export class AclsLinkPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AclsLinkPage');
-    this.profile = this.navParams.get('profile')
-
+    this.userInfo = this.navParams.get('userInfo')
+    this.userType = this.navParams.get('userType')
+    this.getAcls()
   }
 
-  getSectors(){
-    this.sectors = this.httpd.getSectors()
-    this.sectors.subscribe( () => {
-        this.loadProfileInfo()
+  getAcls(){
+    this.acls = []
+    this.allAcls = this.httpd.getAcls()
+
+    this.allAcls.subscribe(data => {                
+      this.acls = data.success
+      this.getAclEmployee()
     })
   }
 
-  loadProfileInfo(){              
-    
-    this.httpd.getAclsSectorsById(this.profile.id)
+  getAclEmployee(){
+
+    this.httpd.getAclsEmployee(this.userInfo.id)
     .subscribe(data => {
-        this.loadSectors(data)
+
+        this.getAclEmployeeContinue(data)
     })
   }
 
-  loadSectors(data){
+  getAclEmployeeContinue(data){
+    
+    let dataS = data.success
+    for(var j = 0; j < dataS.length; ++j){
 
-    data.success.forEach(element => {      
-      
-      this.allSectors.forEach(sector => {
-        if(sector.id === element.id_sector){
+      let id = dataS[j].id_acl      
 
-          this.selectedSectorClicked(sector)          
-          this.selectedArray.push(sector)
+      for( var i = 0; i < this.acls.length; i++){ 
+             
+        if ( this.acls[i].id === id) {                  
+          this.acls[i].checked = true          
         }
-      });      
-    });
+      } 
+    }     
   }
 
-  selectedSectorClicked(sector){
+  aclSelected(acl){
 
-    sector.isChecked = !sector.isChecked
+    for( var i = 0; i < this.acls.length; i++){             
+      if (this.acls[i].id === acl.id) {        
+        acl.checked = !acl.checked
+      }
+    }            
+  }
 
-    if(! sector.isChecked){
-      const index = this.selectedArray.indexOf(sector, 0);
+  cancel(){
+    this.navCtrl.pop()
+  }
 
-      if (index > -1) {
-        this.selectedArray.splice(index, 1);
-      }      
-    }          
-    else {
-      this.selectedArray.push(sector)  
-    }        
+  save(){
+    let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
+    loading.present() 
+
+    let aclCheckeds = []
+
+    for( var i = 0; i < this.acls.length; i++){ 
+      if ( this.acls[i].checked) {
+        aclCheckeds.push(this.acls[i])
+      }
+    }  
+
+    this.httpd.saveAclsEmployee(aclCheckeds, this.userInfo.id)
+    .subscribe( () => {
+      loading.dismiss() 
+      this.viewCtrl.dismiss(aclCheckeds);      
+    })  
   }
 
 }

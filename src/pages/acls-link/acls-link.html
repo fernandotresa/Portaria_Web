@@ -11,9 +11,11 @@
    
   <ion-content>
     <ion-list>            
-        <ion-item no-lines *ngFor="let group of callbackProfiles">
-            <ion-checkbox (click)="profileSelected(group)" [checked]=group.checked></ion-checkbox>
-            <ion-label>{{group.name}} - {{group.type}}</ion-label>  
+        <ion-item no-lines *ngFor="let acl of acls">                      
+            <ion-checkbox (click)="aclSelected(acl)" [checked]=acl.checked></ion-checkbox>
+
+            <ion-label>{{acl.name}}</ion-label>          
+
         </ion-item>
     </ion-list>
    

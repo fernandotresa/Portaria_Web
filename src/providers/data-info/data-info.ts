@@ -78,7 +78,8 @@ export class DataInfoProvider {
   titleSuccess: string = "Sucesso"
 
   titleSaveError: string = "Erro ao salvar"
-  titleAcl: string = "ACL"
+  
+  titleAcl: string = "Lista de controle de acesso"
   titleProfileCreated: string = "Perfil criado"
   titleProfileUpdated: string = "Perfil atualizado"
   titleProfile: string = "Perfil"

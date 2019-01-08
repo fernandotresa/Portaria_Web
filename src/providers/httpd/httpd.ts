@@ -10,8 +10,8 @@ export class HttpdProvider {
 
   data:any = {};
   
-  //address : string = 'http://localhost:8085'    
-  address : string = 'http://suporte.3a.com.br:8085'    
+  address : string = 'http://localhost:8085'    
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
@@ -248,6 +248,20 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getACLByName", myData, {headers: headers})
+  }
+
+  saveAclsEmployee(acls_, employeeId_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, 
+      acls: acls_, employeeId: employeeId_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAclsEmployee", myData, {headers: headers})
+  }
+
+  getAclsEmployee(idEmployee_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAclsEmployee", myData, {headers: headers})
   }
 
 }

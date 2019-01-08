@@ -1,1 +1,12 @@
-node_modules
+www
+.sourcemaps/
+storage_rules
+package-lock.json
+node_modules/
+.database.rules.json
+platforms/
+plugins/
+.grandle
+.vscode
+licenses
+resources

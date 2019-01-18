@@ -24,19 +24,16 @@
 
 <ion-content padding>
 
-  <ion-list>          
-    <ion-item-sliding #item *ngFor="let group of (accessGroups | async)?.success">
+  <ion-list>         
 
-        <button ion-item item-start text-wrap no-lines (click)="goPermissionGroups(group)">     
-            {{group.name}} - {{group.type}} 
-        </button>      
-        
-        <ion-item-options>
-            <button ion-button color="danger" (click)="remove(group)"><ion-icon name="trash"></ion-icon>{{dataInfo.titleRemove}}</button>
-            <button ion-button (click)="edit(group)"><ion-icon name="create"></ion-icon>{{dataInfo.titleEdit}}</button>            
-            <button ion-button color="secondary" (click)="copy(group)"><ion-icon name="copy"></ion-icon>{{dataInfo.titleCopy}}</button>
-          </ion-item-options>
-    </ion-item-sliding>
+    <ion-item *ngFor="let group of (accessGroups | async)?.success">
+
+        <button ion-item item-start text-wrap no-lines>            
+            {{group.name}} - {{group.type}}             
+            <ion-icon name='folder-open' item-end (click)="showOptions(group)" color="primary"></ion-icon>            
+        </button>                      
+       
+    </ion-item>
     
 </ion-list>
 

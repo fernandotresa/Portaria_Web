@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ActionSheetController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -26,6 +26,7 @@ export class AclsPage {
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
+    public actionSheetCtrl: ActionSheetController,
     public events: Events,
     public navParams: NavParams) {
 
@@ -56,6 +57,40 @@ export class AclsPage {
     this.allAcls.subscribe(data => {
         console.log(data)        
     })
+  }
+
+  showOptions(group) {
+
+    const actionSheet = this.actionSheetCtrl.create({
+      title: this.dataInfo.titleSelect,
+      buttons: [
+        {
+          text: this.dataInfo.titleEdit,
+          handler: () => {
+            this.edit(group)
+          }
+        },
+        {
+          text: this.dataInfo.titleDuplicate,
+          handler: () => {
+            this.copy(group)
+          }
+        },
+       {
+          text: this.dataInfo.titleRemoveProfile,
+          handler: () => {
+            this.remove(group)
+          }
+        },{
+          text: this.dataInfo.titleCancel,
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
   }
 
   addAcl(){

@@ -82,6 +82,18 @@ export class ProfilesAddPage {
     this.getAccessTypes()          
   }
 
+  profileCreatedOk(){
+    let alert = this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated)              
+    alert.present()
+
+      .then( () => {
+        setTimeout(function(){
+          alert.dismiss();
+                      
+      }, 3000);   
+    })
+  }
+
   getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
     this.accessTypes.subscribe(data => {    
@@ -420,8 +432,13 @@ export class ProfilesAddPage {
     let start1F = moment(start1)
     let end1F = moment(end1)
 
+    console.log(this.eventSource[0].title)
+    console.log(this.eventSource[1].title)
+
     if(start1F.isBefore(start0F)){
-      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart).present()      
+      
+      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart)
+      .present()      
       this.restartCalendar()
 
     } else {
@@ -429,17 +446,19 @@ export class ProfilesAddPage {
       let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
       loading.present()
       
-      this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start0F, end0F, start1F, end1F)    
+      this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, 
+        start0F, end0F, start1F, end1F)    
+
       .subscribe( () => {
 
         loading.dismiss()
 
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1);
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
+        this.events.publish('refreshProfiles', 1); 
+        this.profileCreatedOk()       
       })
     }    
-  }
+  }  
 
   populateDayweekData(){
     this.datesWeek = []
@@ -549,7 +568,7 @@ export class ProfilesAddPage {
         loading.dismiss()
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
+        this.profileCreatedOk()
       })
   }
 
@@ -595,7 +614,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()
+        this.profileCreatedOk()
       })
     }
   }
@@ -611,7 +630,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
+        this.profileCreatedOk()
       })
   }
 
@@ -628,7 +647,7 @@ export class ProfilesAddPage {
           loading.dismiss()        
           this.navCtrl.pop()
           this.events.publish('refreshProfiles', 1);
-          this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileUpdated).present()        
+          this.profileCreatedOk()
         })
     }    
   }

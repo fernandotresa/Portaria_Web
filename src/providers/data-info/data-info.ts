@@ -33,6 +33,10 @@ export class DataInfoProvider {
   titleCheckSunday: string = "Verificar horários de domingo"
 
   titleAdd: string = "Adicionar"
+  titleAddAccess: string = "Adicionar acesso"
+  titleStart: string = "Inicio"
+  titleEnd: string = "Fim"
+  titleAllDay: string = "Dia inteiro?"
 
   titleClearSectors: string = "Limpar Setores"
   titleSave: string = "Salvar"
@@ -117,6 +121,8 @@ export class DataInfoProvider {
   titleAccessRules: string = "Perfis de acesso"
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
+  titleCancel: string = "Cancelar"
+  titleDuplicate: string = "Duplicar"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
   titleDoYouWantUpdate: string = "Deseja realmente atualizar? A ação não poderá ser refeita."
   titleOperationSuccess: string = "Operação realizada com sucesso!"

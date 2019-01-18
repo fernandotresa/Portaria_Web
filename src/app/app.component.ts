@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform, MenuController, AlertController } from 'ionic-angular';
+import { Nav, Platform, MenuController } from 'ionic-angular';
 import { SideMenuSettings } from './../shared/side-menu-content/models/side-menu-settings';
 import { SideMenuOption } from './../shared/side-menu-content/models/side-menu-option';
 import { SideMenuContentComponent } from './../shared/side-menu-content/side-menu-content.component';
@@ -85,13 +85,12 @@ export class MyApp {
 			displayText: 'Visitantes',
 			component: 'GuestPage'
 		});	
-
 		
 		this.options.push({
 		displayText: 'Acessos e permissões',
 		suboptions: [
 			{
-				iconName: 'hand',
+				iconName: 'folder-open',
 				displayText: 'ACLs',
 				component: 'AclsPage'
 			},

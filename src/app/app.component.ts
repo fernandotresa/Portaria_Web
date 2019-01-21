@@ -68,15 +68,16 @@ export class MyApp {
     this.options = new Array<SideMenuOption>();
     
 		this.options.push({
-			iconName: 'map',
+			iconName: 'home',
 			displayText: 'Início',			
 			custom: {
 				isHome: true
 			}			
-		});											
+		});						
+
 
 		this.options.push({
-			iconName: 'ios-contacts',
+			iconName: 'briefcase',
 			displayText: 'Colaboradores',
 			component: 'EmployeePage'			
 		});
@@ -101,7 +102,7 @@ export class MyApp {
 				component: 'ProfilesPage'
 			},		
 			{
-				iconName: 'ios-people',
+				iconName: 'ios-bug',
 				displayText: 'Usuários',
 				component: 'UsersPage',				
 			}

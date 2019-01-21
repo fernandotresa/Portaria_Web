@@ -34,7 +34,9 @@
                 <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
                 <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
                 <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
-                <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>
+                <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>                
+                
+                <p *ngIf="employee.SETOR"><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
             </ion-item>
 
           </ion-card-header>                  

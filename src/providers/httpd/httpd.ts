@@ -246,6 +246,11 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAclsUser", myData, {headers: headers})
   }
 
+  getAclsUserSector(idUser_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idUser: idUser_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAclsUserSector", myData, {headers: headers})
+  }
 
   saveAclsUser(acls_, idUser_){
     let myData = JSON.stringify({id: this.dataInfo.userId, 

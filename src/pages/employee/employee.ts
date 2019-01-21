@@ -40,8 +40,9 @@ export class EmployeePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeePage');
-    /*this.searchTerm = "Fernando Augusto"
-    this.setFilteredItems()*/
+    this.searchTerm = "Fernando Augusto"
+
+    this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -75,7 +76,7 @@ export class EmployeePage {
           role: 'destructive',
           icon: 'clipboard',
           handler: () => {
-            this.addProfile(employee)
+            this.checkAclUser(employee)
           }                
         },          
         {
@@ -88,6 +89,40 @@ export class EmployeePage {
     });
     actionSheet.present();
   }    
+
+  checkAclUser(employee){
+
+    this.httpd.getAclsUserSector(this.dataInfo.userInfo.id)
+    .subscribe(data => {
+
+      this.checkAclUserCallback(employee, data)      
+    })
+  }
+
+  checkAclUserCallback(employee, data){
+
+    console.log(employee)
+    console.log(data)
+
+    let haveAcess = false
+
+    let sectorIdEmployee = employee.SETOR_ID
+
+    data.success.forEach(element => {
+      
+      let sectorId = element.SETOR_ID
+
+      if(sectorId === sectorIdEmployee)
+          haveAcess = true      
+
+    });
+
+    if(haveAcess)
+      this.addProfile(employee)
+
+    else  
+      this.uiUtils.showAlertError(this.dataInfo.titleAccessDenied)
+  }
 
   addProfile(employee){
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});

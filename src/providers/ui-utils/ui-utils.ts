@@ -71,6 +71,18 @@ export class UiUtilsProvider {
     })
   }
 
+  showAlertError(message: string){
+
+    let alert = this.showAlert("Atenção", message)
+      
+    alert.present()
+    .then( () => {
+      setTimeout(function(){
+        alert.dismiss();
+      }, 3000);        
+    })
+  }
+
   
 
 }

@@ -62,21 +62,31 @@ export class LoginPage {
   loginContinue(email, pass){
     
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
-    loading.present() 
-    var self = this
+    loading.present()     
 
     this.httpd.getAuth(email, pass)
 
     .subscribe( data => {
-      self.goHome()
-      loading.dismiss().then( () => {                                
+      this.loginFinish(data)      
+      loading.dismiss()
 
-      });
-    }, error => {
-      loading.dismiss().then( () => {
-        self.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleAuthError).present()
-      });
     });    
+  }
+
+  loginFinish(data){
+
+    if(data.success.length > 0){
+
+      let userInfo = data.success[0]
+      
+      console.log(userInfo)
+      
+      this.dataInfo.userInfo = userInfo
+      this.dataInfo.userId = userInfo.id
+      this.goHome()
+
+    } else 
+      this.uiUtils.showAlertError(this.dataInfo.titleAuthError)      
   }
 
   goToSignup(): void {

@@ -17,12 +17,13 @@
  
     <ion-item>
       <ion-label>{{dataInfo.titleStart}}</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
  
+
     <ion-item>
       <ion-label>{{dataInfo.titleEnd}}</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
+      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"  [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
  
     <ion-item *ngIf="false">

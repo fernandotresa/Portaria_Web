@@ -6,6 +6,7 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
+import { AclsPage } from '../pages/acls/acls';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,7 +15,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 	
-	rootPage:any = LoginPage;
+	rootPage:any = AclsPage;
 	
   public options: Array<SideMenuOption>;
 
@@ -75,7 +76,7 @@ export class MyApp {
 		});											
 
 		this.options.push({
-			iconName: 'contacts',
+			iconName: 'ios-contacts',
 			displayText: 'Colaboradores',
 			component: 'EmployeePage'			
 		});

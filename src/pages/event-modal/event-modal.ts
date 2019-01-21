@@ -11,7 +11,10 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 export class EventModalPage {
 
   event = { startTime: new Date().toISOString(), endTime: new Date().toISOString(), allDay: false };
-  minDate = new Date().toISOString();
+
+
+  minDate = moment().subtract(1, 'day').format()  
+  maxDate = moment().add(1, 'year').format()
  
   constructor(
     public navCtrl: NavController, 

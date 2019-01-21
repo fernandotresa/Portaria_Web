@@ -44,7 +44,6 @@ export class ProfilesPage {
 
   ionViewDidLoad() {    
     this.getAccessGroups()    
-    this.uiUtils.showToast("Arraste para o lado esquerdo para mais opções")
   }
 
   ngOnDestroy() {    
@@ -56,10 +55,8 @@ export class ProfilesPage {
   }
   
   getAccessGroups(){
-    this.accessGroups = this.httpd.getAccessGroups()
-      this.accessGroups.subscribe(data => {
-        console.log(data)
-    })
+    this.accessGroups = this.httpd.getAccessGroups()      
+    
   }
 
   addPermissionGroups(){

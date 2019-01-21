@@ -58,24 +58,45 @@ export class AclsAddPage {
   selectedSectorClicked(sector){
 
     sector.isChecked = !sector.isChecked
+    
+    console.log("Clicando ", sector.isChecked, sector.id)
 
     if(! sector.isChecked){
       const index = this.selectedArray.indexOf(sector, 0);
+      console.log("Removendo ", index, sector)
 
-      if (index > -1) {
+      if (index > -1) {        
+
         this.selectedArray.splice(index, 1);
+        sector.isChecked = false
       }      
     }          
     else {
       this.selectedArray.push(sector)  
+      sector.isChecked = true
     }        
+  }
+
+  getSelectedSectors(){
+
+    let array = []
+
+    this.selectedArray.forEach(element => {
+      if(element.isChecked)
+        array.push(element)
+    });
+
+    console.log("Selecionados: ", array)
+    return array;
   }
 
   add(){
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.addAcl(this.name, this.permission, this.selectedArray)
+    console.log(this.selectedArray)
+
+    this.httpd.addAcl(this.name, this.permission, this.getSelectedSectors())
     .subscribe( () => {
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
       .then( () => {
@@ -91,7 +112,8 @@ export class AclsAddPage {
   }
 
   save(){
-    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantUpdate)
+
+    this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titleDoYouWantUpdate)
     .then(res => {
       if(res){
         this.saveContinue()
@@ -103,18 +125,15 @@ export class AclsAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.saveAcl(this.profile.id, this.name, this.permission, this.selectedArray)
+    this.httpd.saveAcl(this.profile.id, this.name, this.permission, this.getSelectedSectors())
     .subscribe( () => {
-      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
-      .then( () => {
-        loading.dismiss()
-        this.navCtrl.pop()
-        this.events.publish('refreshAcls', 1);
 
-      }).catch( () =>{
         loading.dismiss()
-        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSaveError).present()
-      })
+        this.uiUtils.showAlertSuccess()      
+        this.navCtrl.pop()
+
+        this.selectedArray = []
+        this.events.publish('refreshAcls', 1);
     })
   }
 
@@ -125,7 +144,7 @@ export class AclsAddPage {
   }
 
   loadProfileInfo(){
-      
+    
     this.name = this.profile.name
     this.permission = this.profile.permissao  
     this.idAcl = this.profile.id      
@@ -138,13 +157,18 @@ export class AclsAddPage {
 
   loadSectors(data){
 
+    console.log(data.success)
+
     data.success.forEach(element => {      
       
       this.allSectors.forEach(sector => {
-        if(sector.id === element.id_sector){
 
+        if(sector.id === element.id_sector){
           this.selectedSectorClicked(sector)          
+
           this.selectedArray.push(sector)
+
+          sector.isChecked = true
         }
       });      
     });

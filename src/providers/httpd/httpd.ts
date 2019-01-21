@@ -129,8 +129,6 @@ export class HttpdProvider {
       desc: desc_, start0: start0_, end0: end0_, start1: start1_, end1: end1_, 
       type: type_, idProfile: idProfile_});
 
-    console.log(myData)      
-
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/updateAccessProfileExpire", myData, {headers: headers})
   }

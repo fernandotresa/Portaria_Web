@@ -232,49 +232,49 @@ export class ProfilesAddPage {
   populateDaysweek(element){
     let datetime_start = new Date(element.datetime_start)
     let datetime_end = new Date(element.datetime_end)
-    let idDay = element.id_day
+    let idDay = element.id_day    
 
     if(idDay === 1){
-      this.sunday = true
-      this.sundayStart = new Date(datetime_start).toISOString()
-      this.sundayEnd = new Date(datetime_end).toISOString()
-    }
-
-    if(idDay === 2){
       this.monday = true
       this.mondayStart = new Date(datetime_start).toISOString()
       this.mondayEnd = new Date(datetime_end).toISOString()
     }
 
-    if(idDay === 3){
+    if(idDay === 2){
       this.tuesday = true
       this.tuesdayStart = new Date(datetime_start).toISOString()
       this.tuesdayEnd = new Date(datetime_end).toISOString()
     }
 
-    if(idDay === 4){
+    if(idDay === 3){
       this.wednesday = true
       this.wednesdayStart = new Date(datetime_start).toISOString()
       this.wednesdayEnd = new Date(datetime_end).toISOString()
     }
 
-    if(idDay === 5){
+    if(idDay === 4){
       this.thursday = true
       this.thursdayStart = new Date(datetime_start).toISOString()
       this.thursdayEnd = new Date(datetime_end).toISOString()
     }
 
-    if(idDay === 6){
+    if(idDay === 5){
       this.friday = true
       this.fridayStart = new Date(datetime_start).toISOString()
       this.fridayEnd = new Date(datetime_end).toISOString()
     }
 
-    if(idDay === 7){
+    if(idDay === 6){
       this.saturday = true
       this.saturdayStart = new Date(datetime_start).toISOString()
       this.saturdayEnd = new Date(datetime_end).toISOString()
-    }        
+    }      
+    
+    if(idDay === 7){
+      this.sunday = true
+      this.sundayStart = new Date(datetime_start).toISOString()
+      this.sundayEnd = new Date(datetime_end).toISOString()
+    }
   }
      
   onTimeSelected(ev) {     
@@ -418,7 +418,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated).present()        
+        this.uiUtils.showAlertSuccess()
       })
   } 
 
@@ -434,9 +434,6 @@ export class ProfilesAddPage {
 
     let start1F = moment(start1)
     let end1F = moment(end1)
-
-    console.log(this.eventSource[0].title)
-    console.log(this.eventSource[1].title)
 
     if(start1F.isBefore(start0F)){
       
@@ -475,7 +472,7 @@ export class ProfilesAddPage {
           return false
 
       } else {
-        this.datesWeek.push({id: 2, startTime: this.mondayStart, endTime: this.mondayEnd})
+        this.datesWeek.push({id: 1, startTime: this.mondayStart, endTime: this.mondayEnd})
       }
     }      
     
@@ -487,7 +484,7 @@ export class ProfilesAddPage {
         return false
 
       } else {
-        this.datesWeek.push({id: 3, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})
+        this.datesWeek.push({id: 2, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})
       }
     }
       
@@ -499,7 +496,7 @@ export class ProfilesAddPage {
         return false
 
       } else {
-        this.datesWeek.push({id: 4, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})
+        this.datesWeek.push({id: 3, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})
       }
     }      
 
@@ -511,7 +508,7 @@ export class ProfilesAddPage {
         return false
 
       } else {
-        this.datesWeek.push({id: 5, startTime: this.thursdayStart, endTime: this.thursdayEnd})
+        this.datesWeek.push({id: 4, startTime: this.thursdayStart, endTime: this.thursdayEnd})
       }
     }
       
@@ -524,7 +521,7 @@ export class ProfilesAddPage {
         return false
 
       } else {
-        this.datesWeek.push({id: 6, startTime: this.fridayStart, endTime: this.fridayEnd})
+        this.datesWeek.push({id: 5, startTime: this.fridayStart, endTime: this.fridayEnd})
       }
     }
       
@@ -537,7 +534,7 @@ export class ProfilesAddPage {
         return false
 
       } else {
-        this.datesWeek.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
+        this.datesWeek.push({id: 6, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
       }
     }
      
@@ -576,8 +573,6 @@ export class ProfilesAddPage {
   }
 
   updateProfile(){
-    console.log('updateProfile', this.selectedAccessType)
-
     if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
       this.updateProfileExpire()
 

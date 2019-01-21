@@ -43,8 +43,11 @@ export class AclsPage {
   }
 
   ionViewDidLoad() {    
-    this.uiUtils.showToast("Arraste para o lado esquerdo para mais opções")
     this.getAcls()
+  }
+
+  ngOnDestroy() {    
+    this.events.unsubscribe('refreshAcls');		
   }
 
   setFilteredItems(){    
@@ -117,6 +120,8 @@ export class AclsPage {
   }
 
   edit(acl){
+    console.log(acl)
+
     this.navCtrl.push('AclsAddPage', {loadProfile: true, profile: acl})
   }
 

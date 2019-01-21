@@ -110,7 +110,7 @@ export class ProfilesLinkPage {
     this.httpd.saveAccessProfileEmployee(this.selectedProfiles, this.userInfo.id)
     .subscribe( () => {
       loading.dismiss() 
-      this.viewCtrl.dismiss(this.selectedProfiles);      
+      this.viewCtrl.dismiss(this.selectedProfiles); 
     })    
   }
 

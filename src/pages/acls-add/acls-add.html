@@ -20,13 +20,12 @@
 
   <ion-item>
     <ion-label>{{dataInfo.titleName}}</ion-label>
-    <ion-input type="text" [(ngModel)]="name"></ion-input>
+    <ion-input type="text" [(ngModel)]="name" text-right></ion-input>
   </ion-item>    
   
   <ion-item>
     <ion-label>{{dataInfo.titlePermissionType}}</ion-label>
-    <ion-select [(ngModel)]="permission">
-      
+    <ion-select [(ngModel)]="permission">      
       <ion-option>{{dataInfo.titleWrite}}</ion-option>
       <ion-option>{{dataInfo.titleRead}}</ion-option>      
     </ion-select>

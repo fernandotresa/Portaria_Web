@@ -57,9 +57,9 @@ export class EmployeePage {
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});
     modal.present();
     modal.onDidDismiss(data => {
-      if (data) {
-        console.log(data)
-
+      
+      if (data) {        
+        this.uiUtils.showAlertSuccess()
       }
     });
   }   
@@ -70,7 +70,7 @@ export class EmployeePage {
     modal.present();
     modal.onDidDismiss(data => {
       if (data) {
-        console.log(data)
+        this.uiUtils.showAlertSuccess()
 
       }
     });

@@ -60,6 +60,17 @@ export class UiUtilsProvider {
     toast.present(toast);
   }
 
+  showAlertSuccess(){
+    let alert = this.showAlert("Sucesso", "Operação realizada com sucesso!")
+      
+    alert.present()
+    .then( () => {
+      setTimeout(function(){
+        alert.dismiss();
+      }, 3000);        
+    })
+  }
+
   
 
 }

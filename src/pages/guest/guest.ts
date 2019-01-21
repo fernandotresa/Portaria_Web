@@ -34,11 +34,6 @@ export class GuestPage {
         this.searching = false;
         this.setFilteredItems();
       });
-
-      this.guests = this.httpd.getGuests()
-      this.guests.subscribe(data => {
-        console.log(data)
-    })
   }
 
   ionViewDidLoad() {

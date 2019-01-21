@@ -174,6 +174,7 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/saveAccessProfileEmployee", myData, {headers: headers})
   }
 
+
   saveAccessProfileGuest(profiles_, guestId_){
     let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, guestId: guestId_});
 

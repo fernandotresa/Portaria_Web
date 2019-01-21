@@ -31,9 +31,6 @@ export class ProfilesLinkPage {
     
     this.userInfo = this.navParams.get('userInfo')
     this.userType = this.navParams.get('userType')
-
-    console.log(this.userInfo, this.userType)
-
     this.getProfiles()
   }
 
@@ -74,12 +71,13 @@ export class ProfilesLinkPage {
   }
 
   checkProfile(id_profile){
-    console.log('id_profile', id_profile)        
     
     this.callbackProfiles.forEach(element => {
       
       if(element.id == id_profile){
         element.checked = true
+
+        this.selectedProfiles.push(element.id)
       }
     });
   }
@@ -87,7 +85,8 @@ export class ProfilesLinkPage {
   profileSelected(group){       
     for( var i = 0; i < this.selectedProfiles.length; i++){ 
       if ( this.selectedProfiles[i] === group.id) {
-        this.selectedProfiles.splice(i, 1);       
+
+        this.selectedProfiles.splice(i, 1);   
         group.checked = false
         return;
       }

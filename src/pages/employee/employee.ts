@@ -35,11 +35,6 @@ export class EmployeePage {
         this.searching = false;
         this.setFilteredItems();
       });
-
-      this.employees = this.httpd.getEmployees()
-      this.employees.subscribe(data => {
-        console.log(data)
-    })
   }
 
   ionViewDidLoad() {

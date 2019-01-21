@@ -210,8 +210,6 @@ export class ProfilesAddPage {
 
     let idProfile = this.profile.id
     
-    console.log(idProfile)
-
     this.httpd.getProfileInfo(idProfile).subscribe(data => {
       this.loadWeekdaysProfileContinue(data)
     })
@@ -220,7 +218,6 @@ export class ProfilesAddPage {
   loadWeekdaysProfileContinue(data){
 
     this.calendarDisabled = true
-    console.log(data)     
 
     data.success.forEach(element => {
       this.populateDaysweek(element)      
@@ -301,7 +298,6 @@ export class ProfilesAddPage {
             this.eventSource.splice(i, 1);
             refresh = false
             this.refreshCalendar()     
-
           }
         }
         
@@ -351,11 +347,18 @@ export class ProfilesAddPage {
         
       this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
   
-        if(data)
+        if(data){
           this.addExpiration(ev)     
+
+          if(! startOrEnd)
+            this.clearDayAfterExpirationEnd()        
+        }          
       })
-    }
-    
+    }    
+  }
+
+  clearDayAfterExpirationEnd(){
+      console.log("clearDayAfterExpirationEnd")      
   }
 
   addExpiration(ev){        

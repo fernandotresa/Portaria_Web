@@ -14,7 +14,7 @@ import { GuestPageModule } from '../pages/guest/guest.module';
 import { ProfilesPageModule } from '../pages/profiles/profiles.module';
 import { ProfilesAddPageModule } from '../pages/profiles-add/profiles-add.module';
 import { ProfilesLinkPageModule } from '../pages/profiles-link/profiles-link.module';
-import { SectorsPageModule } from '../pages/sectors/sectors.module';
+import { UsersPageModule } from '../pages/users/users.module';
 import { AclsPageModule } from '../pages/acls/acls.module';
 import { AclsAddPageModule } from '../pages/acls-add/acls-add.module';
 
@@ -53,7 +53,7 @@ import { NgCalendarModule  } from 'ionic2-calendar';
     ProfilesAddPageModule,
     EmployeeAddPageModule,
     ProfilesLinkPageModule,
-    SectorsPageModule,
+    UsersPageModule,
     AclsPageModule,
     AclsAddPageModule
   ],

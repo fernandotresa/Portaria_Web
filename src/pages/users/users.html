@@ -1,0 +1,28 @@
+<ion-header>
+
+    <ion-navbar text-center no-border-bottom color="primary">
+      <ion-title> {{dataInfo.titleUsers}} </ion-title>                
+    </ion-navbar>
+  
+    <ion-toolbar no-border color="primary">
+        <ion-searchbar
+          [(ngModel)]="searchTerm"
+          (ionInput)="setFilteredItems()"
+          placeholder= "Procurar...">
+       </ion-searchbar>
+    </ion-toolbar>
+   
+  </ion-header>
+  
+<ion-content padding>
+
+    <ion-list>
+
+      <ion-buttons ion-item text-wrap *ngFor="let user of (users | async)?.success" no-lines (click)="addAcl(user)">
+          {{user.name}}        
+    </ion-buttons>
+    
+  </ion-list>
+
+
+</ion-content>

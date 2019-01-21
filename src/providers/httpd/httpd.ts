@@ -25,6 +25,18 @@ export class HttpdProvider {
     return this.http.get(url);
   }
 
+  getUsers(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getUsers", myData, {headers: headers})
+  }
+
+  getUserByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getUserByName", myData, {headers: headers})
+  }
+
   getAuth(username_, password_){
     let myData = JSON.stringify({id: this.dataInfo.userId, username: username_, password: password_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
@@ -172,7 +184,6 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/saveAccessProfileEmployee", myData, {headers: headers})
   }
 
-
   saveAccessProfileGuest(profiles_, guestId_){
     let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, guestId: guestId_});
 
@@ -184,26 +195,7 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessProfileEmployee", myData, {headers: headers})
-  }
-
-  getEmployeesBySector(idSector_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, idSector: idSector_});
-    const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/getEmployeesBySector", myData, {headers: headers})
-  }
-
-  saveAccessProfileSector(profiles_, employees_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, profiles: profiles_, employees: employees_});
-
-    const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/saveAccessProfileSector", myData, {headers: headers})
-  }
-
-  getAccessProfileEmployeeBySector(idSector_, idProfile_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, idSector: idSector_, idProfile: idProfile_});
-    const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/getAccessProfileEmployeeBySector", myData, {headers: headers})
-  }
+  }  
 
   getAccessProfileGuests(idGuest_){
     let myData = JSON.stringify({id: this.dataInfo.userId, idGuest: idGuest_});
@@ -219,7 +211,6 @@ export class HttpdProvider {
 
   addAcl(name_, permission_, sectors_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, permission: permission_, sectors: sectors_});
-
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addAcl", myData, {headers: headers})
   }
@@ -249,18 +240,19 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getACLByName", myData, {headers: headers})
   }
 
-  saveAclsEmployee(acls_, employeeId_){
+  getAclsUser(idUser_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idUser: idUser_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAclsUser", myData, {headers: headers})
+  }
+
+
+  saveAclsUser(acls_, idUser_){
     let myData = JSON.stringify({id: this.dataInfo.userId, 
-      acls: acls_, employeeId: employeeId_});
+      acls: acls_, idUser: idUser_});
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/saveAclsEmployee", myData, {headers: headers})
-  }
-
-  getAclsEmployee(idEmployee_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
-    const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/getAclsEmployee", myData, {headers: headers})
-  }
+    return this.http.post(this.address  + "/saveAclsUser", myData, {headers: headers})
+  }    
 
 }

@@ -27,7 +27,6 @@ export class AclsLinkPage {
 
   ionViewDidLoad() {
     this.userInfo = this.navParams.get('userInfo')
-    this.userType = this.navParams.get('userType')
     this.getAcls()
   }
 
@@ -37,20 +36,20 @@ export class AclsLinkPage {
 
     this.allAcls.subscribe(data => {                
       this.acls = data.success
-      this.getAclEmployee()
+      this.getAclUser()
     })
   }
 
-  getAclEmployee(){
+  getAclUser(){
 
-    this.httpd.getAclsEmployee(this.userInfo.id)
+    this.httpd.getAclsUser(this.userInfo.id)
     .subscribe(data => {
 
-        this.getAclEmployeeContinue(data)
+        this.getAclsUserContinue(data)
     })
   }
 
-  getAclEmployeeContinue(data){
+  getAclsUserContinue(data){
     
     let dataS = data.success
     for(var j = 0; j < dataS.length; ++j){
@@ -91,7 +90,7 @@ export class AclsLinkPage {
       }
     }  
 
-    this.httpd.saveAclsEmployee(aclCheckeds, this.userInfo.id)
+    this.httpd.saveAclsUser(aclCheckeds, this.userInfo.id)
     .subscribe( () => {
       loading.dismiss() 
       this.viewCtrl.dismiss(aclCheckeds);      

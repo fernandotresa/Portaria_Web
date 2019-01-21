@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -27,6 +27,7 @@ export class EmployeePage {
     public uiUtils: UiUtilsProvider,   
     public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
+    public actionsheetCtrl: ActionSheetController,
     public navParams: NavParams) {
 
       this.searchControl = new FormControl();
@@ -39,6 +40,8 @@ export class EmployeePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeePage');
+    /*this.searchTerm = "Fernando Augusto"
+    this.setFilteredItems()*/
   }
 
   setFilteredItems(){
@@ -51,9 +54,42 @@ export class EmployeePage {
 
   goPageEdit(employee){
     this.navCtrl.push(EmployeeAddPage, {informations: employee})
-  }
+  }  
 
-  addEvent(employee){    
+  openMenu(employee) {
+
+    let actionSheet = this.actionsheetCtrl.create({
+      title: this.dataInfo.titleSelectOption,
+      cssClass: 'action-sheets-basic-page',
+      buttons: [
+        {
+          text: this.dataInfo.titleEdit,
+          role: 'destructive',
+          icon: 'folder-open',
+          handler: () => {
+            this.goPageEdit(employee)
+          }                
+        },   
+        {
+          text: this.dataInfo.titleAccessRules,
+          role: 'destructive',
+          icon: 'clipboard',
+          handler: () => {
+            this.addProfile(employee)
+          }                
+        },          
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          icon: 'close'         
+        }
+      ]
+      
+    });
+    actionSheet.present();
+  }    
+
+  addProfile(employee){
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});
     modal.present();
     modal.onDidDismiss(data => {
@@ -62,18 +98,6 @@ export class EmployeePage {
         this.uiUtils.showAlertSuccess()
       }
     });
-  }   
-
-  addAcl(employee){    
-    
-    let modal = this.modalCtrl.create('AclsLinkPage', {userInfo: employee, userType: 1});
-    modal.present();
-    modal.onDidDismiss(data => {
-      if (data) {
-        this.uiUtils.showAlertSuccess()
-
-      }
-    });
-  }   
+  }
 
 }

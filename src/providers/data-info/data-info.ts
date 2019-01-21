@@ -34,6 +34,7 @@ export class DataInfoProvider {
 
   titleAdd: string = "Adicionar"
   titleAddAccess: string = "Adicionar acesso"
+  titleAccessDenied: string = "Acesso negado"
   titleStart: string = "Inicio"
   titleEnd: string = "Fim"
   titleAllDay: string = "Dia inteiro?"
@@ -117,6 +118,7 @@ export class DataInfoProvider {
   titleConfirmStart: string = "Confirmar data inicial?"
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
+  titleSelectOption: string = 'Selecionar Opção'
   titleMultipleUpdate: string = "Atualização múltipla"
   titleAccessRules: string = "Perfis de acesso"
   titleContinueOperation: string = "Deseja continuar?"
@@ -141,6 +143,7 @@ export class DataInfoProvider {
     
   titleAreYouSure: string = "Tem certeza disso?"  
   titleUsernameMinLenght: string = "Usuário deve ter apartir de 6 caracteres"    
+  titleUsers: string = "Usuários"
 
   titlePasswordMinLenght: string = "Senha deve ter apartir de 6 caracteres"    
 

@@ -19,51 +19,31 @@
     <ion-list>
 
       <ion-card class="trip card" text-wrap *ngFor="let employee of (employees | async)?.success" no-lines>
+
+        <ion-card-header>
+
+            <ion-icon style="float: right;" name="md-more" color="primary"(click)="openMenu(employee)"></ion-icon>              
+            
+            <ion-item>
+                <ion-avatar item-start>
+                  <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo">
+                  <img src="{{employee.photo}}" *ngIf="employee.photo">
+                </ion-avatar>
         
-      <ion-item>
-          <ion-avatar item-start>
-            <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo">
-            <img src="{{employee.photo}}" *ngIf="employee.photo">
-          </ion-avatar>
-  
-          <h2>{{employee.name}}</h2>
-          <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
-          <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
-          <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
-          <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>
-      </ion-item>
+                <h2>{{employee.name}}</h2>
+                <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
+                <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
+                <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
+                <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>
+            </ion-item>
+
+          </ion-card-header>                  
   
       <ion-card-content class="mgt-10 top-default"> 
         <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
         <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>
         <p><b>{{dataInfo.titleCompany}}: </b> {{employee.EMPRESA}}</p>        
-      </ion-card-content>                  
-            
-      <ion-row>
-
-        <ion-col>
-          <button ion-button icon-start clear small (click)="addEvent(employee)"> 
-              <ion-icon name="calendar" color="primary"></ion-icon>
-            <div>{{dataInfo.titleAccessRules}}</div>
-          </button>
-        </ion-col>       
-
-        <ion-col>
-
-          <button ion-button icon-start clear small (click)="addAcl(employee)">
-              <ion-icon name="folder-open" color="primary"></ion-icon>
-              <div>{{dataInfo.titleAcl}}</div>
-          </button>
-        </ion-col>
-
-        <ion-col>
-            <button ion-button icon-start clear small (click)="goPageEdit(employee)">
-              <ion-icon name="cog" color="primary"></ion-icon>
-              <div>{{dataInfo.titleEdit}}</div>
-            </button>
-          </ion-col>
-      </ion-row>
-        
+      </ion-card-content>                                   
 
     </ion-card>
     

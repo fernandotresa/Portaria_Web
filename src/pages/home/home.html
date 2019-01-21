@@ -23,15 +23,9 @@
             <div class="clear"></div>
           </div>
         </div>
-      </div>
-      <div class="padding-sm primary-bg">
-        <ion-icon name="alert" class="text-white"></ion-icon>
-        <span ion-text class="text-white"> {{totalRegisterCompletedStr}} </span>
-        <span class="pull-right" ion-text color="light"><strong>{{totalRegisterCompleted}}</strong> <span ion-text  class="text-green bold"> Preenchidos </span></span>
-      </div>
+      </div>     
     </div>
-    
-
+  
     <div class="trip card" tappable (click)="goPageGuests()" margin-bottom>
         <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/visitantes.jpg'}">
           <div class="background-filter rlt">
@@ -40,13 +34,7 @@
               <div class="clear"></div>
             </div>
           </div>
-        </div>
-        <div class="padding-sm primary-bg">
-          <ion-icon name="alert" class="text-white" *ngIf="totalWorks === 0"></ion-icon>
-          <ion-icon name="checkmark-circle" class="text-white" *ngIf="totalWorks !== 0"></ion-icon>
-          <span ion-text class="text-white"> Sem alertas </span>          
-          <span class="pull-right" ion-text color="light"><strong>{{totalWorks}}</strong> <span ion-text  class="text-green bold"> Agendamentos </span></span>
-        </div>
+        </div>        
       </div> 
   
       <div class="trip card" tappable (click)="goPagePermissions()" margin-bottom>
@@ -57,13 +45,7 @@
               <div class="clear"></div>
             </div>
           </div>
-        </div>
-        
-        <div class="padding-sm primary-bg">
-          <ion-icon name="alarm" class="text-white"></ion-icon>          
-          <span class="pull-right" ion-text color="light" *ngIf="totalNotifications !== 0"><strong>{{totalNotifications}}</strong> <span ion-text  class="text-green bold"> mensagens não lidas </span></span>
-          <span class="pull-right" ion-text color="light" *ngIf="totalNotifications === 0"><strong>{{dataInfo.titleNone}}</strong> <span ion-text  class="text-green bold"> notificação </span></span>
-        </div>
+        </div>               
       </div>  
 
 </ion-content>

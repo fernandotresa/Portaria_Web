@@ -6,7 +6,7 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { AclsPage } from '../pages/acls/acls';
+//import { UsersPage } from '../pages/users/users';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,7 +15,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 	
-	rootPage:any = AclsPage;
+	rootPage:any = LoginPage;
 	
   public options: Array<SideMenuOption>;
 
@@ -92,18 +92,18 @@ export class MyApp {
 		suboptions: [
 			{
 				iconName: 'folder-open',
-				displayText: 'ACLs',
+				displayText: 'Lista de controle',
 				component: 'AclsPage'
 			},
 			{
 				iconName: 'unlock',
-				displayText: 'Acessos',
+				displayText: 'Perfis de Acessos',
 				component: 'ProfilesPage'
 			},		
 			{
-				iconName: 'folder-open',
-				displayText: 'Setores',
-				component: 'SectorsPage',				
+				iconName: 'ios-people',
+				displayText: 'Usuários',
+				component: 'UsersPage',				
 			}
 		]
 		});	  

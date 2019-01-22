@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -25,6 +25,7 @@ export class GuestPage {
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
+    public actionsheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     public navParams: NavParams) {
 
@@ -38,6 +39,7 @@ export class GuestPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeePage');
+    this.guests = this.httpd.getGuests()        
   }
 
   setFilteredItems(){
@@ -61,5 +63,38 @@ export class GuestPage {
       }
     });
   }   
+
+  openMenu(guest) {
+
+    let actionSheet = this.actionsheetCtrl.create({
+      title: this.dataInfo.titleSelectOption,
+      cssClass: 'action-sheets-basic-page',
+      buttons: [
+        {
+          text: this.dataInfo.titleEdit,
+          role: 'destructive',
+          icon: 'folder-open',
+          handler: () => {
+            this.goPageEdit(guest)
+          }                
+        },   
+        {
+          text: this.dataInfo.titleAccessRules,
+          role: 'destructive',
+          icon: 'clipboard',
+          handler: () => {
+            this.addEvent(guest)
+          }                
+        },          
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          icon: 'close'         
+        }
+      ]
+      
+    });
+    actionSheet.present();
+  }    
 
 }

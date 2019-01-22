@@ -101,9 +101,6 @@ export class EmployeePage {
 
   checkAclUserCallback(employee, data){
 
-    console.log(employee)
-    console.log(data)
-
     let haveAcess = false
 
     let sectorIdEmployee = employee.SETOR_ID

@@ -26,8 +26,8 @@
             
             <ion-item>
                 <ion-avatar item-start>
-                  <img src="./assets/imgs/default-user.png" *ngIf="! employee.photo">
-                  <img src="{{employee.photo}}" *ngIf="employee.photo">
+                  <img src="./assets/imgs/default-user.png" *ngIf="! employee.foto_web">                  
+                  <img [src]="employee.foto_web" *ngIf="employee.foto_web">
                 </ion-avatar>
         
                 <h2>{{employee.name}}</h2>
@@ -35,7 +35,7 @@
                 <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
                 <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
                 <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>                
-                
+
                 <p *ngIf="employee.SETOR"><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
             </ion-item>
 

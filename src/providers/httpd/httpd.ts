@@ -8,16 +8,16 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class HttpdProvider {
 
-  data:any = {};
-  
-  //address : string = 'http://localhost:8085'    
-  address : string = 'http://suporte.3a.com.br:8085'    
+  data:any = {};  
+  address : string = 'http://localhost:8085'    
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
   constructor(public http: HttpClient, 
     public authProvider: AuthProvider,
     public dataInfo: DataInfoProvider) {
+      
     console.log('Hello HttpdProvider Provider', this.address);
   }  
 

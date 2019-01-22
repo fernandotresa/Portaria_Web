@@ -25,7 +25,7 @@ export class ProfilesAddPage {
   viewTitle: string;
   selectedDay = new Date();
 
-  datesWeek = []
+  datesWeek = []  
 
   monday: Boolean = false;
   mondayStart: string = new Date().toISOString();
@@ -72,7 +72,8 @@ export class ProfilesAddPage {
     public dataInfo: DataInfoProvider,
     public modalCtrl: ModalController,
     public events: Events,
-    public navParams: NavParams) {        
+    public navParams: NavParams) {   
+      moment.locale('pt-br');         
   }
 
   ionViewDidLoad() {      
@@ -81,19 +82,7 @@ export class ProfilesAddPage {
     this.copyProfile = this.navParams.get('copyProfile')
     this.getAccessTypes()          
   }
-
-  profileCreatedOk(){
-    let alert = this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleProfileCreated)              
-    alert.present()
-
-      .then( () => {
-        setTimeout(function(){
-          alert.dismiss();
-                      
-      }, 3000);   
-    })
-  }
-
+  
   getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
     this.accessTypes.subscribe(data => {    
@@ -129,7 +118,6 @@ export class ProfilesAddPage {
     this.selectedAccessType = this.profile.type    
 
     let type = this.profile.id_type
-    console.log(type)
 
     if(type === 1)
       this.loadDatesProfileExpire()
@@ -230,20 +218,25 @@ export class ProfilesAddPage {
   }
 
   populateDaysweek(element){
-    let datetime_start = new Date(element.datetime_start)
-    let datetime_end = new Date(element.datetime_end)
-    let idDay = element.id_day    
+
+    let datetime_start = new Date(element.datetime_start).toISOString()
+    let datetime_end = new Date(element.datetime_end).toISOString()
+    let idDay = element.id_day  
+    
+    console.log(datetime_start, element.datetime_start)
+    
+    console.log(datetime_end, element.datetime_end)
 
     if(idDay === 1){
       this.monday = true
-      this.mondayStart = new Date(datetime_start).toISOString()
-      this.mondayEnd = new Date(datetime_end).toISOString()
+      this.mondayStart = datetime_start
+      this.mondayEnd = datetime_end
     }
 
     if(idDay === 2){
       this.tuesday = true
-      this.tuesdayStart = new Date(datetime_start).toISOString()
-      this.tuesdayEnd = new Date(datetime_end).toISOString()
+      this.tuesdayStart = datetime_start
+      this.tuesdayEnd = datetime_end
     }
 
     if(idDay === 3){
@@ -348,18 +341,11 @@ export class ProfilesAddPage {
       this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
   
         if(data){
-          this.addExpiration(ev)     
-
-          if(! startOrEnd)
-            this.clearDayAfterExpirationEnd()        
+          this.addExpiration(ev)              
         }          
       })
     }    
-  }
-
-  clearDayAfterExpirationEnd(){
-      console.log("clearDayAfterExpirationEnd")      
-  }
+  }  
 
   addExpiration(ev){        
     this.addEvent()
@@ -378,8 +364,16 @@ export class ProfilesAddPage {
       if (data) {
         let eventData = data;
  
+        console.log(this.eventSource)        
+
         eventData.startTime = new Date(data.startTime);
         eventData.endTime = new Date(data.endTime);
+
+        if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
+          console.log(this.selectedAccessType === this.dataInfo.titleProfileExpire)
+          this.eventSource[0].endTime = eventData.endTime
+        }
+          
  
         let events = this.eventSource;
         events.push(eventData);
@@ -388,6 +382,7 @@ export class ProfilesAddPage {
         setTimeout(() => {
           this.eventSource = events;
           
+
           setTimeout( () => {
             this.calendarDisabled = false
           }, 1000)
@@ -455,7 +450,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1); 
-        this.profileCreatedOk()       
+        this.uiUtils.showAlertSuccess()
       })
     }    
   }  
@@ -568,7 +563,7 @@ export class ProfilesAddPage {
         loading.dismiss()
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.profileCreatedOk()
+        this.uiUtils.showAlertSuccess()
       })
   }
 
@@ -612,7 +607,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.profileCreatedOk()
+        this.uiUtils.showAlertSuccess()
       })
     }
   }
@@ -628,7 +623,7 @@ export class ProfilesAddPage {
 
         this.navCtrl.pop()
         this.events.publish('refreshProfiles', 1);
-        this.profileCreatedOk()
+        this.uiUtils.showAlertSuccess()
       })
   }
 
@@ -645,7 +640,7 @@ export class ProfilesAddPage {
           loading.dismiss()        
           this.navCtrl.pop()
           this.events.publish('refreshProfiles', 1);
-          this.profileCreatedOk()
+          this.uiUtils.showAlertSuccess()
         })
     }    
   }

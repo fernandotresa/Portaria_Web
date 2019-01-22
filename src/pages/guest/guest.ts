@@ -39,7 +39,10 @@ export class GuestPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeePage');
-    this.guests = this.httpd.getGuests()        
+    //this.guests = this.httpd.getGuests()    
+    
+    this.searchTerm = "Crisitian "
+    this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -54,7 +57,8 @@ export class GuestPage {
     console.log(guest)
   }
 
-  addEvent(guest){    
+  addEvent(guest){   
+
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: guest, userType: 2});
     modal.present();
     modal.onDidDismiss(data => {

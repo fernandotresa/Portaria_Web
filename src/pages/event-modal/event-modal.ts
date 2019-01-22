@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import * as moment from 'moment';
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 
+
+
+
 @IonicPage()
 @Component({
   selector: 'page-event-modal',

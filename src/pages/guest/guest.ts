@@ -58,9 +58,8 @@ export class GuestPage {
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: guest, userType: 2});
     modal.present();
     modal.onDidDismiss(data => {
-      if (data) {
-        console.log(data)
-      }
+      if (data) 
+        this.uiUtils.showAlertSuccess()
     });
   }   
 

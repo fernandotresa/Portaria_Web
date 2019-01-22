@@ -47,6 +47,7 @@ export class ProfilesLinkPage {
   getProfileUserinfo(){
     if(this.userType == 1)
       this.getAccessProfileEmployee()  
+      
     else
       this.getAccessProfileGuests()    
   }
@@ -64,7 +65,9 @@ export class ProfilesLinkPage {
   }
 
   getProfileUserinfoContinue(data){
+    
     data.success.forEach(element => {
+
       let id_profile = element.id_profile
       this.checkProfile(id_profile)
     });
@@ -99,6 +102,7 @@ export class ProfilesLinkPage {
   save(){
     if(this.userType == 1)
       this.saveProfileEmployee()  
+
     else
       this.saveProfileGust()    
   }

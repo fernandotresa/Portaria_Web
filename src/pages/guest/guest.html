@@ -21,7 +21,7 @@
     <ion-card class="trip card" text-wrap *ngFor="let guest of (guests | async)?.success" no-lines>
 
         <ion-card-header>
-          <ion-icon style="float: right;" name="md-more" color="primary"(click)="openMenu(employee)"></ion-icon>              
+          <ion-icon style="float: right;" name="md-more" color="primary"(click)="openMenu(guest)"></ion-icon>              
 
           <ion-item>
               <ion-avatar item-start>

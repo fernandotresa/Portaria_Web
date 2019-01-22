@@ -103,7 +103,12 @@ export class EmployeePage {
 
     let haveAcess = false
 
-    let sectorIdEmployee = employee.SETOR_ID
+    if(data.success.length === 0)
+      haveAcess = true;
+    
+    console.log(data.success.length, haveAcess)
+
+    let sectorIdEmployee = employee.SETOR_ID    
 
     data.success.forEach(element => {
       
@@ -126,9 +131,9 @@ export class EmployeePage {
     modal.present();
     modal.onDidDismiss(data => {
       
-      if (data) {        
+      if (data) 
         this.uiUtils.showAlertSuccess()
-      }
+      
     });
   }
 

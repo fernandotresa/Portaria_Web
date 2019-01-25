@@ -124,6 +124,8 @@ export class DataInfoProvider {
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
   titleCancel: string = "Cancelar"
+  titleCalendarDatetime: string = "Calendário com horários"
+  titleCalendar: string = "Calendário"
   titleDuplicate: string = "Duplicar"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
   titleDoYouWantUpdate: string = "Deseja realmente atualizar? A ação não poderá ser refeita."

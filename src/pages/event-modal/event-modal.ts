@@ -3,9 +3,6 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import * as moment from 'moment';
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 
-
-
-
 @IonicPage()
 @Component({
   selector: 'page-event-modal',
@@ -14,10 +11,8 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 export class EventModalPage {
 
   event = { startTime: new Date().toISOString(), endTime: new Date().toISOString(), allDay: false };
-
-
-  minDate = moment().subtract(1, 'day').format()  
-  maxDate = moment().add(1, 'year').format()
+  minDate: any
+  maxDate: any  
  
   constructor(
     public navCtrl: NavController, 
@@ -25,9 +20,15 @@ export class EventModalPage {
     public dataInfo: DataInfoProvider,
     public viewCtrl: ViewController) {
 
-    let preselectedDate = moment(this.navParams.get('selectedDay')).format();
-    this.event.startTime = preselectedDate;
-    this.event.endTime = preselectedDate;
+    let selectedDay = this.navParams.get('selectedDay')    
+
+    this.event.startTime = moment(selectedDay).startOf('day').format();
+    this.event.endTime = moment(selectedDay).endOf('day').format();
+    this.minDate = moment(selectedDay).startOf('day').format()
+    this.maxDate =moment(selectedDay).endOf('day').format();
+
+    console.log(this.event)
+
   }
  
   cancel() {

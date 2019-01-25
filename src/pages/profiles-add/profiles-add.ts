@@ -16,6 +16,9 @@ export class ProfilesAddPage {
   calendarDisabled: Boolean = false
   profile: any
 
+  hasDatetime: Boolean = false
+  hasDate: Boolean = true
+
   name: string;
   desc: string;
   loadProfile: Boolean = false
@@ -58,6 +61,7 @@ export class ProfilesAddPage {
   accessTypes: Observable<any>;
   selectedAccessType: string
   lastSelectedAccessType = new Date();
+
   dateStart: any
   dateEnd: any
 
@@ -102,11 +106,12 @@ export class ProfilesAddPage {
 
     let type = this.profile.id_type
 
-    if(type === 1)
+    if(type === 1)    
       this.loadDatesProfileExpire()
-    else if(type === 2)
-    
+
+    else if(type === 2)    
       this.loadDatesProfileDatetime()      
+
     else   
       this.loadWeekdaysProfile()    
   }
@@ -145,7 +150,8 @@ export class ProfilesAddPage {
       let datetime_start = new Date(element.datetime_start)
       let datetime_end = new Date(element.datetime_end)
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}
+      let event = { startTime: datetime_start, endTime: 
+        datetime_end, title: 'Carregado automaticamente'}
       
       events.push(event);
     });  
@@ -272,6 +278,8 @@ export class ProfilesAddPage {
      
   onTimeSelected(ev) {     
     
+    console.log(this.calendarDisabled)
+
     if(! this.calendarDisabled){
 
       this.selectedDay = ev.selectedTime;
@@ -345,15 +353,7 @@ export class ProfilesAddPage {
         }          
       })
     }    
-  }  
-
-  addExpiration(ev){        
-    this.addEvent()
-  }  
-
-  confirmDatetime(ev){    
-    this.addEvent()    
-  }
+  }     
 
   addEvent(){
     this.calendarDisabled = true
@@ -364,31 +364,77 @@ export class ProfilesAddPage {
       if (data) {
         let eventData = data;
  
-        console.log(this.eventSource)        
-
         eventData.startTime = new Date(data.startTime);
         eventData.endTime = new Date(data.endTime);
 
-        if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
-          console.log(this.selectedAccessType === this.dataInfo.titleProfileExpire)
-          this.eventSource[0].endTime = eventData.endTime
-        }
-          
+        if(this.selectedAccessType === this.dataInfo.titleProfileExpire)
+          this.eventSource[0].endTime = eventData.endTime                  
  
         let events = this.eventSource;
         events.push(eventData);
         this.eventSource = [];
+        let self = this
 
         setTimeout(() => {
           this.eventSource = events;
           
-
           setTimeout( () => {
-            this.calendarDisabled = false
+            self.calendarDisabled = false
+            console.log(self.calendarDisabled)
           }, 1000)
         });
+
+      } else {
+        
+        this.calendarDisabled = false
+        console.log("Voltou", this.calendarDisabled)  
       }
     });
+  }  
+
+  addEventDate(){    
+
+    this.calendarDisabled = true     
+    let events = this.eventSource;
+
+    let start = moment(this.selectedDay).startOf('day').format();
+    let end = moment(this.selectedDay).endOf('day').format();
+
+    let startDate = new Date(start)
+    let endDate = new Date(end)
+
+    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente'}
+    
+    events.push(event); 
+  
+    this.eventSource = []
+
+    setTimeout(() => {
+      this.eventSource = events;
+      
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+      
+      })
+  }
+
+  addExpiration(ev){ 
+
+    if(this.hasDatetime)     
+      this.addEvent()
+    else  
+      this.addEventDate()
+  } 
+
+  confirmDatetime(ev){  
+
+    console.log(this.hasDatetime, this.hasDate)
+
+    if(this.hasDatetime)     
+      this.addEvent()
+    else  
+      this.addEventDate()
   }  
 
   addProfile(){
@@ -545,6 +591,7 @@ export class ProfilesAddPage {
       }
     }
 
+
     return true
   }
 
@@ -659,13 +706,29 @@ export class ProfilesAddPage {
       this.eventSource = events;      
       
       setTimeout( () => {
+
         this.calendarDisabled = false
       }, 1000)
     });
   }
 
-  applyTime(){
-    console.log('applyTime')
+  calendarDateClicked(){
+    
+    if(this.hasDatetime)
+      this.hasDatetime = false
+
+    if(! this.hasDate && ! this.hasDatetime)
+
+      this.hasDate = true
+  }
+
+  calendarDatetimeClicked(){
+    
+    if(this.hasDate)
+      this.hasDate = false
+    
+    if(! this.hasDate && ! this.hasDatetime)
+      this.hasDate = true
   }
 
 }

@@ -39,7 +39,20 @@
     </ion-item>
 
 
-    <ion-list-header color="primary" *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> Calendário </ion-list-header>  
+    <ion-list-header color="primary" 
+        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> 
+
+    <ion-item no-lines item-end text-center class="list-header-cal">        
+        <ion-checkbox (click)="calendarDateClicked()" [(ngModel)]="hasDate"></ion-checkbox>
+        <ion-label>{{dataInfo.titleCalendar}}</ion-label>      
+    </ion-item>
+
+    <ion-item no-lines item-end text-center class="list-header-cal">                    
+        <ion-checkbox (click)="calendarDatetimeClicked()" [(ngModel)]="hasDatetime"></ion-checkbox>        
+        <ion-label>{{dataInfo.titleCalendarDatetime}}</ion-label>  
+    </ion-item>
+
+    </ion-list-header>  
 
     <calendar [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
@@ -59,10 +72,10 @@
           <ion-label>{{dataInfo.titleMonday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="monday">            
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayStart"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="monday">
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="mondayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayEnd"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -73,10 +86,10 @@
           <ion-label>{{dataInfo.titleTuesday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="tuesday">            
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="tuesdayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayStart"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="tuesday">
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="tuesdayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayEnd"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -86,10 +99,10 @@
         <ion-label>{{dataInfo.titleWednesday}}</ion-label>  
     </ion-item>
     <ion-item no-lines item-end *ngIf="wednesday">            
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="wednesdayStart"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayStart"></ion-datetime>
     </ion-item>
     <ion-item no-lines item-end *ngIf="wednesday">
-        <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="wednesdayEnd"></ion-datetime>                    
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayEnd"></ion-datetime>                    
     </ion-item>     
   </ion-item>
 
@@ -99,10 +112,10 @@
           <ion-label>{{dataInfo.titleThursday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="thursday">            
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="thursdayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayStart"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="thursday">
-          <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="thursdayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayEnd"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -112,10 +125,10 @@
             <ion-label>{{dataInfo.titleFriday}}</ion-label>  
         </ion-item>
         <ion-item no-lines item-end *ngIf="friday">            
-            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fridayStart"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayStart"></ion-datetime>
         </ion-item>
         <ion-item no-lines item-end *ngIf="friday">
-            <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="fridayEnd"></ion-datetime>                    
+            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayEnd"></ion-datetime>                    
         </ion-item>     
       </ion-item>
 
@@ -126,10 +139,10 @@
           </ion-item>
 
           <ion-item no-lines item-end *ngIf="saturday">            
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayStart"></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayStart"></ion-datetime>
           </ion-item>
           <ion-item no-lines item-end *ngIf="saturday">
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="saturdayEnd"></ion-datetime>                    
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayEnd"></ion-datetime>                    
           </ion-item>     
         </ion-item>
 
@@ -140,10 +153,10 @@
           </ion-item>
           
           <ion-item no-lines item-end *ngIf="sunday">            
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="sundayStart"></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayStart"></ion-datetime>
           </ion-item>
           <ion-item no-lines item-end *ngIf="sunday">
-              <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="sundayEnd"></ion-datetime>                    
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayEnd"></ion-datetime>                    
           </ion-item>     
         </ion-item>                
     

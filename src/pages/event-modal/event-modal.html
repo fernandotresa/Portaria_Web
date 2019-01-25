@@ -5,7 +5,9 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
+
     <ion-title>{{dataInfo.titleAddAccess}}</ion-title>
+
   </ion-navbar>
 </ion-header>
  
@@ -17,13 +19,13 @@
  
     <ion-item>
       <ion-label>{{dataInfo.titleStart}}</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate" [max]="maxDate"></ion-datetime>
+
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
  
-
     <ion-item>
       <ion-label>{{dataInfo.titleEnd}}</ion-label>
-      <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime"  [min]="minDate" [max]="maxDate"></ion-datetime>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime"  [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
  
     <ion-item *ngIf="false">

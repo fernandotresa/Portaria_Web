@@ -27,6 +27,7 @@ export class LoginPage {
     public storage: Storage,
     public httpd: HttpdProvider) {
     
+
     this.storage.set('ion_did_tutorial', 'true')      
   }
 
@@ -38,7 +39,7 @@ export class LoginPage {
     if(this.autoLogin == undefined)
       this.autoLogin = true   
       
-      this.loginContinue("admin", "Restrito2018")
+      //this.loginContinue("admin", "Restrito2018")
   }
 
   
@@ -75,6 +76,8 @@ export class LoginPage {
 
   loginFinish(data){
 
+    console.log(data)
+    
     if(data.success.length > 0){
 
       let userInfo = data.success[0]

@@ -41,8 +41,8 @@ export class GuestPage {
     console.log('ionViewDidLoad EmployeePage');
     //this.guests = this.httpd.getGuests()    
     
-    this.searchTerm = "Crisitian "
-    this.setFilteredItems()
+    //this.searchTerm = "Crisitian "
+    //this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -78,7 +78,7 @@ export class GuestPage {
           role: 'destructive',
           icon: 'folder-open',
           handler: () => {
-            this.goPageEdit(guest)
+            //this.goPageEdit(guest)
           }                
         },   
         {

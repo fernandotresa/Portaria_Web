@@ -30,6 +30,8 @@ export class ProfilesAddPage {
 
   datesWeek = []  
 
+  selectedMonth: string;
+
   monday: Boolean = false;
   mondayStart: string = new Date().toISOString();
   mondayEnd: string = new Date().toISOString();
@@ -67,6 +69,7 @@ export class ProfilesAddPage {
 
   calendar = {
     mode: 'month',
+    locale: 'pt',
     currentDate: new Date()            
   };
 
@@ -84,7 +87,8 @@ export class ProfilesAddPage {
     this.loadProfile = this.navParams.get('loadProfile')
     this.profile = this.navParams.get('profile')
     this.copyProfile = this.navParams.get('copyProfile')
-    this.getAccessTypes()          
+    this.getAccessTypes()    
+    this.selectedMonth  = moment(this.selectedDay).format("MMMM")
   }
   
   getAccessTypes(){
@@ -223,15 +227,13 @@ export class ProfilesAddPage {
 
   }
 
+
   populateDaysweek(element){
 
     let datetime_start = new Date(element.datetime_start).toISOString()
     let datetime_end = new Date(element.datetime_end).toISOString()
     let idDay = element.id_day  
-    
-    console.log(datetime_start, element.datetime_start)
-    
-    console.log(datetime_end, element.datetime_end)
+      
 
     if(idDay === 1){
       this.monday = true
@@ -279,6 +281,8 @@ export class ProfilesAddPage {
   onTimeSelected(ev) {     
     
     console.log(this.calendarDisabled)
+
+    this.selectedMonth  = moment(this.selectedDay).format("MMMM")
 
     if(! this.calendarDisabled){
 
@@ -730,5 +734,13 @@ export class ProfilesAddPage {
     if(! this.hasDate && ! this.hasDatetime)
       this.hasDate = true
   }
+
+  goHome(){
+    this.navCtrl.popToRoot()
+  }
+
+  onViewTitleChanged = (title: string) => {
+    this.viewTitle = title;
+};
 
 }

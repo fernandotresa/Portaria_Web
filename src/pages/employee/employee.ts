@@ -40,9 +40,8 @@ export class EmployeePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmployeePage');
-    this.searchTerm = "Fernando Augusto"
-
-    this.setFilteredItems()
+    //this.searchTerm = "Fernando Augusto"
+    //this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -68,7 +67,7 @@ export class EmployeePage {
           role: 'destructive',
           icon: 'folder-open',
           handler: () => {
-            this.goPageEdit(employee)
+            //this.goPageEdit(employee)
           }                
         },   
         {

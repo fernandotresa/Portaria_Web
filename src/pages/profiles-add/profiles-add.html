@@ -6,13 +6,19 @@
   <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title> 
 
   <ion-buttons end>
+        <button ion-button color="white_" (click)="goHome()">
+        <ion-icon name="home"></ion-icon></button>
+    </ion-buttons>
+
+  <ion-buttons end>
       <button ion-button menuToggle color="white_">
         <ion-icon name="menu"></ion-icon></button>
-   </ion-buttons>   
+   </ion-buttons>      
    
  </ion-navbar>  
 
 </ion-header>
+
 
 <ion-content padding>
 
@@ -54,11 +60,18 @@
 
     </ion-list-header>  
 
+    <ion-list-header color="primary" 
+        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> 
+        <ion-label text-center>{{selectedMonth}}</ion-label>  
+    </ion-list-header>  
+
     <calendar [eventSource]="eventSource"
         [calendarMode]="calendar.mode"
         [currentDate]="calendar.currentDate"
         [showEventDetail]="false"
+        [locale]="calendar.locale"
         (onTimeSelected)="onTimeSelected($event)"        
+        (onTitleChanged)="onViewTitleChanged($event)"
         [step]="30"
         class="has-header"
         *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">

@@ -10,6 +10,8 @@ export class HttpdProvider {
 
   data:any = {};  
   address : string = 'http://localhost:8085'    
+
+  
     
   //address : string = 'http://suporte.3a.com.br:8085'    
 

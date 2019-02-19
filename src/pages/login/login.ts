@@ -31,15 +31,13 @@ export class LoginPage {
     this.storage.set('ion_did_tutorial', 'true')      
   }
 
-  ionViewDidLoad() {
-    var self = this  
-    
+  ionViewDidLoad() {    
     this.autoLogin = this.navParams.get("autoLogin")
 
     if(this.autoLogin == undefined)
       this.autoLogin = true   
       
-      //this.loginContinue("admin", "Restrito2018")
+      this.loginContinue("admin", "Restrito2018")
   }
 
   

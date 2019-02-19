@@ -3,17 +3,24 @@
 
   <ion-navbar text-center no-border-bottom color="primary">  
   
-  <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title> 
+  <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title>   
+   
+   <ion-buttons end>
+    <button ion-button [disabled]="isToday" (click)="today()">Hoje</button>
+    <button ion-button (click)="changeMode('month')">M</button>
+    <button ion-button (click)="changeMode('week')">S</button>
+    <button ion-button (click)="changeMode('day')">D</button>
+  </ion-buttons>
 
-  <ion-buttons end>
-        <button ion-button color="white_" (click)="goHome()">
-        <ion-icon name="home"></ion-icon></button>
-    </ion-buttons>
+    <ion-buttons end>
+            <button ion-button color="white_" (click)="goHome()">
+            <ion-icon name="home"></ion-icon></button>
+        </ion-buttons>
 
-  <ion-buttons end>
-      <button ion-button menuToggle color="white_">
-        <ion-icon name="menu"></ion-icon></button>
-   </ion-buttons>      
+    <ion-buttons end>
+        <button ion-button menuToggle color="white_">
+            <ion-icon name="menu"></ion-icon></button>
+    </ion-buttons>  
    
  </ion-navbar>  
 

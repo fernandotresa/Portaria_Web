@@ -124,6 +124,8 @@ export class DataInfoProvider {
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
   titleBlockUser: string = "Bloquear usuário"
+  
+  titleActiveUser: string = "Desbloquear usuário"
   titleSelectOption: string = 'Selecionar Opção'
   titleMultipleUpdate: string = "Atualização múltipla"
   titleAccessRules: string = "Perfis de acesso"
@@ -135,6 +137,8 @@ export class DataInfoProvider {
   titleDuplicate: string = "Duplicar"
   titleDoYouWantRemove: string = "Deseja realmente remover? A ação não poderá ser refeita."
   titleDoYouWantUpdate: string = "Deseja realmente atualizar? A ação não poderá ser refeita."
+  titleDoYouBlockThisUser: string = "Deseja realmente inativar esse usuário?"
+  titleDoYouActiveThisUser: string = "Deseja realmente ativar esse usuário?"
   titleOperationSuccess: string = "Operação realizada com sucesso!"
   titleRemove: string = "Remover"
   titleEdit: string = "Editar"

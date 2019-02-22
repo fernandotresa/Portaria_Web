@@ -9,16 +9,14 @@ import 'rxjs/add/operator/map';
 export class HttpdProvider {
 
   data:any = {};  
-  //address : string = 'http://localhost:8085'            
-  address : string = 'http://suporte.3a.com.br:8085'    
+  address : string = 'http://localhost:8085'            
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
   constructor(public http: HttpClient, 
     public authProvider: AuthProvider,
     public dataInfo: DataInfoProvider) {
-      
-    console.log('Hello HttpdProvider Provider', this.address);
   }  
 
   GET(url) {
@@ -35,6 +33,18 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getUserByName", myData, {headers: headers})
+  }
+
+  blockUser(user_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, user: user_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/blockUser", myData, {headers: headers})
+  }
+
+  activeUser(user_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, user: user_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/activeUser", myData, {headers: headers})
   }
 
   getAuth(username_, password_){

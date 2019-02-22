@@ -19,8 +19,11 @@
     <ion-list>
 
       <ion-buttons ion-item text-wrap *ngFor="let user of (users | async)?.success" no-lines (click)="showOptions(user)">
-          <ion-icon name="md-flash" item-start *ngIf="user.id_type === 1" color="primary"></ion-icon>
-          <ion-icon name="ios-hand" item-start *ngIf="user.id_type === 5" color="primary"></ion-icon>
+          <ion-icon name="md-flash" item-start *ngIf="user.id_type === 1 && user.id_status === 1" color="secondary"></ion-icon>
+          <ion-icon name="md-flash" item-start *ngIf="user.id_type === 1 && user.id_status === 0" color="danger"></ion-icon>
+
+          <ion-icon name="ios-hand" item-start *ngIf="user.id_type === 5 && user.id_status === 1" color="secondary"></ion-icon>
+          <ion-icon name="ios-hand" item-start *ngIf="user.id_type === 5 && user.id_status === 0" color="danger"></ion-icon>
           {{user.name}}        
     </ion-buttons>
     

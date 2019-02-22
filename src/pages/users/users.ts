@@ -37,8 +37,10 @@ export class UsersPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UsersPage');
+    this.getUsers()  
+  }
 
+  getUsers(){
     this.users = this.httpd.getUsers()
   }
 
@@ -48,13 +50,15 @@ export class UsersPage {
 
   showOptions(user) {
 
+    let id_status = user.id_status    
+
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
       buttons: [
         {
-          text: this.dataInfo.titleBlockUser,
+          text: id_status == 1 ? this.dataInfo.titleBlockUser : this.dataInfo.titleActiveUser,
           handler: () => {
-            this.blockUser(user)
+            this.changeStatusUser(user)
           }
         },
         {
@@ -82,13 +86,74 @@ export class UsersPage {
     modal.onDidDismiss(data => {
       if (data) {
         this.uiUtils.showAlertSuccess()
-
       }
     });
   }   
 
-  blockUser(user){
-    console.log(user)
+  changeStatusUser(user){
+    
+    let id_type = user.id_type
+
+    if(id_type === 1)
+      this.uiUtils.showAlertError(this.dataInfo.titleAccessDenied)
+
+    else {
+
+      let id_status = user.id_status
+
+      if(id_status == 1)
+        this.blockUser(user)
+      else
+        this.activeUser(user)
+    }    
+    
   }
+
+  blockUser(user){
+
+    this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titleDoYouBlockThisUser)
+    .then(res => {
+      if(res){
+        this.blockUserContinue(user)
+      }
+    })       
+  }
+
+  blockUserContinue(user){
+
+    this.httpd.blockUser(user)
+    .subscribe( () => {
+      this.uiUtils.showAlertSuccess()
+
+      this.getUsers()
+    })
+  }
+
+  activeUser(user){
+
+    this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titleDoYouActiveThisUser)
+    .then(res => {
+      if(res){
+        this.activeUserContinue(user)
+      }
+    })
+  }
+
+  activeUserContinue(user){
+
+    this.httpd.activeUser(user)
+
+    .subscribe( () => {
+      this.uiUtils.showAlertSuccess()
+
+      this.getUsers()
+    })
+  }
+
+
+
+
+
+  
 
 }

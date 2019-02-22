@@ -35,7 +35,7 @@ export class LoginPage {
     this.autoLogin = this.navParams.get("autoLogin")
 
     if(this.autoLogin == undefined)
-      this.autoLogin = true         
+      this.autoLogin = true               
 
       this.loginContinue("admin", "Restrito2018")
   }

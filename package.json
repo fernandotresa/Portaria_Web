@@ -37,6 +37,7 @@
     "ionic2-calendar": "^0.4.6",
     "ionicons": "3.0.0",
     "moment": "^2.22.2",
+    "moment-timezone": "^0.5.23",
     "rxjs": "^6.3.3",
     "rxjs-compat": "^6.3.3",
     "sw-toolbox": "3.6.0",

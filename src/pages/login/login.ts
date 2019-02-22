@@ -35,8 +35,8 @@ export class LoginPage {
     this.autoLogin = this.navParams.get("autoLogin")
 
     if(this.autoLogin == undefined)
-      this.autoLogin = true   
-      
+      this.autoLogin = true         
+
       this.loginContinue("admin", "Restrito2018")
   }
 
@@ -73,15 +73,11 @@ export class LoginPage {
   }
 
   loginFinish(data){
-
-    console.log(data)
     
     if(data.success.length > 0){
 
       let userInfo = data.success[0]
-      
-      console.log(userInfo)
-      
+          
       this.dataInfo.userInfo = userInfo
       this.dataInfo.userId = userInfo.id
       this.goHome()

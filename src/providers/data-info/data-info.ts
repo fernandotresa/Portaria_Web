@@ -32,6 +32,9 @@ export class DataInfoProvider {
   titleCheckSaturnday: string = "Verificar horários de sábado"
   titleCheckSunday: string = "Verificar horários de domingo"
 
+  titleDayStart: string = "Data inicial"
+  titleEndStart: string = "Data final"
+
   titleAdd: string = "Adicionar"
   titleAddAccess: string = "Adicionar acesso"
   titleAccessDenied: string = "Acesso negado"
@@ -81,6 +84,7 @@ export class DataInfoProvider {
   titleProfileExpire: string = 'Vencimento'
   titleProfileDatetime: string = 'Datas específicas + horários'
   titleProfileDayweek: string = 'Dias da Semana + horários'
+  titleProfileVacation: string = 'Férias, folgas e afastamentos'
   titleSuccess: string = "Sucesso"
 
   titleSaveError: string = "Erro ao salvar"
@@ -115,10 +119,11 @@ export class DataInfoProvider {
   titleExit: string = "Saída"
   titleApplyChecked: string = "Aplicar marcados"  
   titleWarning: string = "Atenção"  
-  titlePleaseUnselect: string = "Favor desmarcar os dias selecionados"
+  titlePleaseUnselect: string = "Deseja remover a data final?"
   titleConfirmStart: string = "Confirmar data inicial?"
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
+  titleBlockUser: string = "Bloquear usuário"
   titleSelectOption: string = 'Selecionar Opção'
   titleMultipleUpdate: string = "Atualização múltipla"
   titleAccessRules: string = "Perfis de acesso"

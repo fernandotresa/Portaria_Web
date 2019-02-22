@@ -59,7 +59,7 @@ export class AclsAddPage {
 
     sector.isChecked = !sector.isChecked
     
-    console.log("Clicando ", sector.isChecked, sector.id)
+    console.log("Clicando ", sector.isChecked, sector.id, this.selectedArray.length)
 
     if(! sector.isChecked){
       const index = this.selectedArray.indexOf(sector, 0);

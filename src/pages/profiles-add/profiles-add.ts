@@ -63,7 +63,7 @@ export class ProfilesAddPage {
   accessTypes: Observable<any>;
   selectedAccessType: string
   lastSelectedAccessType = new Date();
-
+  
   dateStart: any
   dateEnd: any
 
@@ -94,7 +94,7 @@ export class ProfilesAddPage {
   
   getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
-    this.accessTypes.subscribe(data => {    
+    this.accessTypes.subscribe( () => {    
 
       if(this.loadProfile)
         this.loadProfileInfo()  
@@ -117,24 +117,38 @@ export class ProfilesAddPage {
     else if(type === 2)    
       this.loadDatesProfileDatetime()      
 
+    else if(type === 3)    
+      this.loadWeekdaysProfile()
+
+    else if(type === 4)    
+      this.loadVacationsProfile()
+
     else   
-      this.loadWeekdaysProfile()    
+      console.log("Tipo de profile não configurado", type)
   }
 
   loadProfileInfo(){
-  
+
     this.name = this.profile.name
     this.desc = this.profile.description
     this.selectedAccessType = this.profile.type    
 
     let type = this.profile.id_type
 
-    if(type === 1)
+    if(type === 1)    
       this.loadDatesProfileExpire()
-    else if(type === 2)
+
+    else if(type === 2)    
       this.loadDatesProfileDatetime()      
+
+    else if(type === 3)    
+      this.loadWeekdaysProfile()
+
+    else if(type === 4)    
+      this.loadVacationsProfile()
+
     else   
-      this.loadWeekdaysProfile()    
+      console.log("Tipo de profile não configurado", type)
   }
 
   loadDatesProfileExpire(){    
@@ -158,9 +172,7 @@ export class ProfilesAddPage {
       let datetime_start = new Date(dateS)
       let datetime_end = new Date(dateF)
 
-      let event = { startTime: datetime_start, endTime: 
-        datetime_end, title: 'Carregado automaticamente'}
-      
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}      
       events.push(event);
     });  
     
@@ -184,21 +196,19 @@ export class ProfilesAddPage {
   }
 
   loadDatesProfileDatetimeContinue(data){    
-    
+  
     this.calendarDisabled = true     
     let events = this.eventSource;
 
     data.success.forEach(element => {
-      
+
       let dateS = moment(element.datetime_start).tz('America/Sao_Paulo').format()
       let dateF = moment(element.datetime_end).tz('America/Sao_Paulo').format()
 
-      let datetime_start = new Date(dateS)
-      let datetime_end = new Date(dateF)
+      let datetime_start = this.parseTimestamp(dateS)
+      let datetime_end = this.parseTimestamp(dateF)
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}
-      console.log(event)
-      
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}      
       events.push(event);
     });  
     
@@ -212,6 +222,10 @@ export class ProfilesAddPage {
       }, 1000)
     });
   }
+
+  parseTimestamp(timestampStr) {
+    return new Date(timestampStr);
+  };
 
   loadWeekdaysProfile(){
 
@@ -233,9 +247,7 @@ export class ProfilesAddPage {
     setTimeout( () => {
       this.calendarDisabled = false
     }, 1000);
-
   }
-
 
   populateDaysweek(element){
 
@@ -285,86 +297,115 @@ export class ProfilesAddPage {
       this.sundayEnd = datetime_end
     }
   }
+
+  loadVacationsProfile(){    
+    this.loadDatesProfileExpire()
+  }
      
-  onTimeSelected(ev) {     
+  onTimeSelected(ev) {         
         
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")
 
-    if(! this.calendarDisabled){
+    if(! this.calendarDisabled)
+      this.onTimeSelectedContinue(ev)          
+  }
 
-      this.selectedDay = ev.selectedTime;
-      let refresh = true
+  onTimeSelectedContinue(ev){
+    this.selectedDay = ev.selectedTime;
+    let refresh = true
 
-      if(this.lastSelectedAccessType == this.selectedDay){
+    if(this.lastSelectedAccessType == this.selectedDay){
 
-        let dayClicked = new Date(this.selectedDay)                
+      let dayClicked = new Date(this.selectedDay)                
 
-        for(let i = 0; i < this.eventSource.length; ++i){
-          
-          let day = new Date(this.eventSource[i].startTime)
-          let isSame = moment(day).isSame(dayClicked, 'day')    
+      for(let i = 0; i < this.eventSource.length; ++i){
+        
+        let day = new Date(this.eventSource[i].startTime)
+        let isSame = moment(day).isSame(dayClicked, 'day')    
 
-          if(isSame){
-            this.calendarDisabled = true
-            this.eventSource.splice(i, 1);
-            refresh = false
-            this.refreshCalendar()     
-          }
+        if(isSame){
+          this.calendarDisabled = true
+          this.eventSource.splice(i, 1);
+          refresh = false
+          this.refreshCalendar()     
         }
-        
-        if(refresh)
-          this.checkAccessType(ev)
-      }        
-        
-      this.lastSelectedAccessType = this.selectedDay
-    }    
+      }
+      
+      if(refresh)
+        this.checkAccessType(ev)
+    }        
+      
+    this.lastSelectedAccessType = this.selectedDay
   }
 
   checkAccessType(ev){
+    
     if(this.selectedAccessType === this.dataInfo.titleProfileExpire)
       this.confirmExpiration(ev)    
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.confirmDatetime(ev)    
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
+      this.confirmExpiration(ev)    
   }
 
   confirmExpiration(ev){
     let total = this.eventSource.length
 
-    if(total >= 2)
-      this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).present()      
-    else 
+    if(total >= 2){
+
+      this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).then(data => {      
+  
+        
+        if(data){
+          
+          this.eventSource.pop()
+          this.addExpiration(ev)
+        }          
+      })         
+         
+    } else     
       this.confirmExpirationFinish(ev)          
+      
   }
   
   confirmExpirationFinish(ev){
 
+    let checkOk = this.checkDatesExpiration()
     let total = this.eventSource.length
-    let startOrEnd =  total === 0
+    let start =  total === 0
+        
+    if(checkOk){
+
+      let msg = start ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
+        
+      this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
+  
+        if(data)
+          this.addExpiration(ev)
+         
+      })
+    }   
+  }     
+
+  checkDatesExpiration(){
+    let total = this.eventSource.length
+    let start =  total === 0
     let checkOk = true;
 
-    if(!startOrEnd){
+    if(!start){
       let date0 = this.eventSource[0].startTime
       let isBefore = moment(this.selectedDay).isBefore(moment(date0))
 
       if(isBefore){
         checkOk = false
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateEndBeforeDateStart).present()
-      }
-    }
+      }      
+    }  
 
-    if(checkOk){
-
-      let msg = startOrEnd ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
-        
-      this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
-  
-        if(data){
-          this.addExpiration(ev)              
-        }          
-      })
-    }    
-  }     
+    return checkOk;
+  }
 
   addEvent(){
     this.calendarDisabled = true
@@ -372,16 +413,36 @@ export class ProfilesAddPage {
     let modal = this.modalCtrl.create('EventModalPage', {selectedDay: this.selectedDay});
     modal.present();
     modal.onDidDismiss(data => {
-      if (data) {
 
-        if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
-            this.confirmExpirationFinish(data)
-        }        
+      if (data) {
+        this.addEventDatetime(data) 
 
       } else {      
         this.calendarDisabled = false
       }
     });
+  }
+
+  addEventDatetime(data){    
+
+    let eventData = data
+    eventData.startTime = new Date(data.startTime);
+    eventData.endTime = new Date(data.endTime);
+
+    let events = this.eventSource;
+    events.push(eventData);
+    
+    this.eventSource = [];
+    let self = this
+
+    setTimeout(() => {
+      this.eventSource = events;
+      
+      setTimeout( () => {
+        self.calendarDisabled = false
+      }, 1000)
+    });
+
   }
   
   addEventDate(){    
@@ -389,17 +450,15 @@ export class ProfilesAddPage {
     this.calendarDisabled = true     
     let events = this.eventSource;
     
-    let start = moment(this.selectedDay).tz('America/Sao_Paulo').startOf('day').format()
+    let start = moment(this.selectedDay).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
     let end = moment(this.selectedDay).tz('America/Sao_Paulo').endOf('day').format()
 
     let startDate = new Date(start)
     let endDate = new Date(end)
 
-    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente'}
-
-    console.log(event)
-    
+    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente'}    
     events.push(event); 
+    console.log(event)
   
     this.eventSource = []
 
@@ -438,6 +497,9 @@ export class ProfilesAddPage {
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
       this.addProfileDayWeek()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
+      this.addProfileVacation()
   }
 
   addProfileDateTimes() {    
@@ -505,9 +567,8 @@ export class ProfilesAddPage {
           this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckMonday).present()
           return false
 
-      } else {
-        this.datesWeek.push({id: 1, startTime: this.mondayStart, endTime: this.mondayEnd})
-      }
+      } else 
+        this.datesWeek.push({id: 1, startTime: this.mondayStart, endTime: this.mondayEnd})      
     }      
     
     if(this.tuesday){
@@ -517,9 +578,8 @@ export class ProfilesAddPage {
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckTuesday).present()
         return false
 
-      } else {
-        this.datesWeek.push({id: 2, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})
-      }
+      } else 
+        this.datesWeek.push({id: 2, startTime: this.tuesdayStart, endTime: this.tuesdayEnd})    
     }
       
     if(this.wednesday){
@@ -529,9 +589,8 @@ export class ProfilesAddPage {
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckWednesday).present()
         return false
 
-      } else {
-        this.datesWeek.push({id: 3, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})
-      }
+      } else 
+        this.datesWeek.push({id: 3, startTime: this.wednesdayStart, endTime: this.wednesdayEnd})  
     }      
 
     if(this.thursday){
@@ -541,9 +600,8 @@ export class ProfilesAddPage {
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckThursday).present()
         return false
 
-      } else {
-        this.datesWeek.push({id: 4, startTime: this.thursdayStart, endTime: this.thursdayEnd})
-      }
+      } else 
+        this.datesWeek.push({id: 4, startTime: this.thursdayStart, endTime: this.thursdayEnd})    
     }
       
     if(this.friday){
@@ -554,9 +612,8 @@ export class ProfilesAddPage {
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckFriday).present()
         return false
 
-      } else {
-        this.datesWeek.push({id: 5, startTime: this.fridayStart, endTime: this.fridayEnd})
-      }
+      } else 
+        this.datesWeek.push({id: 5, startTime: this.fridayStart, endTime: this.fridayEnd})    
     }
       
     if(this.saturday){
@@ -567,9 +624,8 @@ export class ProfilesAddPage {
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckSaturnday).present()
         return false
 
-      } else {
+      } else
         this.datesWeek.push({id: 6, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
-      }
     }
      
     if(this.sunday){
@@ -579,9 +635,9 @@ export class ProfilesAddPage {
       if(sundayIsBefore){        
         this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleCheckSunday).present()
         return false
-      } else {
+      } else 
         this.datesWeek.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
-      }
+      
     }
 
     return true
@@ -606,6 +662,11 @@ export class ProfilesAddPage {
       })
   }
 
+  addProfileVacation(){
+    console.log("addProfileVacation()")
+    this.addProfileExpire()
+  }
+
   updateProfile(){
     if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
       this.updateProfileExpire()
@@ -615,6 +676,9 @@ export class ProfilesAddPage {
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
       this.updateProfileDayWeek()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
+      this.updateProfileVacation()
   }
 
   updateProfileExpire(){
@@ -654,9 +718,6 @@ export class ProfilesAddPage {
   updateProfileDateTimes(){
     let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
       loading.present()
-
-
-      console.log(this.eventSource)
       
       this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
       .subscribe( () => {
@@ -667,6 +728,11 @@ export class ProfilesAddPage {
         this.events.publish('refreshProfiles', 1);
         this.uiUtils.showAlertSuccess()
       })
+  }
+
+  updateProfileVacation(){
+    console.log("updateProfileVacation")
+    this.updateProfileExpire()
   }
 
   updateProfileDayWeek(){        
@@ -741,5 +807,8 @@ export class ProfilesAddPage {
   today() {
     this.calendar.currentDate = new Date();
   }
+  
+
+  
 
 }

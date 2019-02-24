@@ -12,5 +12,54 @@ page-profiles-add {
         background-color: transparent;
         color: white;                
     }
+
+    .monthview-selected {
+        background-color: transparent !important;
+        color: black !important;
+      }
+    
+      td.monthview-current {
+        color: white;
+    
+        .calendar-day {
+          background-color: color($colors, 'light') !important;
+        }
+      }
+    
+      .monthview-datetable {
+        border: 0 !important;
+    
+        td, th {
+          border: 0 !important;
+          padding: 3px!important;
+          background-color: transparent!important;
+        }
+      }
+    
+      .calendar-day {
+        border-radius: 6px;
+        padding: 3px 5px;
+    
+        &.primary {
+          background-color: color($colors, 'primary');
+          color: white;
+        }
+    
+        &.secondary {
+          background-color: color($colors, 'secondary');
+          color: white;
+        }
+
+    
+        &.green {
+          background-color: color($colors, 'secondary');
+          color: white;
+        }
+    
+        &.danger {
+          background-color: color($colors, 'danger');
+          color: white;
+        }
+      }
 }
 

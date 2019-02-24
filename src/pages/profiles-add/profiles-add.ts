@@ -73,6 +73,8 @@ export class ProfilesAddPage {
     currentDate: new Date()            
   };
 
+  colors: string[] = ['primary', 'warning', 'danger', 'success'];
+
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
@@ -159,6 +161,12 @@ export class ProfilesAddPage {
     })
   }
 
+  getColorStatus(){    
+    let color = 'primary'
+    return color;
+  }
+
+
   loadDatesProfileExpireContinue(data){    
     
     this.calendarDisabled = true     
@@ -172,7 +180,7 @@ export class ProfilesAddPage {
       let datetime_start = new Date(dateS)
       let datetime_end = new Date(dateF)
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}      
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
       events.push(event);
     });  
     
@@ -663,7 +671,6 @@ export class ProfilesAddPage {
   }
 
   addProfileVacation(){
-    console.log("addProfileVacation()")
     this.addProfileExpire()
   }
 
@@ -731,7 +738,6 @@ export class ProfilesAddPage {
   }
 
   updateProfileVacation(){
-    console.log("updateProfileVacation")
     this.updateProfileExpire()
   }
 

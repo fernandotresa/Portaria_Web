@@ -86,7 +86,7 @@ export class DataInfoProvider {
   titleProfileDayweek: string = 'Dias da Semana + horários'
   titleProfileVacation: string = 'Férias, folgas e afastamentos'
   titleSuccess: string = "Sucesso"
-
+  titleTitle: string = "Título"
   titleSaveError: string = "Erro ao salvar"
   
   titleAcl: string = "Lista de controle de acesso"

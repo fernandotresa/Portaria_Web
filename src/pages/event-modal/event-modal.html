@@ -14,12 +14,12 @@
 <ion-content>
   <ion-list>
     <ion-item>
+      <ion-label>{{dataInfo.titleTitle}}</ion-label>
       <ion-input type="text" placeholder="Título" [(ngModel)]="event.title"></ion-input>
     </ion-item>
  
     <ion-item>
       <ion-label>{{dataInfo.titleStart}}</ion-label>
-
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" [min]="minDate" [max]="maxDate"></ion-datetime>
     </ion-item>
  

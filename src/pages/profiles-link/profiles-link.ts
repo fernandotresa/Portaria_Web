@@ -18,6 +18,7 @@ export class ProfilesLinkPage {
   userInfo: any;
   userType: number = 0
   callbackProfiles: any;
+  selectedProfileType: number = 0
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 

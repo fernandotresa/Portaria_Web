@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
@@ -67,6 +67,8 @@ export class ProfilesAddPage {
   dateStart: any
   dateEnd: any
 
+  shiftClicked: Boolean = false
+
   calendar = {
     mode: 'month',
     locale: 'pt',
@@ -74,6 +76,16 @@ export class ProfilesAddPage {
   };
 
   colors: string[] = ['primary', 'warning', 'danger', 'success'];
+
+  @HostListener('document:keydown.Shift', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.shiftClicked = true
+    console.log("SHIFT CLICKED", this.shiftClicked)
+  }
+
+  @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
+    this.shiftClicked = false   
+    console.log("SHIFT CLICKED", this.shiftClicked)
+  }
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -216,7 +228,7 @@ export class ProfilesAddPage {
       let datetime_start = this.parseTimestamp(dateS)
       let datetime_end = this.parseTimestamp(dateF)
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente'}      
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
       events.push(event);
     });  
     
@@ -310,7 +322,7 @@ export class ProfilesAddPage {
     this.loadDatesProfileExpire()
   }
      
-  onTimeSelected(ev) {         
+  onTimeSelected(ev) {            
         
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")
 
@@ -319,7 +331,42 @@ export class ProfilesAddPage {
   }
 
   onTimeSelectedContinue(ev){
-    this.selectedDay = ev.selectedTime;
+
+    this.selectedDay = ev.selectedTime;    
+
+    if(this.shiftClicked)
+      this.onTimeSelectedContinueShift(ev)      
+    else
+      this.onTimeSelectedContinueNormal(ev)
+      
+    this.lastSelectedAccessType = this.selectedDay
+  }
+
+  onTimeSelectedContinueShift(ev){
+    
+    let refresh = true
+
+    let dayClicked = new Date(this.selectedDay)                
+
+    for(let i = 0; i < this.eventSource.length; ++i){
+      
+      let day = new Date(this.eventSource[i].startTime)
+      let isSame = moment(day).isSame(dayClicked, 'day')    
+
+      if(isSame){
+        this.calendarDisabled = true
+        this.eventSource.splice(i, 1);
+        refresh = false
+        this.refreshCalendar()     
+      }
+    }
+    
+    if(refresh)
+      this.checkAccessType(ev)       
+  }
+
+  onTimeSelectedContinueNormal(ev){
+
     let refresh = true
 
     if(this.lastSelectedAccessType == this.selectedDay){
@@ -342,8 +389,6 @@ export class ProfilesAddPage {
       if(refresh)
         this.checkAccessType(ev)
     }        
-      
-    this.lastSelectedAccessType = this.selectedDay
   }
 
   checkAccessType(ev){
@@ -455,6 +500,14 @@ export class ProfilesAddPage {
   
   addEventDate(){    
 
+    if(this.shiftClicked)
+      this.addEventDateShift()
+    else
+      this.addEventDateNormal()
+  }
+
+  addEventDateNormal(){    
+
     this.calendarDisabled = true     
     let events = this.eventSource;
     
@@ -464,11 +517,54 @@ export class ProfilesAddPage {
     let startDate = new Date(start)
     let endDate = new Date(end)
 
-    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente'}    
-    events.push(event); 
-    console.log(event)
+    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}    
+    events.push(event);     
   
     this.eventSource = []
+
+    setTimeout(() => {
+      this.eventSource = events;
+      
+      setTimeout( () => {
+        this.calendarDisabled = false
+      }, 1000)
+      
+      })
+  }
+
+  addEventDateShift(){    
+
+    this.calendarDisabled = true     
+    let events = this.eventSource;    
+
+    let start = moment(this.selectedDay).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
+    let end = moment(this.selectedDay).tz('America/Sao_Paulo').endOf('day').format()
+
+    let startDate = new Date(start)
+    let endDate = new Date(end)
+
+    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}    
+    events.push(event);     
+  
+    this.eventSource = []
+
+    if(events.length === 2){     
+
+      let a = events[0].startTime      
+
+      for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
+
+        let startB = moment(m).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
+        let endB = moment(m).tz('America/Sao_Paulo').endOf('day').format()
+
+        let startDateB = new Date(startB)
+        let endDateB = new Date(endB)
+
+        let eventB = { startTime: startDateB, endTime: endDateB, title: 'Carregado automaticamente', color: this.getColorStatus()}    
+        events.push(eventB);
+
+      }
+    }
 
     setTimeout(() => {
       this.eventSource = events;
@@ -813,8 +909,13 @@ export class ProfilesAddPage {
   today() {
     this.calendar.currentDate = new Date();
   }
-  
 
+  onCurrentDateChanged(event){    
+    let month = moment(event).format("MMMM")
+    this.onViewTitleChanged(month)
+  }
+
+  
   
 
 }

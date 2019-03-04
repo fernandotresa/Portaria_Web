@@ -19,8 +19,9 @@ export class ProfilesPage {
   searchTerm: string = '';
   searching: any = false;
   searchControl: FormControl;
-
+  selectedType: number = 0
   date: string;
+  allAccessGroups: any = []
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -43,7 +44,7 @@ export class ProfilesPage {
   }  
 
   ionViewDidLoad() {    
-    this.getAccessGroups()    
+    //this.getAccessGroups()    
   }
 
   ngOnDestroy() {    
@@ -122,6 +123,19 @@ export class ProfilesPage {
 
   copy(group){
     this.navCtrl.push('ProfilesAddPage', {loadProfile: false, profile: group, copyProfile: true})
+  }
+
+  setSelectedType(type: number){    
+    this.selectedType = type
+    this.accessGroups = this.httpd.getAccessGroupsTypeById(this.selectedType)
+
+    this.accessGroups.subscribe(data => {
+      this.allAccessGroups = data
+    })
+  }
+
+  showGroupsTypes(){
+    this.selectedType = 0
   }
 
 }

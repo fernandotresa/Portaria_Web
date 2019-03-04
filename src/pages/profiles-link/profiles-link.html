@@ -5,11 +5,13 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>Associar acesso</ion-title>
+    <ion-title>{{dataInfo.titleAccessAssociate}}</ion-title>
   </ion-navbar>
 </ion-header>
  
 <ion-content>
+
+  
   <ion-list>            
       <ion-item no-lines *ngFor="let group of callbackProfiles">
           <ion-checkbox (click)="profileSelected(group)" [checked]=group.checked></ion-checkbox>
@@ -18,6 +20,6 @@
   </ion-list>
  
   <button ion-button full icon-left (click)="save()">
-    <ion-icon name="checkmark"></ion-icon> Associar
+    <ion-icon name="checkmark"></ion-icon>{{dataInfo.titleAssociate}}}}
   </button>
 </ion-content>

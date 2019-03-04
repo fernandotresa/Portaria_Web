@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -13,6 +13,9 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+
+  @ViewChild('inputEmail') inputEmail;
+  @ViewChild('inputPassword') inputPassword;
 
   allConfigs: Observable<any>;
   autoLogin: Boolean = true
@@ -37,9 +40,19 @@ export class LoginPage {
     if(this.autoLogin == undefined)
       this.autoLogin = true               
 
-      //this.loginContinue("admin", "Restrito2018")
+      this.loginContinue("admin", "Restrito2018")
+      
   }
 
+  focusEmail(){    
+    if(this.inputEmail)
+      this.inputEmail.setFocus()
+  }  
+
+  focusPassword(){    
+    if(this.inputPassword)
+      this.inputPassword.setFocus()
+  }  
   
   goHome(){
     this.navCtrl.setRoot(HomePage, {primeiroUso: false});

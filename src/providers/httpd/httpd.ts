@@ -10,8 +10,9 @@ export class HttpdProvider {
 
   data:any = {};  
   
-  //address : string = 'http://localhost:8085'            
-  address : string = 'http://suporte.3a.com.br:8085'    
+  address : string = 'http://localhost:8085'            
+
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
@@ -118,6 +119,12 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessGroupsByName", myData, {headers: headers})
+  }
+
+  getAccessGroupsTypeById(id_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idAccessGroupType: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessGroupsTypeById", myData, {headers: headers})
   }
 
   delAccessGroups(group){

@@ -18,7 +18,7 @@
 
     <ion-list>
 
-      <ion-card class="trip card" text-wrap *ngFor="let employee of (employees | async)?.success" no-lines>
+      <ion-card class="trip card" text-wrap *ngFor="let employee of (employees | async)?.success" no-lines (click)="openMenu(employee)">
 
         <ion-card-header>
 

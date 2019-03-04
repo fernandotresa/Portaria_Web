@@ -7,12 +7,12 @@
         </ion-row>
         <ion-list class="ani-bottom-to-top">
           <ion-item class="text-white white-opct bdra-20">
-            <ion-input type="text" placeholder="{{dataInfo.titleEmail}}" [(ngModel)]="username"></ion-input>
+            <ion-input #inputEmail type="text" placeholder="{{dataInfo.titleEmail}}" [(ngModel)]="username" (keyup.enter)="focusPassword()"></ion-input>
           </ion-item>
         </ion-list>
         <ion-list class="ani-bottom-to-top">
           <ion-item class="text-white white-opct bdra-20">
-            <ion-input type="password" placeholder="{{dataInfo.titlePassword}}" [(ngModel)]="password"></ion-input>
+            <ion-input #inputPassword type="password" placeholder="{{dataInfo.titlePassword}}" [(ngModel)]="password" (keyup.enter)="loginUser()"></ion-input>
           </ion-item>
         </ion-list>
         

@@ -73,14 +73,14 @@ export class GuestPage {
       title: this.dataInfo.titleSelectOption,
       cssClass: 'action-sheets-basic-page',
       buttons: [
-        {
+        /*{
           text: this.dataInfo.titleEdit,
           role: 'destructive',
           icon: 'folder-open',
           handler: () => {
             //this.goPageEdit(guest)
           }                
-        },   
+        }, */  
         {
           text: this.dataInfo.titleAccessRules,
           role: 'destructive',

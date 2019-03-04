@@ -107,6 +107,8 @@ export class DataInfoProvider {
   titleBadge: string = "Crachá"
   titleOffice: string = "Cargo"
   titleCompany: string = "Empresa"
+  titleAccessAssociate: string = "Seleção de Perfil"
+  titleAssociate: string = "Associar"
   titleDaysWeek: string = "Dias da semana"
   titleMonday: string = "Segunda-Feira"
   titleTuesday: string = "Terça-Feira"

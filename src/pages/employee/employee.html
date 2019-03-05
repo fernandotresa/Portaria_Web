@@ -18,12 +18,10 @@
 
     <ion-list>
 
-      <ion-card class="trip card" text-wrap *ngFor="let employee of (employees | async)?.success" no-lines (click)="openMenu(employee)">
+      <ion-card class="trip card" text-wrap *ngFor="let employee of allemployees" no-lines (click)="openMenu(employee)">
 
         <ion-card-header>
-
-            <ion-icon style="float: right;" name="md-more" color="primary"(click)="openMenu(employee)"></ion-icon>              
-            
+                      
             <ion-item>
                 <ion-avatar item-start>
                   <img src="./assets/imgs/default-user.png" *ngIf="! employee.foto_web">                  
@@ -41,7 +39,7 @@
           </ion-card-header>                  
   
       <ion-card-content class="mgt-10 top-default"> 
-        <p><b>{{dataInfo.titleAccessRules}}: </b>{{employee.CRACHA}}</p>
+        <p><b>{{dataInfo.titleAccessRules}}: </b>{{employee.profiles}}</p>
         <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
         <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>
         <p><b>{{dataInfo.titleCompany}}: </b> {{employee.EMPRESA}}</p>        

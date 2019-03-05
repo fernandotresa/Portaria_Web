@@ -17,6 +17,7 @@ import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
 export class EmployeePage {
 
   employees: Observable<any>;
+  allemployees: any = [];
 
   searchTerm: string = '';
   searching: any = false;
@@ -38,15 +39,44 @@ export class EmployeePage {
       });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EmployeePage');
-    //this.searchTerm = "Fernando Augusto"
-    //this.setFilteredItems()
+  ionViewDidLoad() {    
+   /* this.searchTerm = "Fernando Augusto"
+    this.setFilteredItems()*/
   }
 
   setFilteredItems(){
-    this.employees = this.httpd.getEmployeesByName(this.searchTerm)    
+    this.employees = this.httpd.getEmployeesByName(this.searchTerm)
+    this.employees.subscribe(data => {
+
+      this.allemployees = data.success
+      this.checkAllProfiles()
+    })    
   } 
+
+  checkAllProfiles(){
+    this.allemployees.forEach(element => {
+      this.checkProfiles(element)
+    });
+  }
+
+  checkProfiles(employee){
+    
+    this.httpd.getAccessProfilesNameEmployee(employee.id).subscribe(data => {      
+      this.checkProfileContinue(employee, data)
+    })
+  }  
+
+  checkProfileContinue(employee, data){
+
+    employee.profiles = []
+
+    data.success.forEach(element => {
+
+      let name = element.name
+      let str = name + " "
+      employee.profiles.push(str)
+    });
+  }
 
   goPageAdd(){
     this.navCtrl.push(EmployeeAddPage)
@@ -103,9 +133,7 @@ export class EmployeePage {
     let haveAcess = false
 
     if(data.success.length === 0)
-      haveAcess = true;
-    
-    console.log(data.success.length, haveAcess)
+      haveAcess = true;        
 
     let sectorIdEmployee = employee.SETOR_ID    
 
@@ -126,13 +154,15 @@ export class EmployeePage {
   }
 
   addProfile(employee){
+
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});
     modal.present();
     modal.onDidDismiss(data => {
       
-      if (data) 
+      if (data){
+        this.setFilteredItems()
         this.uiUtils.showAlertSuccess()
-      
+      }              
     });
   }
 

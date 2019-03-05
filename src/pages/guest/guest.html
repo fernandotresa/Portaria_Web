@@ -18,10 +18,9 @@
 
   <ion-list>
 
-    <ion-card class="trip card" text-wrap *ngFor="let guest of (guests | async)?.success" no-lines>
+    <ion-card class="trip card" text-wrap *ngFor="let guest of allGuests" no-lines (click)="openMenu(guest)">
 
-        <ion-card-header>
-          <ion-icon style="float: right;" name="md-more" color="primary"(click)="openMenu(guest)"></ion-icon>              
+        <ion-card-header>          
 
           <ion-item>
               <ion-avatar item-start>
@@ -36,6 +35,7 @@
       </ion-card-header>
           
     <ion-card-content class="mgt-10 top-default"> 
+      <p><b>{{dataInfo.titleAccessRules}}: </b>{{guest.profiles}}</p>
       <p><b>{{dataInfo.titleRG}}</b> {{guest.rg}} </p>      
       <p><b>{{dataInfo.titleCPF}}</b> {{guest.cpf}} </p>        
       <p><b>{{dataInfo.titleBadge}}</b> {{guest.CRACHA}} </p>      

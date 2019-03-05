@@ -50,6 +50,16 @@
         <ion-option  *ngFor="let type of (accessTypes | async)?.success" no-lines>{{type.name}}</ion-option>        
       </ion-select>
     </ion-item>
+
+    <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+        <ion-label>{{dataInfo.titleDayStart}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
+      </ion-item>
+
+      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+        <ion-label>{{dataInfo.titleEndStart}}</ion-label>
+        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
+      </ion-item>
   
     <ion-list-header color="primary" 
         *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> 

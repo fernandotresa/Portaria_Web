@@ -209,16 +209,28 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/saveAccessProfileGuest", myData, {headers: headers})
   }
 
-  getAccessProfileEmployee(idEmployee_){
+  getAccessProfileEmployee(idEmployee_){    
     let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessProfileEmployee", myData, {headers: headers})
-  }  
+  } 
+  
+  getAccessProfilesNameEmployee(idEmployee_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idEmployee: idEmployee_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessProfilesNameEmployee", myData, {headers: headers})
+  } 
 
   getAccessProfileGuests(idGuest_){
     let myData = JSON.stringify({id: this.dataInfo.userId, idGuest: idGuest_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessProfileGuests", myData, {headers: headers})
+  }
+
+  getAccessProfilesNameGuest(idGuest_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idGuest: idGuest_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessProfilesNameGuest", myData, {headers: headers})
   }
 
   getAcls(){

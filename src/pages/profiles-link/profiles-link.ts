@@ -32,6 +32,8 @@ export class ProfilesLinkPage {
     
     this.userInfo = this.navParams.get('userInfo')
     this.userType = this.navParams.get('userType')
+
+    console.log(this.userInfo)
     this.getProfiles()
   }
 

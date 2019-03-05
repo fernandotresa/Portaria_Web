@@ -16,6 +16,7 @@ import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
 export class GuestPage {
 
   guests: Observable<any>;
+  allGuests: any = []
 
   searchTerm: string = '';
   searching: any = false;
@@ -37,17 +38,45 @@ export class GuestPage {
       });
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EmployeePage');
-    //this.guests = this.httpd.getGuests()    
-    
-    //this.searchTerm = "Crisitian "
-    //this.setFilteredItems()
+  ionViewDidLoad() {     
+    /*this.searchTerm = "Crisitian "
+    this.setFilteredItems()*/
   }
 
   setFilteredItems(){
     this.guests = this.httpd.getGuestsByName(this.searchTerm)    
+
+    this.guests.subscribe(data => {
+
+      this.allGuests = data.success
+      this.checkAllProfiles()
+    })  
   } 
+
+  checkAllProfiles(){
+    this.allGuests.forEach(element => {
+      this.checkProfiles(element)
+    });
+  }
+
+  checkProfiles(guest){
+    
+    this.httpd.getAccessProfilesNameGuest(guest.id).subscribe(data => {      
+      this.checkProfileContinue(guest, data)
+    })
+  }  
+
+  checkProfileContinue(guest, data){
+
+    guest.profiles = []
+
+    data.success.forEach(element => {
+
+      let name = element.name
+      let str = name + " "
+      guest.profiles.push(str)
+    });
+  }
 
   goPageAdd(){
     this.navCtrl.push(EmployeeAddPage)
@@ -62,8 +91,10 @@ export class GuestPage {
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: guest, userType: 2});
     modal.present();
     modal.onDidDismiss(data => {
-      if (data) 
+      if (data){
+        this.setFilteredItems()
         this.uiUtils.showAlertSuccess()
+      }
     });
   }   
 

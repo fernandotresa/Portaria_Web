@@ -67,9 +67,8 @@ export class DataInfoProvider {
   titleCopyProfile: string = " - Copia"
   titleSelectAll: string = "Selecionar todos"
   titleDeselectAll: string = "Deselecionar todos"
-  titlePermissions: string = "Acessos"
-  
-  titlePermissionsAccess: string = "Grupos de acesso - Entrada / Saída"
+  titlePermissions: string = "Gerenciamento de Perfis"  
+  titlePermissionsAccess: string = "Gerenciamento de Perfis"
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."

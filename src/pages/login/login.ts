@@ -41,7 +41,7 @@ export class LoginPage {
       this.autoLogin = true               
 
       this.loginContinue("admin", "Restrito2018")
-      
+  
   }
 
   focusEmail(){    

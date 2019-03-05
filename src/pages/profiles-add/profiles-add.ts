@@ -79,12 +79,10 @@ export class ProfilesAddPage {
 
   @HostListener('document:keydown.Shift', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.shiftClicked = true
-    console.log("SHIFT CLICKED", this.shiftClicked)
   }
 
   @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
     this.shiftClicked = false   
-    console.log("SHIFT CLICKED", this.shiftClicked)
   }
 
   constructor(public navCtrl: NavController, 
@@ -95,7 +93,6 @@ export class ProfilesAddPage {
     public events: Events,
     public navParams: NavParams) {   
       moment.locale('pt-br');       
-
   }
 
   ionViewDidLoad() {      
@@ -517,7 +514,15 @@ export class ProfilesAddPage {
     let startDate = new Date(start)
     let endDate = new Date(end)
 
-    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}    
+    if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
+
+      if(events.length === 1){
+        events[0].endTime = endDate
+      }
+    }
+    
+    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}        
+    
     events.push(event);     
   
     this.eventSource = []
@@ -578,8 +583,11 @@ export class ProfilesAddPage {
 
   addExpiration(ev){ 
 
+    console.log(ev)
+    
     if(this.hasDatetime)     
       this.addEvent()
+
     else  
       this.addEventDate()
   } 
@@ -913,6 +921,14 @@ export class ProfilesAddPage {
   onCurrentDateChanged(event){    
     let month = moment(event).format("MMMM")
     this.onViewTitleChanged(month)
+  }
+
+  dataStartChanged(){
+    console.log(this.dateStart)
+  }
+
+  dataEndChanged(){
+    console.log(this.dateEnd)
   }
 
   

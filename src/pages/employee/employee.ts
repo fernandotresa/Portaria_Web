@@ -33,15 +33,16 @@ export class EmployeePage {
 
       this.searchControl = new FormControl();
 
-      this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
+      /*this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
         this.searching = false;
         this.setFilteredItems();
-      });
+      });*/
+
   }
 
   ionViewDidLoad() {    
-   /* this.searchTerm = "Fernando Augusto"
-    this.setFilteredItems()*/
+    //this.searchTerm = "Fernando Augusto"
+    /*this.setFilteredItems()*/
   }
 
   setFilteredItems(){

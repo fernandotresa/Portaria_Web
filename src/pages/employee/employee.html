@@ -10,8 +10,8 @@
           (ionInput)="setFilteredItems()"
           placeholder= "Procurar...">
        </ion-searchbar>
-    </ion-toolbar>
-   
+    </ion-toolbar>       
+
   </ion-header>
   
 <ion-content padding>
@@ -54,3 +54,7 @@
   </ion-fab>
 
 </ion-content>
+
+<ion-footer>
+  <button ion-button full (click)="setFilteredItems()" *ngIf="searchTerm.length > 0">{{dataInfo.titleSearch}}</button>
+</ion-footer>

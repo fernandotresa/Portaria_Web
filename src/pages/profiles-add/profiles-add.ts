@@ -4,7 +4,7 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
-import * as moment from 'moment-timezone';
+import * as moment from 'moment';
 
 @IonicPage()
 @Component({
@@ -26,6 +26,8 @@ export class ProfilesAddPage {
 
   eventSource = [];
   viewTitle: string;
+
+  selectedType: number = 0
   selectedDay = new Date();
 
   datesWeek = []  
@@ -91,14 +93,24 @@ export class ProfilesAddPage {
     public dataInfo: DataInfoProvider,
     public modalCtrl: ModalController,
     public events: Events,
-    public navParams: NavParams) {   
+    public navParams: NavParams) {  
+
       moment.locale('pt-br');       
   }
 
   ionViewDidLoad() {      
     this.loadProfile = this.navParams.get('loadProfile')
     this.profile = this.navParams.get('profile')
-    this.copyProfile = this.navParams.get('copyProfile')
+    this.copyProfile = this.navParams.get('copyProfile')   
+
+    this.selectedType = this.navParams.get('selectedType')    
+    let selectedTypeName = this.navParams.get('selectedTypeName')    
+
+    if(selectedTypeName){
+      this.selectedAccessType = selectedTypeName
+    }
+      
+
     this.getAccessTypes()    
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")
   }
@@ -133,16 +145,13 @@ export class ProfilesAddPage {
 
     else if(type === 4)    
       this.loadVacationsProfile()
-
-    else   
-      console.log("Tipo de profile não configurado", type)
   }
 
   loadProfileInfo(){
 
     this.name = this.profile.name
     this.desc = this.profile.description
-    this.selectedAccessType = this.profile.type    
+    this.selectedAccessType = this.profile.type     
 
     let type = this.profile.id_type
 
@@ -157,9 +166,6 @@ export class ProfilesAddPage {
 
     else if(type === 4)    
       this.loadVacationsProfile()
-
-    else   
-      console.log("Tipo de profile não configurado", type)
   }
 
   loadDatesProfileExpire(){    
@@ -175,7 +181,6 @@ export class ProfilesAddPage {
     return color;
   }
 
-
   loadDatesProfileExpireContinue(data){    
     
     this.calendarDisabled = true     
@@ -183,11 +188,14 @@ export class ProfilesAddPage {
 
     data.success.forEach(element => {
 
-      let dateS = moment(element.datetime_start).tz('America/Sao_Paulo').format()
-      let dateF = moment(element.datetime_end).tz('America/Sao_Paulo').format()
+      let dateS = moment(element.datetime_start).utc().format()
+      let dateF = moment(element.datetime_end).utc().format()
 
-      let datetime_start = new Date(dateS)
+      let datetime_start = this.parseTimestamp(dateS)
       let datetime_end = new Date(dateF)
+
+      this.dateStart = dateS
+      this.dateEnd = dateF
 
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
       events.push(event);
@@ -214,16 +222,21 @@ export class ProfilesAddPage {
 
   loadDatesProfileDatetimeContinue(data){    
   
+    console.log(data.success)
+
     this.calendarDisabled = true     
     let events = this.eventSource;
 
     data.success.forEach(element => {
 
-      let dateS = moment(element.datetime_start).tz('America/Sao_Paulo').format()
-      let dateF = moment(element.datetime_end).tz('America/Sao_Paulo').format()
+      let dateS = moment(element.datetime_start).utc().format()
+      let dateF = moment(element.datetime_end).utc().format()
 
-      let datetime_start = this.parseTimestamp(dateS)
-      let datetime_end = this.parseTimestamp(dateF)
+      let datetime_start = this.parseTimestamp(dateS)    
+      let datetime_end = new Date(dateF)
+
+      this.dateStart = dateS
+      this.dateEnd = dateF
 
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
       events.push(event);
@@ -241,7 +254,11 @@ export class ProfilesAddPage {
   }
 
   parseTimestamp(timestampStr) {
-    return new Date(timestampStr);
+    return new Date(new Date(timestampStr).getTime() + (new Date().getTimezoneOffset() * 60 * 3000));
+  };
+
+  parseTimestampEnd(timestampStr) {
+    return new Date(new Date(timestampStr).getTime() - (new Date().getTimezoneOffset() * 60 * 3000));
   };
 
   loadWeekdaysProfile(){
@@ -268,8 +285,8 @@ export class ProfilesAddPage {
 
   populateDaysweek(element){
 
-    let datetime_start = moment(element.datetime_start).tz('America/Sao_Paulo').format()
-    let datetime_end = moment(element.datetime_end).tz('America/Sao_Paulo').format()
+    let datetime_start = moment(element.datetime_start).utc().format()
+    let datetime_end = moment(element.datetime_end).utc().format()
     let idDay = element.id_day      
 
     if(idDay === 1){
@@ -406,13 +423,11 @@ export class ProfilesAddPage {
     if(total >= 2){
 
       this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).then(data => {      
-  
-        
-        if(data){
           
+        if(data){          
           this.eventSource.pop()
           this.addExpiration(ev)
-        }          
+        }       
       })         
          
     } else     
@@ -422,21 +437,10 @@ export class ProfilesAddPage {
   
   confirmExpirationFinish(ev){
 
-    let checkOk = this.checkDatesExpiration()
-    let total = this.eventSource.length
-    let start =  total === 0
+    let checkOk = this.checkDatesExpiration()    
         
-    if(checkOk){
-
-      let msg = start ? this.dataInfo.titleConfirmStart : this.dataInfo.titleConfirmEnd
-        
-      this.uiUtils.showConfirm(this.dataInfo.titleSelect, msg).then(data => {      
-  
-        if(data)
-          this.addExpiration(ev)
-         
-      })
-    }   
+    if(checkOk)
+      this.addExpiration(ev)        
   }     
 
   checkDatesExpiration(){
@@ -473,11 +477,12 @@ export class ProfilesAddPage {
     });
   }
 
+
   addEventDatetime(data){    
 
     let eventData = data
-    eventData.startTime = new Date(data.startTime);
-    eventData.endTime = new Date(data.endTime);
+    eventData.startTime = this.parseTimestamp(data.startTime);
+    eventData.endTime = this.parseTimestamp(data.endTime);
 
     let events = this.eventSource;
     events.push(eventData);
@@ -490,101 +495,112 @@ export class ProfilesAddPage {
       
       setTimeout( () => {
         self.calendarDisabled = false
+        self.updateInputs()
       }, 1000)
     });
 
   }
   
   addEventDate(){    
-
     if(this.shiftClicked)
       this.addEventDateShift()
-    else
+    else 
       this.addEventDateNormal()
   }
 
   addEventDateNormal(){    
 
-    this.calendarDisabled = true     
-    let events = this.eventSource;
-    
-    let start = moment(this.selectedDay).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
-    let end = moment(this.selectedDay).tz('America/Sao_Paulo').endOf('day').format()
+    if(moment(this.selectedDay).isValid()){
 
-    let startDate = new Date(start)
-    let endDate = new Date(end)
+      this.calendarDisabled = true     
+      let events = this.eventSource;
+      
+      let start = moment(this.selectedDay).utc().startOf('day').format()
+      let end = moment(this.selectedDay).utc().endOf('day').format()
+      
+      let startDate = this.parseTimestamp(start)    
+      let endDate = this.parseTimestampEnd(end)
 
-    if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
+      if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
 
-      if(events.length === 1){
-        events[0].endTime = endDate
+        if(events.length === 1){
+          events[0].endTime = endDate
+        }
       }
-    }
+      
+      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}        
+      
+      events.push(event);     
     
-    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}        
-    
-    events.push(event);     
-  
-    this.eventSource = []
+      this.eventSource = []
+      let self = this
 
-    setTimeout(() => {
-      this.eventSource = events;
-      
-      setTimeout( () => {
-        this.calendarDisabled = false
-      }, 1000)
-      
-      })
+      setTimeout(() => {
+        self.eventSource = events;
+        
+          setTimeout( () => {
+            self.calendarDisabled = false
+            self.updateInputs()
+          }, 1000)
+        
+        })
+    }    
   }
 
   addEventDateShift(){    
 
-    this.calendarDisabled = true     
-    let events = this.eventSource;    
+    if(moment(this.selectedDay).isValid()){
+      
+      this.calendarDisabled = true     
+      let events = this.eventSource;    
 
-    let start = moment(this.selectedDay).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
-    let end = moment(this.selectedDay).tz('America/Sao_Paulo').endOf('day').format()
+      let start = moment(this.selectedDay).utc().startOf('day').format()
+      let end = moment(this.selectedDay).utc().endOf('day').format()
 
-    let startDate = new Date(start)
-    let endDate = new Date(end)
+      let startDate = this.parseTimestamp(start)
+      let endDate = this.parseTimestampEnd(end)
 
-    let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}    
-    events.push(event);     
-  
-    this.eventSource = []
+      this.updateInputs()
 
-    if(events.length === 2){     
+      let event = { startTime: startDate, endTime: endDate, 
+        title: 'Carregado automaticamente', color: this.getColorStatus()}    
 
-      let a = events[0].startTime      
+      events.push(event);     
+    
+      this.eventSource = []
 
-      for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
+      if(events.length === 2){     
 
-        let startB = moment(m).tz('America/Sao_Paulo').startOf('day').add(1, 'minutes').format()
-        let endB = moment(m).tz('America/Sao_Paulo').endOf('day').format()
+        let a = events[0].startTime      
 
-        let startDateB = new Date(startB)
-        let endDateB = new Date(endB)
+        for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
 
-        let eventB = { startTime: startDateB, endTime: endDateB, title: 'Carregado automaticamente', color: this.getColorStatus()}    
-        events.push(eventB);
+          let startB = moment(m).utc().startOf('day').format()
+          let endB = moment(m).utc().endOf('day').format()
 
+          let startDateB = this.parseTimestamp(startB)
+          let endDateB = this.parseTimestampEnd(endB)
+
+          let eventB = { startTime: startDateB, endTime: endDateB, 
+            title: 'Carregado automaticamente', color: this.getColorStatus()}    
+
+          events.push(eventB);
+        }
       }
-    }
 
-    setTimeout(() => {
-      this.eventSource = events;
-      
-      setTimeout( () => {
-        this.calendarDisabled = false
-      }, 1000)
-      
-      })
+      setTimeout(() => {
+        this.eventSource = events;
+        
+        setTimeout( () => {
+          this.calendarDisabled = false
+        }, 1000)
+        
+        })
+
+    }    
   }
 
-  addExpiration(ev){ 
-
-    console.log(ev)
-    
+  addExpiration(ev){     
     if(this.hasDatetime)     
       this.addEvent()
 
@@ -624,7 +640,7 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1);
+        this.events.publish('refreshProfiles', this.selectedType); 
         this.uiUtils.showAlertSuccess()
       })
   } 
@@ -662,7 +678,8 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1); 
+
+        this.events.publish('refreshProfiles', this.selectedType); 
         this.uiUtils.showAlertSuccess()
       })
     }    
@@ -769,7 +786,7 @@ export class ProfilesAddPage {
 
         loading.dismiss()
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1);
+        this.events.publish('refreshProfiles', this.selectedType); 
         this.uiUtils.showAlertSuccess()
       })
   }
@@ -796,7 +813,7 @@ export class ProfilesAddPage {
     let start0 = this.eventSource[0].startTime
     let end0 = this.eventSource[0].endTime
 
-    let start1 = this.eventSource[1].startTime
+    let start1 = this.eventSource[1].endTime
     let end1 = this.eventSource[1].endTime
 
     let start0F = moment(start0)
@@ -811,8 +828,9 @@ export class ProfilesAddPage {
     } else {
 
       let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-      loading.present()
       
+      loading.present()        
+
       this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, 
         start0, end0, this.profile.id, start1, end1)    
       .subscribe( () => {
@@ -820,7 +838,7 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1);
+        this.events.publish('refreshProfiles', this.profile.id_type);
         this.uiUtils.showAlertSuccess()
       })
     }
@@ -836,7 +854,7 @@ export class ProfilesAddPage {
         loading.dismiss()
 
         this.navCtrl.pop()
-        this.events.publish('refreshProfiles', 1);
+        this.events.publish('refreshProfiles', this.profile.id_type);
         this.uiUtils.showAlertSuccess()
       })
   }
@@ -857,14 +875,14 @@ export class ProfilesAddPage {
   
           loading.dismiss()        
           this.navCtrl.pop()
-          this.events.publish('refreshProfiles', 1);
+          this.events.publish('refreshProfiles', this.profile.id_type);
           this.uiUtils.showAlertSuccess()
         })
     }    
   }
 
   restartCalendar(){    
-      this.calendarDisabled = true
+      this.calendarDisabled = true      
       this.eventSource.splice(0, this.eventSource.length)            
       this.refreshCalendar()   
   }
@@ -877,7 +895,6 @@ export class ProfilesAddPage {
       this.eventSource = events;      
       
       setTimeout( () => {
-
         this.calendarDisabled = false
       }, 1000)
     });
@@ -918,19 +935,87 @@ export class ProfilesAddPage {
     this.calendar.currentDate = new Date();
   }
 
-  onCurrentDateChanged(event){    
-    let month = moment(event).format("MMMM")
-    this.onViewTitleChanged(month)
+  onCurrentDateChanged(event){   
+
+    if(moment(event).isValid()){
+      let month = moment(event).format("MMMM")    
+      this.onViewTitleChanged(month)
+    }
+    
   }
 
   dataStartChanged(){
-    console.log(this.dateStart)
+    this.restartCalendar()    
+    this.dateEnd = ""
+    let dateS = this.parseTimestamp(this.dateStart)
+    this.selectedDay = dateS
+
+    let ev = []
+    
+    this.checkAccessType(ev)    
   }
 
-  dataEndChanged(){
-    console.log(this.dateEnd)
+  dataEndChanged(){  
+    
+    if(this.dateStart.length > 0){
+
+      let dateS = this.parseTimestamp(this.dateStart)
+      this.selectedDay = dateS  
+      let ev = []
+      this.checkAccessType(ev)   
+
+    } else {
+      this.dateEnd = ""
+    }
+         
   }
 
+  clearCal(){
+    this.dateEnd = ""
+    this.dateStart = ""
+
+    this.restartCalendar()
+    this.eventSource = [];
+    this.eventSource = [];
+  }
+
+  updateInputs(){
+    /*if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
+      this.updateInputProfileExpire()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
+      this.updateInputProfileDatetimes()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
+      this.updateInputProfileDayWeek()
+
+    else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
+      this.updateInputProfileVacation()*/
+  }
+
+  checkInvalid(){
+    this.eventSource.forEach(element => {
+      console.log(element.startTime)
+    })
+  }
+
+  updateInputProfileExpire(){
+    console.log("updateInputProfileExpire", this.selectedAccessType)
+    this. checkInvalid()
+
+  }
+
+  updateInputProfileDatetimes(){
+    console.log("updateInputProfileDatetimes", this.selectedAccessType, this.eventSource)
+  }
+
+  updateInputProfileDayWeek(){
+    console.log("updateInputProfileDayWeek", this.selectedAccessType, this.eventSource)
+  }
+
+  updateInputProfileVacation(){
+    console.log("updateInputProfileVacation", this.selectedAccessType, this.eventSource)
+  }
   
   
 

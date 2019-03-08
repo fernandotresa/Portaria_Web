@@ -24,18 +24,19 @@
 <ion-content padding class="trips detail-bg">        
 
     <div class="trip card" tappable (click)="setSelectedType(1)" margin-bottom *ngIf="selectedType === 0">
-        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda.jpg'}">
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda.jpg)', 'background-repeat': 'no-repeat', 'background-size': 'cover', 'background-position': 'center center'}">
             <div class="background-filter rlt">
-            <div class="align-bottom" padding-left padding-right>            
-                <h6 class="pull-right text-white" ion-text>{{dataInfo.titleProfileExpire}}</h6>
+            <div class="align-bottom" padding-left padding-right>   
+                         
+                <h6 class="pull-right text-white" ion-text>{{dataInfo.titlePeriod}}</h6>
                 <div class="clear"></div>
             </div>
             </div>
         </div>     
         </div>
     
-    <div class="trip card" tappable (click)="setSelectedType(1)" margin-bottom *ngIf="selectedType === 0">
-        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda.jpg'}">
+    <div class="trip card" tappable (click)="setSelectedType(2)" margin-bottom *ngIf="selectedType === 0">
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda1.jpeg)', 'background-repeat': 'no-repeat', 'background-size': 'cover', 'background-position': 'center center'}">
         <div class="background-filter rlt">
             <div class="align-bottom" padding-left padding-right>            
             <h6 class="pull-right text-white" ion-text>{{dataInfo.titleProfileDatetime}}</h6>
@@ -44,9 +45,9 @@
         </div>
         </div>     
     </div>
-
+    
     <div class="trip card" tappable (click)="setSelectedType(3)" margin-bottom  *ngIf="selectedType === 0">
-        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda.jpg'}">
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda2.jpeg)', 'background-repeat': 'no-repeat', 'background-size': 'cover', 'background-position': 'center center'}">
             <div class="background-filter rlt"> 
             <div class="align-bottom" padding-left padding-right>            
                 <h6 class="pull-right text-white" ion-text>{{dataInfo.titleProfileDayweek}}</h6>
@@ -57,7 +58,7 @@
         </div>
     
     <div class="trip card" tappable (click)="setSelectedType(4)" margin-bottom  *ngIf="selectedType === 0">
-        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda.jpg'}">
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/agenda3.jpeg)', 'background-repeat': 'no-repeat', 'width': '100%', 'background-size': 'cover', 'background-position': 'center center'}">
         <div class="background-filter rlt">
             <div class="align-bottom" padding-left padding-right>            
             <h6 class="pull-right text-white" ion-text>{{dataInfo.titleProfileVacation}}</h6>
@@ -67,19 +68,19 @@
         </div>                        
     </div>       
         
-  <ion-list>         
+  <ion-list *ngIf="selectedType > 0">         
 
-    <ion-item *ngFor="let group of (accessGroups | async)?.success">
-        <button ion-item item-start text-wrap no-lines>            
+    <ion-item *ngFor="let group of allAccessGroups">
+
+        <button ion-item item-start text-wrap no-lines (click)="showOptions(group)">            
             {{group.name}} - {{group.type}}             
-            <ion-icon name='folder-open' item-end (click)="showOptions(group)" color="primary"></ion-icon>            
-        </button>                      
-       
+            <ion-icon name='folder-open' item-end color="primary"></ion-icon>            
+        </button>                             
     </ion-item>
     
 </ion-list>        
 
-<ion-fab bottom right margin-bottom *ngIf="selectedType > 0">
+<ion-fab bottom right margin-bottom *ngIf="selectedType > 0 && selectedTypeName.length > 0">
     <button color="secondary" ion-fab (click)="addPermissionGroups()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
  

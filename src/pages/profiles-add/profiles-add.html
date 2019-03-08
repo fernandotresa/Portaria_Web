@@ -31,19 +31,20 @@
 
 <ion-list no-lines>
 
-  <ion-list-header color="primary">{{dataInfo.titleProfile}}</ion-list-header>  
+  <ion-list-header color="primary" *ngIf="! selectedAccessType">{{dataInfo.titleProfile}}</ion-list-header>  
+  <ion-list-header color="primary" *ngIf="selectedAccessType">{{selectedAccessType}}</ion-list-header>  
 
-  <ion-item>
+  <ion-item no-lines>
     <ion-label>{{dataInfo.titleName}}</ion-label>
     <ion-input type="text" [(ngModel)]="name" text-right></ion-input>
   </ion-item>
 
-  <ion-item>
+  <ion-item no-lines>
       <ion-label>{{dataInfo.titleDescription}}</ion-label>
       <ion-input type="text" [(ngModel)]="desc" text-right></ion-input>
     </ion-item>
 
-    <ion-item>
+    <ion-item no-lines *ngIf="false">
       <ion-label>{{dataInfo.titleAccessType}}</ion-label>   
        
       <ion-select [(ngModel)]="selectedAccessType">
@@ -51,25 +52,39 @@
       </ion-select>
     </ion-item>
 
-    <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <ion-label>{{dataInfo.titleDayStart}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
-      </ion-item>
+    <ion-item>
 
-      <ion-item *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-        <ion-label>{{dataInfo.titleEndStart}}</ion-label>
-        <ion-datetime displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
-      </ion-item>
+        <ion-row>
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+                <ion-label>{{dataInfo.titleDayStart}}</ion-label>
+            </ion-col>
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+
+                <ion-datetime  *ngIf="selectedAccessType === 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
+                <ion-datetime  *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
+            </ion-col>                        
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+                <ion-label>{{dataInfo.titleEndStart}}</ion-label>
+            </ion-col>
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+                <ion-datetime *ngIf="selectedAccessType === 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
+                <ion-datetime *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
+            </ion-col>
+
+        </ion-row>        
+    </ion-item>    
   
-    <ion-list-header color="primary" 
-        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> 
+    <ion-list-header color="primary" *ngIf="false"> 
 
-    <ion-item no-lines item-end text-center class="list-header-cal">        
+    <ion-item no-lines item-end text-center class="list-header-cal" *ngIf="false">        
         <ion-checkbox (click)="calendarDateClicked()" [(ngModel)]="hasDate"></ion-checkbox>
         <ion-label>{{dataInfo.titleCalendar}}</ion-label>      
     </ion-item>
 
-    <ion-item no-lines item-end text-center class="list-header-cal">                    
+    <ion-item no-lines item-end text-center class="list-header-cal" *ngIf="false">                    
         <ion-checkbox (click)="calendarDatetimeClicked()" [(ngModel)]="hasDatetime"></ion-checkbox>        
         <ion-label>{{dataInfo.titleCalendarDatetime}}</ion-label>  
     </ion-item>
@@ -208,8 +223,8 @@
   
 </ion-content>
 
-<ion-footer *ngIf="name && selectedAccessType">
-  <button ion-button full (click)="restartCalendar()" *ngIf="eventSource.length > 0">{{dataInfo.titleCleanCal}}</button>
+<ion-footer>
+  <button ion-button full (click)="clearCal()" *ngIf="eventSource.length > 0">{{dataInfo.titleCleanCal}}</button>
   <button ion-button full (click)="addProfile()" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
   <button ion-button full (click)="updateProfile()" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
 </ion-footer>

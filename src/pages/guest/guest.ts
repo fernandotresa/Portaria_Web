@@ -32,10 +32,10 @@ export class GuestPage {
 
       this.searchControl = new FormControl();
 
-      this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
+      /*this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
         this.searching = false;
         this.setFilteredItems();
-      });
+      });*/
   }
 
   ionViewDidLoad() {     
@@ -44,6 +44,7 @@ export class GuestPage {
   }
 
   setFilteredItems(){
+    this.searching = false;
     this.guests = this.httpd.getGuestsByName(this.searchTerm)    
 
     this.guests.subscribe(data => {

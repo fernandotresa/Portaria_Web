@@ -6,6 +6,7 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
+import { ProfilesAddPage } from '../../pages/profiles-add/profiles-add';
 
 @IonicPage()
 @Component({
@@ -20,8 +21,10 @@ export class ProfilesPage {
   searching: any = false;
   searchControl: FormControl;
   selectedType: number = 0
+  selectedTypeName: string = ""
   date: string;
   allAccessGroups: any = []
+  allAccessGroupsGeneral: any = []
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -38,13 +41,12 @@ export class ProfilesPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('refreshProfiles', () => {
-        this.getAccessGroups() 
+      this.events.subscribe('refreshProfiles', selected => {
+        this.setSelectedType(selected)
       });
   }  
 
   ionViewDidLoad() {    
-    //this.getAccessGroups()    
   }
 
   ngOnDestroy() {    
@@ -55,13 +57,10 @@ export class ProfilesPage {
     this.accessGroups = this.httpd.getAccessGroupsByName(this.searchTerm)    
   }
   
-  getAccessGroups(){
-    this.accessGroups = this.httpd.getAccessGroups()      
-    
-  }
-
   addPermissionGroups(){
-    this.navCtrl.push('ProfilesAddPage')  
+    console.log(this.selectedTypeName)
+
+    this.navCtrl.push(ProfilesAddPage, {'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})  
   }
 
   showOptions(group) {
@@ -112,26 +111,52 @@ export class ProfilesPage {
     this.httpd.delAccessGroups(group).subscribe(data => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
-          this.getAccessGroups()
+          this.selectedType = 0
         })
     })
   }
 
   edit(group){
-    this.navCtrl.push('ProfilesAddPage', {loadProfile: true, profile: group})
+    this.navCtrl.push(ProfilesAddPage, {loadProfile: true, profile: group})
   }
 
   copy(group){
-    this.navCtrl.push('ProfilesAddPage', {loadProfile: false, profile: group, copyProfile: true})
+    this.navCtrl.push(ProfilesAddPage, {loadProfile: false, profile: group, copyProfile: true})
   }
 
   setSelectedType(type: number){    
-    this.selectedType = type
-    this.accessGroups = this.httpd.getAccessGroupsTypeById(this.selectedType)
 
-    this.accessGroups.subscribe(data => {
-      this.allAccessGroups = data
+    this.selectedType = type
+
+    this.httpd.getAccessGroupsTypeById(this.selectedType)
+
+    .subscribe(data => {
+        this.setSelectedTypeCallback(data, type)      
     })
+  }
+
+  setSelectedTypeCallback(data, type: number){
+    this.allAccessGroups = data.success
+
+      if(this.allAccessGroups.length > 0){
+        this.selectedTypeName = this.allAccessGroups[0].type
+      }        
+      else 
+        this.checkAccessTypes(type)
+  }
+
+  checkAccessTypes(type: number){
+
+    this.httpd.getAccessGroupsTypes(type)
+    .subscribe(data => {
+
+        this.checkAccessTypesCallback(data)
+    })
+  }
+
+  checkAccessTypesCallback(data){
+    let datas = data.success[0]
+    this.selectedTypeName = datas.name    
   }
 
   showGroupsTypes(){

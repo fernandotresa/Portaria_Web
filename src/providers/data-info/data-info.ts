@@ -80,7 +80,7 @@ export class DataInfoProvider {
   titleContinue: string = "Continuar"
   titleAuthErrorSignUp: string = "Falha ao se cadastrar, email já existe"
   titleMenu: string = "Menu"
-  titleProfileExpire: string = 'Vencimento'
+  titleProfileExpire: string = 'Período'
   titleProfileDatetime: string = 'Datas específicas + horários'
   titleProfileDayweek: string = 'Dias da Semana + horários'
   titleProfileVacation: string = 'Férias, folgas e afastamentos'
@@ -132,6 +132,7 @@ export class DataInfoProvider {
   titleAccessRules: string = "Perfis de acesso"
   titleContinueOperation: string = "Deseja continuar?"
   titleRemoveProfile: string = "Remover Perfil"
+  titleSearch: string = "Procurar"
   titleCancel: string = "Cancelar"
   titleCalendarDatetime: string = "Calendário com horários"
   titleCalendar: string = "Calendário"
@@ -146,6 +147,8 @@ export class DataInfoProvider {
   titleMessageAndAlerts: string = "Mensagens e alertas"
   titleNotInformed: string = "Não informado"
   titleCopy: string = "Duplicar"
+  
+  titlePeriod: string = "Período"
   
   pleaseWait: string = "Favor aguarde";
   uploading: string = "Enviando foto";

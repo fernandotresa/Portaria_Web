@@ -4,6 +4,22 @@ page-profiles-add {
         align-items: unset !important;
     }
 
+    .stroke{
+      border-style:solid;
+    }
+
+    .stroke-black-opct-1    {
+      border-color: $black-opct-1 !important;
+    }
+
+    .stroke-bottom{
+
+      border-bottom: 1px solid #ccc;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: rgb(204, 204, 204);
+    }
+
     .item-datetime ion-datetime {
         position: initial;
       }

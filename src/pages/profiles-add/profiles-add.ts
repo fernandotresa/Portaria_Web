@@ -33,6 +33,10 @@ export class ProfilesAddPage {
   datesWeek = []  
 
   selectedMonth: string;
+  updatingDates: Boolean = false
+  updatingClick: Boolean = false
+
+  lockSwipe: Boolean = false
 
   monday: Boolean = false;
   mondayStart: string = new Date().toISOString();
@@ -110,10 +114,17 @@ export class ProfilesAddPage {
       this.selectedAccessType = selectedTypeName
     }
       
-
     this.getAccessTypes()    
-    this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+    this.selectedMonth  = moment(this.selectedDay).format("MMMM")    
+    this.onViewTitleChanged(this.selectedMonth)
   }
+
+  ngAfterViewInit() {
+    var me = this;
+    setTimeout(function() {
+        me.lockSwipe = true;
+    },1000);
+}
   
   getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
@@ -176,8 +187,8 @@ export class ProfilesAddPage {
     })
   }
 
-  getColorStatus(){    
-    let color = 'primary'
+  getColorStatus(col: number){   
+    let color = 'primary'  
     return color;
   }
 
@@ -185,6 +196,9 @@ export class ProfilesAddPage {
     
     this.calendarDisabled = true     
     let events = this.eventSource;
+
+    let total = data.success.length
+    let atual = 0
 
     data.success.forEach(element => {
 
@@ -195,10 +209,16 @@ export class ProfilesAddPage {
       let datetime_end = new Date(dateF)
 
       this.dateStart = dateS
-      this.dateEnd = dateF
+      this.dateEnd = dateF      
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
+      let colorS = this.getColorStatus(1)
+
+      if(total === atual)
+        colorS = this.getColorStatus(0)
+
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente',  color: colorS}      
       events.push(event);
+      atual++
     });  
     
     this.eventSource = []
@@ -222,10 +242,15 @@ export class ProfilesAddPage {
 
   loadDatesProfileDatetimeContinue(data){    
   
-    console.log(data.success)
-
     this.calendarDisabled = true     
     let events = this.eventSource;
+
+    if(data.success.length > 0){
+      this.dateStart = moment(data.success[0].datetime_start).utc().format()
+    }    
+
+    let total = data.success.length
+    let atual = 0
 
     data.success.forEach(element => {
 
@@ -235,11 +260,17 @@ export class ProfilesAddPage {
       let datetime_start = this.parseTimestamp(dateS)    
       let datetime_end = new Date(dateF)
 
-      this.dateStart = dateS
       this.dateEnd = dateF
 
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: this.getColorStatus()}      
+      let colorS = this.getColorStatus(1)
+
+      if(total === atual)
+        colorS = this.getColorStatus(0)
+     
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: colorS}      
       events.push(event);
+
+      atual++
     });  
     
     this.eventSource = []
@@ -339,6 +370,7 @@ export class ProfilesAddPage {
   onTimeSelected(ev) {            
         
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+    this.onViewTitleChanged(this.selectedMonth)
 
     if(! this.calendarDisabled)
       this.onTimeSelectedContinue(ev)          
@@ -368,7 +400,7 @@ export class ProfilesAddPage {
       let isSame = moment(day).isSame(dayClicked, 'day')    
 
       if(isSame){
-        this.calendarDisabled = true
+        this.calendarDisabled = true        
         this.eventSource.splice(i, 1);
         refresh = false
         this.refreshCalendar()     
@@ -379,11 +411,11 @@ export class ProfilesAddPage {
       this.checkAccessType(ev)       
   }
 
-  onTimeSelectedContinueNormal(ev){
-
-    let refresh = true
+  onTimeSelectedContinueNormal(ev){    
 
     if(this.lastSelectedAccessType == this.selectedDay){
+
+      let refresh = true
 
       let dayClicked = new Date(this.selectedDay)                
 
@@ -391,17 +423,18 @@ export class ProfilesAddPage {
         
         let day = new Date(this.eventSource[i].startTime)
         let isSame = moment(day).isSame(dayClicked, 'day')    
+        console.log(isSame)
 
         if(isSame){
           this.calendarDisabled = true
           this.eventSource.splice(i, 1);
           refresh = false
-          this.refreshCalendar()     
         }
       }
       
       if(refresh)
-        this.checkAccessType(ev)
+      this.checkAccessType(ev)  
+
     }        
   }
 
@@ -420,7 +453,7 @@ export class ProfilesAddPage {
   confirmExpiration(ev){
     let total = this.eventSource.length
 
-    if(total >= 2){
+    if(total > 1){
 
       this.uiUtils.showConfirm(this.dataInfo.titleWarning, this.dataInfo.titlePleaseUnselect).then(data => {      
           
@@ -520,15 +553,17 @@ export class ProfilesAddPage {
       
       let startDate = this.parseTimestamp(start)    
       let endDate = this.parseTimestampEnd(end)
-
+      
       if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
 
         if(events.length === 1){
           events[0].endTime = endDate
         }
       }
+
+      let colorS = this.getColorStatus(1)
       
-      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente', color: this.getColorStatus()}        
+      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: colorS}        
       
       events.push(event);     
     
@@ -561,9 +596,10 @@ export class ProfilesAddPage {
       let endDate = this.parseTimestampEnd(end)
 
       this.updateInputs()
+      let colorS = this.getColorStatus(1)
 
       let event = { startTime: startDate, endTime: endDate, 
-        title: 'Carregado automaticamente', color: this.getColorStatus()}    
+        title: 'Carregado automaticamente',  color: colorS}    
 
       events.push(event);     
     
@@ -582,7 +618,7 @@ export class ProfilesAddPage {
           let endDateB = this.parseTimestampEnd(endB)
 
           let eventB = { startTime: startDateB, endTime: endDateB, 
-            title: 'Carregado automaticamente', color: this.getColorStatus()}    
+            title: 'Carregado automaticamente',  color: colorS}    
 
           events.push(eventB);
         }
@@ -940,34 +976,55 @@ export class ProfilesAddPage {
     if(moment(event).isValid()){
       let month = moment(event).format("MMMM")    
       this.onViewTitleChanged(month)
+
+    } else {      
+      let month = moment(new Date()).format("MMMM")    
+      this.onViewTitleChanged(month)
     }
     
   }
 
   dataStartChanged(){
-    this.restartCalendar()    
-    this.dateEnd = ""
-    let dateS = this.parseTimestamp(this.dateStart)
-    this.selectedDay = dateS
 
-    let ev = []
-    
-    this.checkAccessType(ev)    
+    if(! this.updatingDates && !this.updatingClick){
+
+      this.updatingDates = true
+      this.restartCalendar()    
+      this.dateEnd = ""
+      let dateS = this.parseTimestamp(this.dateStart)
+      this.selectedDay = dateS
+
+      let ev = []
+      
+      this.checkAccessType(ev)   
+      this.updatingDates = false
+    }
+     
   }
 
   dataEndChanged(){  
     
-    if(this.dateStart.length > 0){
+    if(! this.updatingDates && !this.updatingClick){
 
-      let dateS = this.parseTimestamp(this.dateStart)
-      this.selectedDay = dateS  
-      let ev = []
-      this.checkAccessType(ev)   
 
-    } else {
-      this.dateEnd = ""
-    }
-         
+      this.updatingDates = true
+
+      if(this.dateStart.length > 0){
+
+        let dateS = this.parseTimestamp(this.dateEnd)        
+
+        this.selectedDay = dateS  
+        let ev = []
+        this.checkAccessType(ev)   
+  
+      } 
+      else {
+        this.dateEnd = ""
+      }
+
+      this.updatingDates = false
+
+    }             
   }
 
   clearCal(){
@@ -975,46 +1032,118 @@ export class ProfilesAddPage {
     this.dateStart = ""
 
     this.restartCalendar()
-    this.eventSource = [];
-    this.eventSource = [];
+    this.eventSource = [];    
+
+    let self = this
+
+    setTimeout(function(){            
+      self.viewTitle = moment().format()        
+    }, 2000)
+
   }
 
   updateInputs(){
-    /*if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
+
+    if(this.selectedAccessType ==  this.dataInfo.titleProfileExpire)
       this.updateInputProfileExpire()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.updateInputProfileDatetimes()
 
-    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
-      this.updateInputProfileDayWeek()
-
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
-      this.updateInputProfileVacation()*/
+      this.updateInputProfileVacation()
   }
 
-  checkInvalid(){
-    this.eventSource.forEach(element => {
-      console.log(element.startTime)
-    })
-  }
+  updateInputProfileExpire(){        
+    let self = this
 
-  updateInputProfileExpire(){
-    console.log("updateInputProfileExpire", this.selectedAccessType)
-    this. checkInvalid()
+    if(! this.updatingDates){
 
+      this.updatingClick = true
+      this.updatingDates = true
+      let total = this.eventSource.length      
+
+      if(total === 1){   
+        
+        let start = this.eventSource[0].startTime        
+        let dateS = moment(start).utc().format()             
+        this.dateStart = dateS        
+      }
+        
+      if(total > 1){        
+
+        let start = this.eventSource[1].endTime
+        let dateF = moment(start).utc().format()             
+        this.dateEnd = dateF        
+      }        
+        
+      setTimeout(function(){
+        self.updatingDates = false
+        self.updatingClick = false
+      })
+    }           
   }
 
   updateInputProfileDatetimes(){
-    console.log("updateInputProfileDatetimes", this.selectedAccessType, this.eventSource)
+
+    let self = this
+
+    if(! this.updatingDates){
+
+      this.updatingDates = true
+      this.updatingClick = true
+      let total = this.eventSource.length      
+
+      if(total === 1){   
+        
+        let start = this.eventSource[0].startTime
+        let dateS = moment(start).utc().format()             
+        this.dateStart = dateS        
+      }              
+
+      if(total > 1){
+
+        let last
+
+        this.eventSource.forEach(element => {
+
+          let start = element.startTime          
+          let dateF = moment(start).utc().format()             
+          
+          if(moment(start).isAfter(last))            
+            this.dateEnd = dateF                  
+          
+          last = dateF
+        })                
+      }        
+        
+      setTimeout(function(){
+        self.updatingDates = false
+        self.updatingClick = false
+      })
+    }
   }
 
-  updateInputProfileDayWeek(){
-    console.log("updateInputProfileDayWeek", this.selectedAccessType, this.eventSource)
+  updateInputProfileVacation(){    
+    this.updateInputProfileExpire()
   }
 
-  updateInputProfileVacation(){
-    console.log("updateInputProfileVacation", this.selectedAccessType, this.eventSource)
+  lastMonth(){
+    let next = new Date(moment(this.selectedDay).add(-1, 'month').format())
+    let month = moment(this.selectedDay).add(-1, 'month').format("MMMM")    
+    this.selectedDay = next
+    this.calendar.currentDate =  next
+    this.selectedMonth  = month
+    this.onViewTitleChanged(this.selectedMonth)
+  }
+
+  nextMonth(){
+    let next = new Date(moment(this.selectedDay).add(1, 'month').format())
+    let month = moment(this.selectedDay).add(1, 'month').format("MMMM")    
+    this.selectedDay = next
+    this.calendar.currentDate =  next
+    this.selectedMonth  = month
+    this.onViewTitleChanged(this.selectedMonth)
   }
   
   

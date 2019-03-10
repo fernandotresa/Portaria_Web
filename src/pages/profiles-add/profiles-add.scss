@@ -4,6 +4,38 @@ page-profiles-add {
         align-items: unset !important;
     }
 
+    ion-segment{
+      height: 44px;
+      border-bottom: none;
+  }
+
+  .segment-button-checked{
+    background: #4CAF50;
+    color: #673AB7;
+    border-bottom: 3px solid #673AB7;
+    font-size: 16px;
+    color: var(--ion-color-medium);
+    border: 0px;
+    border-bottom: none;
+    border-radius: 0px;
+
+}
+
+
+    .align-left {
+      align-items: left;
+    }
+
+    .text-white{
+      color: $white !important;
+      .p, span, i, a, div, ion-icon, b, small, strong{
+        color: $white !important;
+      }
+      input::placeholder{
+        color: $white !important;
+      }
+    }
+
     .stroke{
       border-style:solid;
     }

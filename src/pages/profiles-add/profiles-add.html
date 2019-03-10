@@ -4,13 +4,6 @@
   <ion-navbar text-center no-border-bottom color="primary">  
   
   <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title>   
-   
-   <ion-buttons end *ngIf="false">
-    <button ion-button [disabled]="isToday" (click)="today()">Hoje</button>
-    <button ion-button (click)="changeMode('month')">M</button>
-    <button ion-button (click)="changeMode('week')">S</button>
-    <button ion-button (click)="changeMode('day')">D</button>
-  </ion-buttons>
 
     <ion-buttons end>
             <button ion-button color="white_" (click)="goHome()">
@@ -60,9 +53,8 @@
             </ion-col>
 
             <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-
-                <ion-datetime  *ngIf="selectedAccessType === 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
-                <ion-datetime  *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"></ion-datetime>
+                <ion-datetime  *ngIf="selectedAccessType === 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>
+                <ion-datetime  *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"  min="2000" max="2099"></ion-datetime>
             </ion-col>                        
 
             <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
@@ -70,8 +62,8 @@
             </ion-col>
 
             <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-                <ion-datetime *ngIf="selectedAccessType === 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
-                <ion-datetime *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"></ion-datetime>
+                <ion-datetime *ngIf="selectedAccessType === 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"  min="2000" max="2099"></ion-datetime>
+                <ion-datetime *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"   min="2000" max="2099"></ion-datetime>
             </ion-col>
 
         </ion-row>        
@@ -89,12 +81,18 @@
         <ion-label>{{dataInfo.titleCalendarDatetime}}</ion-label>  
     </ion-item>
 
-    </ion-list-header>  
+    </ion-list-header>               
 
-    <ion-list-header color="primary" 
-        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"> 
-        <ion-label text-center>{{selectedMonth}}</ion-label>  
-    </ion-list-header>  
+        <ion-toolbar no-border-top *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"  color="primary">
+
+        <ion-segment mode="md">
+
+            <button ion-button class="text-white" (click)="lastMonth()"><ion-label>Anterior</ion-label></button>
+            <button ion-button class="text-white segment-button-checked" (click)="today()" text-uppercase text-center><ion-label>{{selectedMonth}}</ion-label></button>
+            <button ion-button class="text-white" (click)="nextMonth()"><ion-label>Próximo</ion-label></button>
+          </ion-segment>
+          
+    </ion-toolbar>  
 
     <ng-template #template let-view="view" let-row="row" let-col="col" let-showEventDetail="showEventDetail">        
 
@@ -119,6 +117,8 @@
         (onTimeSelected)="onTimeSelected($event)"        
         (onTitleChanged)="onViewTitleChanged($event)"
         [step]="30"
+        [autoSelect]="false"
+        [lockSwipes]="lockSwipe"
         class="has-header"
         *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
       </calendar>           
@@ -131,10 +131,10 @@
           <ion-label>{{dataInfo.titleMonday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="monday">            
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayStart" min="2000" max="2099"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="monday">
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="mondayEnd" min="2000" max="2099"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -145,10 +145,10 @@
           <ion-label>{{dataInfo.titleTuesday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="tuesday">            
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayStart" min="2000" max="2099"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="tuesday">
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="tuesdayEnd"   min="2000" max="2099"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -158,10 +158,10 @@
         <ion-label>{{dataInfo.titleWednesday}}</ion-label>  
     </ion-item>
     <ion-item no-lines item-end *ngIf="wednesday">            
-        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayStart"></ion-datetime>
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayStart" min="2000" max="2099"></ion-datetime>
     </ion-item>
     <ion-item no-lines item-end *ngIf="wednesday">
-        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayEnd"></ion-datetime>                    
+        <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="wednesdayEnd" min="2000" max="2099"></ion-datetime>                    
     </ion-item>     
   </ion-item>
 
@@ -171,10 +171,10 @@
           <ion-label>{{dataInfo.titleThursday}}</ion-label>  
       </ion-item>
       <ion-item no-lines item-end *ngIf="thursday">            
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayStart"></ion-datetime>
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayStart" min="2000" max="2099"></ion-datetime>
       </ion-item>
       <ion-item no-lines item-end *ngIf="thursday">
-          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayEnd"></ion-datetime>                    
+          <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="thursdayEnd" min="2000" max="2099"></ion-datetime>                    
       </ion-item>     
     </ion-item>
 
@@ -184,10 +184,10 @@
             <ion-label>{{dataInfo.titleFriday}}</ion-label>  
         </ion-item>
         <ion-item no-lines item-end *ngIf="friday">            
-            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayStart"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayStart"  min="2000" max="2099"></ion-datetime>
         </ion-item>
         <ion-item no-lines item-end *ngIf="friday">
-            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayEnd"></ion-datetime>                    
+            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="fridayEnd"  min="2000" max="2099"></ion-datetime>                    
         </ion-item>     
       </ion-item>
 
@@ -198,10 +198,10 @@
           </ion-item>
 
           <ion-item no-lines item-end *ngIf="saturday">            
-              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayStart"></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayStart"  min="2000" max="2099"></ion-datetime>
           </ion-item>
           <ion-item no-lines item-end *ngIf="saturday">
-              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayEnd"></ion-datetime>                    
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="saturdayEnd"  min="2000" max="2099"></ion-datetime>                    
           </ion-item>     
         </ion-item>
 
@@ -212,10 +212,10 @@
           </ion-item>
           
           <ion-item no-lines item-end *ngIf="sunday">            
-              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayStart"></ion-datetime>
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayStart"  min="2000" max="2099"></ion-datetime>
           </ion-item>
           <ion-item no-lines item-end *ngIf="sunday">
-              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayEnd"></ion-datetime>                    
+              <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="sundayEnd"  min="2000" max="2099"></ion-datetime>                    
           </ion-item>     
         </ion-item>                
     
@@ -225,6 +225,7 @@
 
 <ion-footer>
   <button ion-button full (click)="clearCal()" *ngIf="eventSource.length > 0">{{dataInfo.titleCleanCal}}</button>
-  <button ion-button full (click)="addProfile()" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
-  <button ion-button full (click)="updateProfile()" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
+  
+  <button ion-button full (click)="addProfile()" color="secondary" *ngIf="! loadProfile">{{dataInfo.titleRegister}}</button>
+  <button ion-button full (click)="updateProfile()" color="secondary" *ngIf="loadProfile">{{dataInfo.titleSave}}</button>
 </ion-footer>

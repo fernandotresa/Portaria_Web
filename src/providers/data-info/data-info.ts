@@ -62,7 +62,7 @@ export class DataInfoProvider {
   titleLogin: string = 'Logar'
   titleCleanCal: string = "Limpar calendário"
   titleEmployeers: string = 'Colaboradores'
-  titleDateEndBeforeDateStart = 'Horário final não pode ser mair que o horário inicial'
+  titleDateEndBeforeDateStart = 'Horário final não pode ser maior que o horário inicial'
   titleGuests: string = 'Visitantes'
   titleCopyProfile: string = " - Copia"
   titleSelectAll: string = "Selecionar todos"

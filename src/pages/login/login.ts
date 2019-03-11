@@ -92,6 +92,7 @@ export class LoginPage {
     if(data.success.length > 0){
 
       let userInfo = data.success[0]
+      console.log(userInfo)
           
       this.dataInfo.userInfo = userInfo
       this.dataInfo.userId = userInfo.id

@@ -89,7 +89,7 @@
             </ion-col>         
 
             <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
-                    <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;"
+                    <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;" [pickerOptions]="customOptions"
                         [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
                 </ion-col>         
                         

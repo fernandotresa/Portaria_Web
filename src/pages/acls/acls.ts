@@ -43,8 +43,15 @@ export class AclsPage {
       });
   }
 
-  ionViewDidLoad() {    
-    this.getAcls()
+  ionViewDidLoad() {  
+    
+    if(this.dataInfo.userInfo.id_type !== 1){
+      this.navCtrl.pop()
+      this.uiUtils.showAlertError(this.dataInfo.titleAccessDenied)
+    }
+      
+    else
+      this.getAcls()
   }
 
   ngOnDestroy() {    

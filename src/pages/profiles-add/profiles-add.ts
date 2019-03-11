@@ -71,11 +71,14 @@ export class ProfilesAddPage {
   selectedAccessType: string
   lastSelectedAccessType = new Date();
   
+  dateStartDate: Date = new Date()
   dateStart: string
   dateEnd: string
 
   hourStart: any
   hourEnd: any
+
+  placeholderDate: any
 
   shiftClicked: Boolean = false
   selectDateTimeVisible: Boolean = true
@@ -96,6 +99,15 @@ export class ProfilesAddPage {
     this.shiftClicked = false   
   }
 
+  customOptions: any = {
+    buttons: [{
+      text: 'Clear',
+      handler: () => {
+        this.placeholderDate = null;
+      }
+    }]
+  };
+
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
@@ -107,6 +119,7 @@ export class ProfilesAddPage {
 
       moment.locale('pt-br');       
   }
+
 
   ionViewDidLoad() {      
     this.loadProfile = this.navParams.get('loadProfile')
@@ -1206,8 +1219,6 @@ export class ProfilesAddPage {
       let startDate = this.parseTimestamp(moment(this.dateStart))      
 
       if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-
-
         let h = this.hourStart.substring(0, 2);
         let m = this.hourStart.substring(3, 5);
         let s = this.hourStart.substring(6, 8);
@@ -1229,46 +1240,64 @@ export class ProfilesAddPage {
   }
 
   dataEndChanged(){  
-    
+        
     if(! this.updatingDates && !this.updatingClick){
 
       this.updatingDates = true
       this.shiftClicked = true
-      let tmpdate = this.selectedDay
+    
 
-      if(this.dateStart.length > 0){
+      if(moment(this.dateEnd).isBefore(moment(this.dateStart))){
+        
+        let self = this
 
-        let endDate = this.parseTimestamp(moment(this.dateEnd))      
+        this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart)
 
-        if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-
-          let h = this.hourEnd.substring(0, 2);
-          let m = this.hourEnd.substring(3, 5);
-          let s = this.hourEnd.substring(6, 8);
-
-          endDate.setHours(h)
-          endDate.setMinutes(m)
-          endDate.setSeconds(s)
-        }
-                    
-        else 
-          endDate.setHours(0, 0, 1)          
-
-        this.selectedDay = endDate
-        let ev = []
-        this.checkAccessType(ev)   
+          .present().then(function(){
+            self.dateEnd = ""
+          }        
+        )      
   
-      } 
-      else {
-        this.dateEnd = ""
-      }
+      } else {
+             
+        let tmpdate = this.selectedDay
+
+        if(this.dateStart.length > 0){
+
+          let endDate = this.parseTimestamp(moment(this.dateEnd))      
+
+          if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+
+            let h = this.hourEnd.substring(0, 2);
+            let m = this.hourEnd.substring(3, 5);
+            let s = this.hourEnd.substring(6, 8);
+
+            endDate.setHours(h)
+            endDate.setMinutes(m)
+            endDate.setSeconds(s)
+          }
+                      
+          else 
+            endDate.setHours(0, 0, 1)          
+
+          this.selectedDay = endDate
+          let ev = []
+          this.checkAccessType(ev)   
+    
+        } 
+        else {
+          this.dateEnd = ""
+        }
 
       this.selectedDay = tmpdate
-      this.updatingDates = false
-      this.shiftClicked = false
-    }             
+  
+      }
+    }    
+    
+    this.updatingDates = false
+    this.shiftClicked = false
   }
-
+  
   hourStartChanged(){
     if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
 

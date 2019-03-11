@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
+import { MomentsProvider } from '../../providers/moments/moments';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
@@ -39,7 +40,7 @@ export class ProfilesAddPage {
   lockSwipe: Boolean = false
 
   monday: Boolean = false;
-  mondayStart: string = new Date().toISOString();
+  mondayStart: string = new Date().toISOString(); 
   mondayEnd: string = new Date().toISOString();
 
   tuesday: Boolean = false;
@@ -70,8 +71,8 @@ export class ProfilesAddPage {
   selectedAccessType: string
   lastSelectedAccessType = new Date();
   
-  dateStart: any
-  dateEnd: any
+  dateStart: string
+  dateEnd: string
 
   hourStart: any
   hourEnd: any
@@ -101,6 +102,7 @@ export class ProfilesAddPage {
     public dataInfo: DataInfoProvider,
     public modalCtrl: ModalController,
     public events: Events,
+    public moments: MomentsProvider,
     public navParams: NavParams) {  
 
       moment.locale('pt-br');       
@@ -123,6 +125,7 @@ export class ProfilesAddPage {
     this.onViewTitleChanged(this.selectedMonth)
     this.hourStart = moment(this.selectedDay).startOf('day').format('HH:mm:ss')
     this.hourEnd = moment(this.selectedDay).endOf('day').format('HH:mm:ss')
+    this.setDateDefaultDayweeks()
     this.selectDateTimeVisible = true
   }
 
@@ -131,7 +134,30 @@ export class ProfilesAddPage {
     setTimeout(function() {
         me.lockSwipe = true;
     },1000);
-}
+  }
+
+  setDateDefaultDayweeks(){
+    this.mondayStart = this.moments.getStartDayStr()
+    this.mondayEnd = this.moments.getEndDayStr()
+
+    this.tuesdayStart = this.moments.getStartDayStr()
+    this.tuesdayEnd = this.moments.getEndDayStr()
+
+    this.wednesdayStart = this.moments.getStartDayStr()
+    this.wednesdayEnd = this.moments.getEndDayStr()
+
+    this.thursdayStart = this.moments.getStartDayStr()
+    this.thursdayEnd = this.moments.getEndDayStr()
+
+    this.fridayStart = this.moments.getStartDayStr()
+    this.fridayEnd = this.moments.getEndDayStr()
+
+    this.saturdayStart = this.moments.getStartDayStr()
+    this.saturdayEnd = this.moments.getEndDayStr()
+
+    this.sundayStart = this.moments.getStartDayStr()
+    this.sundayEnd = this.moments.getEndDayStr()
+  }
   
   getAccessTypes(){
     this.accessTypes = this.httpd.getAccessControlTypes()
@@ -1179,12 +1205,22 @@ export class ProfilesAddPage {
 
       let startDate = this.parseTimestamp(moment(this.dateStart))      
 
-      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime)
-        startDate.setHours(this.hourStart)        
-        
-      else 
-        startDate.setHours(0, 0, 1)                              
+      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
 
+
+        let h = this.hourStart.substring(0, 2);
+        let m = this.hourStart.substring(3, 5);
+        let s = this.hourStart.substring(6, 8);
+
+        startDate.setHours(h)
+        startDate.setMinutes(m)
+        startDate.setSeconds(s)        
+      }        
+        
+      else {
+        startDate.setHours(0, 0, 1)                              
+      }
+        
       this.selectedDay = startDate
       let ev = []    
       this.checkAccessType(ev)   
@@ -1197,16 +1233,26 @@ export class ProfilesAddPage {
     if(! this.updatingDates && !this.updatingClick){
 
       this.updatingDates = true
+      this.shiftClicked = true
+      let tmpdate = this.selectedDay
 
       if(this.dateStart.length > 0){
 
         let endDate = this.parseTimestamp(moment(this.dateEnd))      
 
-        if(this.selectedAccessType === this.dataInfo.titleProfileDatetime)
-          endDate.setHours(this.hourStart)        
-          
+        if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+
+          let h = this.hourEnd.substring(0, 2);
+          let m = this.hourEnd.substring(3, 5);
+          let s = this.hourEnd.substring(6, 8);
+
+          endDate.setHours(h)
+          endDate.setMinutes(m)
+          endDate.setSeconds(s)
+        }
+                    
         else 
-          endDate.setHours(0, 0, 1)  
+          endDate.setHours(0, 0, 1)          
 
         this.selectedDay = endDate
         let ev = []
@@ -1217,17 +1263,36 @@ export class ProfilesAddPage {
         this.dateEnd = ""
       }
 
+      this.selectedDay = tmpdate
       this.updatingDates = false
-
+      this.shiftClicked = false
     }             
   }
 
   hourStartChanged(){
-    console.log(this.hourStart)
+    if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
+
+      this.mondayStart = this.hourStart      
+      this.tuesdayStart = this.hourStart      
+      this.wednesdayStart = this.hourStart      
+      this.thursdayStart = this.hourStart      
+      this.fridayStart = this.hourStart      
+      this.saturdayStart = this.hourStart      
+      this.sundayStart = this.hourStart      
+    }
   }
 
   hourEndChanged(){
-    console.log(this.hourEnd)
+    if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){      
+      this.mondayEnd = this.hourEnd      
+      this.tuesdayEnd = this.hourEnd      
+      this.wednesdayEnd = this.hourEnd      
+      this.thursdayEnd = this.hourEnd      
+      this.fridayEnd = this.hourEnd      
+      this.saturdayEnd = this.hourEnd      
+      this.sundayEnd = this.hourEnd
+    }
+
   }
 
 }

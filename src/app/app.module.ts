@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule, Injectable, Injector } from '@angular/core';
+import { ErrorHandler, NgModule, Injector } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
@@ -25,6 +25,7 @@ import { AuthProvider } from '../providers/auth/auth';
 
 import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-content.component';
 import { NgCalendarModule  } from 'ionic2-calendar';
+import { MomentsProvider } from '../providers/moments/moments';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { NgCalendarModule  } from 'ionic2-calendar';
     HttpdProvider,
     DataInfoProvider,
     UiUtilsProvider,
-    AuthProvider
+    AuthProvider,
+    MomentsProvider
   ]
 })
 

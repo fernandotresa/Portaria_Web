@@ -32,8 +32,11 @@ export class DataInfoProvider {
   titleCheckSaturnday: string = "Verificar horários de sábado"
   titleCheckSunday: string = "Verificar horários de domingo"
 
+  titlePeriodDays: string = "Período dias"  
   titleDayStart: string = "Data inicial"
-  titleEndStart: string = "Data final"
+  titleDayEnd: string = "Data final"
+  titleHourStart: string = "Hora inicial"
+  titleHourEnd: string = "Hora final"
 
   titleAdd: string = "Adicionar"
   titleAddAccess: string = "Adicionar acesso"

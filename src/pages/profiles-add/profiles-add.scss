@@ -18,9 +18,12 @@ page-profiles-add {
     border: 0px;
     border-bottom: none;
     border-radius: 0px;
-
-}
-
+ }
+ 
+    
+  .mg-left {
+    margin-left: 20px;
+  }
 
     .align-left {
       align-items: left;
@@ -44,12 +47,20 @@ page-profiles-add {
       border-color: $black-opct-1 !important;
     }
 
-    .stroke-bottom{
+    .stroke-bottom-green{
 
       border-bottom: 1px solid #ccc;
       border-bottom-width: 1px;
       border-bottom-style: solid;
-      border-bottom-color: rgb(204, 204, 204);
+      border-bottom-color: green;
+    }
+
+    .stroke-bottom-red{
+
+      border-bottom: 1px solid #ccc;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: red;
     }
 
     .item-datetime ion-datetime {

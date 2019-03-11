@@ -6,13 +6,13 @@
   <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title>   
 
     <ion-buttons end>
-            <button ion-button color="white_" (click)="goHome()">
-            <ion-icon name="home"></ion-icon></button>
-        </ion-buttons>
+        <button ion-button color="white_" (click)="goHome()">
+        <ion-icon name="home"></ion-icon></button>
+    </ion-buttons>
 
     <ion-buttons end>
         <button ion-button menuToggle color="white_">
-            <ion-icon name="menu"></ion-icon></button>
+        <ion-icon name="menu"></ion-icon></button>
     </ion-buttons>  
    
  </ion-navbar>  
@@ -22,19 +22,19 @@
 
 <ion-content padding>
 
-<ion-list no-lines>
+<ion-list lines="none">
 
   <ion-list-header color="primary" *ngIf="! selectedAccessType">{{dataInfo.titleProfile}}</ion-list-header>  
   <ion-list-header color="primary" *ngIf="selectedAccessType">{{selectedAccessType}}</ion-list-header>  
 
-  <ion-item no-lines>
-    <ion-label>{{dataInfo.titleName}}</ion-label>
-    <ion-input type="text" [(ngModel)]="name" text-right></ion-input>
-  </ion-item>
+    <ion-item no-lines>
+        <ion-label>{{dataInfo.titleName}}</ion-label>
+        <ion-input type="text" [(ngModel)]="name" text-right></ion-input>
+    </ion-item>
 
-  <ion-item no-lines>
-      <ion-label>{{dataInfo.titleDescription}}</ion-label>
-      <ion-input type="text" [(ngModel)]="desc" text-right></ion-input>
+    <ion-item no-lines>
+        <ion-label>{{dataInfo.titleDescription}}</ion-label>
+        <ion-input type="text" [(ngModel)]="desc" text-right></ion-input>
     </ion-item>
 
     <ion-item no-lines *ngIf="false">
@@ -43,27 +43,64 @@
       <ion-select [(ngModel)]="selectedAccessType">
         <ion-option  *ngFor="let type of (accessTypes | async)?.success" no-lines>{{type.name}}</ion-option>        
       </ion-select>
+      
     </ion-item>
-
-    <ion-item>
-
+    
+    <ion-item no-lines>
         <ion-row>
-            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
                 <ion-label>{{dataInfo.titleDayStart}}</ion-label>
             </ion-col>
 
-            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-                <ion-datetime  *ngIf="selectedAccessType === 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>
-                <ion-datetime  *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom" displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateStart" (ionChange)="dataStartChanged()"  min="2000" max="2099"></ion-datetime>
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileExpire || selectedAccessType === dataInfo.titleProfileVacation">
+                    <ion-datetime class="stroke-bottom text-green" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: right;"
+                        [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>                
+                </ion-col>
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
+                <ion-datetime class="stroke-bottom text-green" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;"
+                    [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>                
             </ion-col>                        
 
-            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-                <ion-label>{{dataInfo.titleEndStart}}</ion-label>
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire && selectedAccessType !== dataInfo.titleProfileVacation">
+                <ion-label>{{dataInfo.titleHourStart}}</ion-label>
             </ion-col>
 
-            <ion-col *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
-                <ion-datetime *ngIf="selectedAccessType === 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"  min="2000" max="2099"></ion-datetime>
-                <ion-datetime *ngIf="selectedAccessType !== 'Período'" class="stroke-bottom"  displayFormat="DD/MM/YYYY HH:mm" pickerFormat="DD/MM/YYYY HH:mm" [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()"   min="2000" max="2099"></ion-datetime>
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire && selectedAccessType !== dataInfo.titleProfileVacation">
+
+                <ion-datetime class="stroke-bottom text-green" displayFormat="HH:mm:ss" pickerFormat="HH:mm:ss" [(ngModel)]="hourStart" style="width: 100%; text-align: right;"
+                    (ionChange)="hourStartChanged()"  min="2000" max="2099"></ion-datetime>
+            </ion-col>
+            
+        </ion-row>        
+    </ion-item>    
+
+    <ion-item no-lines>
+        <ion-row>         
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
+                <ion-label>{{dataInfo.titleDayEnd}}</ion-label>
+            </ion-col>
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileExpire || selectedAccessType === dataInfo.titleProfileVacation">
+                <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: right;"
+                    [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
+            </ion-col>         
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
+                    <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;"
+                        [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
+                </ion-col>         
+                        
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire && selectedAccessType !== dataInfo.titleProfileVacation">
+                <ion-label>{{dataInfo.titleHourEnd}}</ion-label>
+            </ion-col>
+            
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire && selectedAccessType !== dataInfo.titleProfileVacation">                
+
+                <ion-datetime class="stroke-bottom"  displayFormat="HH:mm:ss" pickerFormat="HH:mm:ss" [(ngModel)]="hourEnd"  style="width: 100%; text-align: right;"
+                    (ionChange)="hourEndChanged()"   min="2000" max="2099"></ion-datetime>
             </ion-col>
 
         </ion-row>        
@@ -83,10 +120,9 @@
 
     </ion-list-header>               
 
-        <ion-toolbar no-border-top *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'"  color="primary">
+        <ion-toolbar no-border-top *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek"  color="primary">
 
         <ion-segment mode="md">
-
             <button ion-button class="text-white" (click)="lastMonth()"><ion-label>Anterior</ion-label></button>
             <button ion-button class="text-white segment-button-checked" (click)="today()" text-uppercase text-center><ion-label>{{selectedMonth}}</ion-label></button>
             <button ion-button class="text-white" (click)="nextMonth()"><ion-label>Próximo</ion-label></button>
@@ -120,12 +156,12 @@
         [autoSelect]="false"
         [lockSwipes]="lockSwipe"
         class="has-header"
-        *ngIf="selectedAccessType && selectedAccessType !== 'Dias da Semana + horários'">
+        *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
       </calendar>           
 
-  <ion-list-header color="primary" *ngIf="selectedAccessType == 'Dias da Semana + horários'">{{dataInfo.titleDaysWeek}}</ion-list-header>  
+  <ion-list-header color="primary" *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">{{dataInfo.titleDaysWeek}}</ion-list-header>  
 
-    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+    <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
       <ion-item no-lines item-end>
           <ion-checkbox [(ngModel)]="monday"></ion-checkbox>
           <ion-label>{{dataInfo.titleMonday}}</ion-label>  
@@ -138,7 +174,7 @@
       </ion-item>     
     </ion-item>
 
-    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+    <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
       <ion-item no-lines item-end>
         
           <ion-checkbox [(ngModel)]="tuesday"></ion-checkbox>
@@ -152,7 +188,7 @@
       </ion-item>     
     </ion-item>
 
-  <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+  <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
     <ion-item no-lines item-end>
         <ion-checkbox [(ngModel)]="wednesday"></ion-checkbox>
         <ion-label>{{dataInfo.titleWednesday}}</ion-label>  
@@ -165,7 +201,7 @@
     </ion-item>     
   </ion-item>
 
-  <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+  <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
       <ion-item no-lines item-end>
           <ion-checkbox [(ngModel)]="thursday"></ion-checkbox>
           <ion-label>{{dataInfo.titleThursday}}</ion-label>  
@@ -178,7 +214,7 @@
       </ion-item>     
     </ion-item>
 
-    <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+    <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
         <ion-item no-lines item-end>
             <ion-checkbox [(ngModel)]="friday"></ion-checkbox>
             <ion-label>{{dataInfo.titleFriday}}</ion-label>  
@@ -191,7 +227,7 @@
         </ion-item>     
       </ion-item>
 
-      <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+      <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
           <ion-item no-lines item-end>
               <ion-checkbox [(ngModel)]="saturday"></ion-checkbox>
               <ion-label>{{dataInfo.titleSaturday}}</ion-label>  
@@ -205,7 +241,7 @@
           </ion-item>     
         </ion-item>
 
-      <ion-item no-lines *ngIf="selectedAccessType == 'Dias da Semana + horários'">              
+      <ion-item no-lines *ngIf="selectedAccessType == dataInfo.titleProfileDayweek">              
           <ion-item no-lines item-end>
               <ion-checkbox  checked="false"  [(ngModel)]="sunday"></ion-checkbox>
               <ion-label>{{dataInfo.titleSunday}}</ion-label>  

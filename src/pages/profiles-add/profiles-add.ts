@@ -73,7 +73,11 @@ export class ProfilesAddPage {
   dateStart: any
   dateEnd: any
 
+  hourStart: any
+  hourEnd: any
+
   shiftClicked: Boolean = false
+  selectDateTimeVisible: Boolean = true
 
   calendar = {
     mode: 'month',
@@ -117,6 +121,9 @@ export class ProfilesAddPage {
     this.getAccessTypes()    
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")    
     this.onViewTitleChanged(this.selectedMonth)
+    this.hourStart = moment(this.selectedDay).startOf('day').format('HH:mm:ss')
+    this.hourEnd = moment(this.selectedDay).endOf('day').format('HH:mm:ss')
+    this.selectDateTimeVisible = true
   }
 
   ngAfterViewInit() {
@@ -144,6 +151,7 @@ export class ProfilesAddPage {
     this.selectedAccessType = this.profile.type    
 
     let type = this.profile.id_type
+    this.selectDateTimeVisible = true
 
     if(type === 1)    
       this.loadDatesProfileExpire()
@@ -162,7 +170,8 @@ export class ProfilesAddPage {
 
     this.name = this.profile.name
     this.desc = this.profile.description
-    this.selectedAccessType = this.profile.type     
+    this.selectedAccessType = this.profile.type  
+    this.selectDateTimeVisible = true    
 
     let type = this.profile.id_type
 
@@ -197,28 +206,30 @@ export class ProfilesAddPage {
     this.calendarDisabled = true     
     let events = this.eventSource;
 
-    let total = data.success.length
-    let atual = 0
-
     data.success.forEach(element => {
 
       let dateS = moment(element.datetime_start).utc().format()
-      let dateF = moment(element.datetime_end).utc().format()
-
+      let dateF = moment(element.datetime_end).utc().format()            
+      
       let datetime_start = this.parseTimestamp(dateS)
-      let datetime_end = new Date(dateF)
+      let datetime_end = this.parseTimestamp(dateF)
 
+      datetime_start.setDate(moment(element.datetime_start).utc().date())
+      datetime_start.setHours(moment(element.datetime_start).utc().hours())
+      datetime_start.setMinutes(moment(element.datetime_start).utc().minutes())
+
+      datetime_end.setDate(moment(element.datetime_end).utc().date())
+      datetime_end.setHours(moment(element.datetime_end).utc().hours())
+      datetime_end.setMinutes(moment(element.datetime_end).utc().minutes())
+      
       this.dateStart = dateS
       this.dateEnd = dateF      
 
       let colorS = this.getColorStatus(1)
 
-      if(total === atual)
-        colorS = this.getColorStatus(0)
-
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente',  color: colorS}      
+      
       events.push(event);
-      atual++
     });  
     
     this.eventSource = []
@@ -257,9 +268,17 @@ export class ProfilesAddPage {
       let dateS = moment(element.datetime_start).utc().format()
       let dateF = moment(element.datetime_end).utc().format()
 
-      let datetime_start = this.parseTimestamp(dateS)    
-      let datetime_end = new Date(dateF)
+      let datetime_start = this.parseTimestamp(dateS)          
+      let datetime_end = this.parseTimestamp(dateS)
 
+      datetime_start.setDate(moment(element.datetime_start).utc().date())
+      datetime_start.setHours(moment(element.datetime_start).utc().hours())
+      datetime_start.setMinutes(moment(element.datetime_start).utc().minutes())
+
+      datetime_end.setDate(moment(element.datetime_end).utc().date())
+      datetime_end.setHours(moment(element.datetime_end).utc().hours())
+      datetime_end.setMinutes(moment(element.datetime_end).utc().minutes())
+      
       this.dateEnd = dateF
 
       let colorS = this.getColorStatus(1)
@@ -284,17 +303,14 @@ export class ProfilesAddPage {
     });
   }
 
-  parseTimestamp(timestampStr) {
-    return new Date(new Date(timestampStr).getTime() + (new Date().getTimezoneOffset() * 60 * 3000));
-  };
-
-  parseTimestampEnd(timestampStr) {
-    return new Date(new Date(timestampStr).getTime() - (new Date().getTimezoneOffset() * 60 * 3000));
+  parseTimestamp(timestampStr) {          
+    return new Date(timestampStr)
   };
 
   loadWeekdaysProfile(){
 
     let idProfile = this.profile.id
+    this.selectDateTimeVisible = false
     
     this.httpd.getProfileInfo(idProfile).subscribe(data => {
       this.loadWeekdaysProfileContinue(data)
@@ -423,7 +439,6 @@ export class ProfilesAddPage {
         
         let day = new Date(this.eventSource[i].startTime)
         let isSame = moment(day).isSame(dayClicked, 'day')    
-        console.log(isSame)
 
         if(isSame){
           this.calendarDisabled = true
@@ -434,7 +449,6 @@ export class ProfilesAddPage {
       
       if(refresh)
       this.checkAccessType(ev)  
-
     }        
   }
 
@@ -510,7 +524,6 @@ export class ProfilesAddPage {
     });
   }
 
-
   addEventDatetime(data){    
 
     let eventData = data
@@ -546,25 +559,43 @@ export class ProfilesAddPage {
     if(moment(this.selectedDay).isValid()){
 
       this.calendarDisabled = true     
-      let events = this.eventSource;
-      
-      let start = moment(this.selectedDay).utc().startOf('day').format()
-      let end = moment(this.selectedDay).utc().endOf('day').format()
-      
-      let startDate = this.parseTimestamp(start)    
-      let endDate = this.parseTimestampEnd(end)
-      
-      if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
+      this.updatingDates = true
+
+      let events = this.eventSource;            
+
+      let startDate = this.parseTimestamp(moment(this.selectedDay))
+      let endDate = this.parseTimestamp(moment(this.selectedDay))
+
+      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+        
+        let h = this.hourStart.substring(0, 2);
+        let m = this.hourStart.substring(3, 5);
+        let s = this.hourStart.substring(6, 8);
+
+        let he = this.hourEnd.substring(0, 2);
+        let me = this.hourEnd.substring(3, 5);
+        let se = this.hourEnd.substring(6, 8);
+
+        startDate.setHours(h, m, s)
+        endDate.setHours(he, me, se)
+        
+      } else {
+
+        startDate.setHours(0, 0, 1)
+        endDate.setHours(23, 59, 0)
+      }                      
+
+      if(this.selectedAccessType === this.dataInfo.titleProfileExpire 
+        || this.selectedAccessType === this.dataInfo.titleProfileVacation){
 
         if(events.length === 1){
           events[0].endTime = endDate
         }
       }
 
-      let colorS = this.getColorStatus(1)
-      
+      let colorS = this.getColorStatus(1)      
       let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: colorS}        
-      
+
       events.push(event);     
     
       this.eventSource = []
@@ -575,6 +606,7 @@ export class ProfilesAddPage {
         
           setTimeout( () => {
             self.calendarDisabled = false
+            self.updatingDates = false
             self.updateInputs()
           }, 1000)
         
@@ -587,22 +619,38 @@ export class ProfilesAddPage {
     if(moment(this.selectedDay).isValid()){
       
       this.calendarDisabled = true     
+      this.updatingDates = true
       let events = this.eventSource;    
 
-      let start = moment(this.selectedDay).utc().startOf('day').format()
-      let end = moment(this.selectedDay).utc().endOf('day').format()
+      let startDate = this.parseTimestamp(moment(this.selectedDay))
+      let endDate = this.parseTimestamp(moment(this.selectedDay))
 
-      let startDate = this.parseTimestamp(start)
-      let endDate = this.parseTimestampEnd(end)
+      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+
+        let h = this.hourStart.substring(0, 2);
+        let m = this.hourStart.substring(3, 5);
+        let s = this.hourStart.substring(6, 8);
+
+        let he = this.hourEnd.substring(0, 2);
+        let me = this.hourEnd.substring(3, 5);
+        let se = this.hourEnd.substring(6, 8);
+
+        startDate.setHours(h, m, s)
+        endDate.setHours(he, me, se)
+        
+      } else {
+
+        startDate.setHours(0, 0, 0)
+        endDate.setHours(23, 59, 0)
+      }  
 
       this.updateInputs()
       let colorS = this.getColorStatus(1)
 
-      let event = { startTime: startDate, endTime: endDate, 
-        title: 'Carregado automaticamente',  color: colorS}    
+      let event = { startTime: startDate, endTime: endDate,  title: 'Carregado automaticamente',  color: colorS}    
 
       events.push(event);     
-    
+
       this.eventSource = []
 
       if(events.length === 2){     
@@ -611,11 +659,27 @@ export class ProfilesAddPage {
 
         for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
 
-          let startB = moment(m).utc().startOf('day').format()
-          let endB = moment(m).utc().endOf('day').format()
+          let startDateB = this.parseTimestamp(moment(m))
+          let endDateB = this.parseTimestamp(moment(m))
 
-          let startDateB = this.parseTimestamp(startB)
-          let endDateB = this.parseTimestampEnd(endB)
+          if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+            
+            let h = this.hourStart.substring(0, 2);
+            let m = this.hourStart.substring(3, 5);
+            let s = this.hourStart.substring(6, 8);
+
+            let he = this.hourEnd.substring(0, 2);
+            let me = this.hourEnd.substring(3, 5);
+            let se = this.hourEnd.substring(6, 8);
+
+            startDateB.setHours(h, m, s)
+            endDateB.setHours(he, me, se)
+            
+          } else {
+    
+            startDateB.setHours(0, 0, 0)
+            endDateB.setHours(23, 59, 0)
+          }  
 
           let eventB = { startTime: startDateB, endTime: endDateB, 
             title: 'Carregado automaticamente',  color: colorS}    
@@ -624,15 +688,18 @@ export class ProfilesAddPage {
         }
       }
 
+      let self = this 
+
       setTimeout(() => {
-        this.eventSource = events;
+        self.eventSource = events;
         
         setTimeout( () => {
-          this.calendarDisabled = false
+          self.calendarDisabled = false
+          self.updatingDates = false
+          self.updateInputs()
         }, 1000)
         
         })
-
     }    
   }
 
@@ -865,7 +932,9 @@ export class ProfilesAddPage {
 
       let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
       
-      loading.present()        
+      loading.present()       
+      
+      this.name, this.desc, this.selectedAccessType, start0, end0, this.profile.id, start1, end1
 
       this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, 
         start0, end0, this.profile.id, start1, end1)    
@@ -972,7 +1041,6 @@ export class ProfilesAddPage {
   }
 
   onCurrentDateChanged(event){   
-
     if(moment(event).isValid()){
       let month = moment(event).format("MMMM")    
       this.onViewTitleChanged(month)
@@ -980,52 +1048,8 @@ export class ProfilesAddPage {
     } else {      
       let month = moment(new Date()).format("MMMM")    
       this.onViewTitleChanged(month)
-    }
-    
-  }
-
-  dataStartChanged(){
-
-    if(! this.updatingDates && !this.updatingClick){
-
-      this.updatingDates = true
-      this.restartCalendar()    
-      this.dateEnd = ""
-      let dateS = this.parseTimestamp(this.dateStart)
-      this.selectedDay = dateS
-
-      let ev = []
-      
-      this.checkAccessType(ev)   
-      this.updatingDates = false
-    }
-     
-  }
-
-  dataEndChanged(){  
-    
-    if(! this.updatingDates && !this.updatingClick){
-
-
-      this.updatingDates = true
-
-      if(this.dateStart.length > 0){
-
-        let dateS = this.parseTimestamp(this.dateEnd)        
-
-        this.selectedDay = dateS  
-        let ev = []
-        this.checkAccessType(ev)   
-  
-      } 
-      else {
-        this.dateEnd = ""
-      }
-
-      this.updatingDates = false
-
-    }             
-  }
+    }    
+  }  
 
   clearCal(){
     this.dateEnd = ""
@@ -1039,7 +1063,6 @@ export class ProfilesAddPage {
     setTimeout(function(){            
       self.viewTitle = moment().format()        
     }, 2000)
-
   }
 
   updateInputs(){
@@ -1066,14 +1089,14 @@ export class ProfilesAddPage {
       if(total === 1){   
         
         let start = this.eventSource[0].startTime        
-        let dateS = moment(start).utc().format()             
+        let dateS = moment(start).format()             
         this.dateStart = dateS        
       }
         
       if(total > 1){        
 
         let start = this.eventSource[1].endTime
-        let dateF = moment(start).utc().format()             
+        let dateF = moment(start).format()             
         this.dateEnd = dateF        
       }        
         
@@ -1146,6 +1169,65 @@ export class ProfilesAddPage {
     this.onViewTitleChanged(this.selectedMonth)
   }
   
+  dataStartChanged(){
+
+    if(! this.updatingDates && !this.updatingClick){
+
+      this.updatingDates = true
+      this.restartCalendar()    
+      this.dateEnd = ""
+
+      let startDate = this.parseTimestamp(moment(this.dateStart))      
+
+      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime)
+        startDate.setHours(this.hourStart)        
+        
+      else 
+        startDate.setHours(0, 0, 1)                              
+
+      this.selectedDay = startDate
+      let ev = []    
+      this.checkAccessType(ev)   
+      this.updatingDates = false
+    }     
+  }
+
+  dataEndChanged(){  
+    
+    if(! this.updatingDates && !this.updatingClick){
+
+      this.updatingDates = true
+
+      if(this.dateStart.length > 0){
+
+        let endDate = this.parseTimestamp(moment(this.dateEnd))      
+
+        if(this.selectedAccessType === this.dataInfo.titleProfileDatetime)
+          endDate.setHours(this.hourStart)        
+          
+        else 
+          endDate.setHours(0, 0, 1)  
+
+        this.selectedDay = endDate
+        let ev = []
+        this.checkAccessType(ev)   
   
+      } 
+      else {
+        this.dateEnd = ""
+      }
+
+      this.updatingDates = false
+
+    }             
+  }
+
+  hourStartChanged(){
+    console.log(this.hourStart)
+  }
+
+  hourEndChanged(){
+    console.log(this.hourEnd)
+  }
 
 }

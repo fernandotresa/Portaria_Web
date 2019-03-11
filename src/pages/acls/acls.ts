@@ -121,8 +121,6 @@ export class AclsPage {
   }
 
   edit(acl){
-    console.log(acl)
-
     this.navCtrl.push('AclsAddPage', {loadProfile: true, profile: acl})
   }
 

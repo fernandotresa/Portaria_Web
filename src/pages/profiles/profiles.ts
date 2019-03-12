@@ -58,7 +58,7 @@ export class ProfilesPage {
   }
   
   addPermissionGroups(){
-    console.log(this.selectedTypeName)
+    console.log(this.selectedTypeName, this.selectedType)
 
     this.navCtrl.push(ProfilesAddPage, {'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})  
   }
@@ -117,16 +117,19 @@ export class ProfilesPage {
   }
 
   edit(group){
-    this.navCtrl.push(ProfilesAddPage, {loadProfile: true, profile: group})
+
+    this.navCtrl.push(ProfilesAddPage, {loadProfile: true, profile: group, 'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})
   }
 
   copy(group){
-    this.navCtrl.push(ProfilesAddPage, {loadProfile: false, profile: group, copyProfile: true})
+    this.navCtrl.push(ProfilesAddPage, {loadProfile: false, profile: group, copyProfile: true, 
+      'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})
   }
 
   setSelectedType(type: number){    
 
     this.selectedType = type
+    console.log(this.selectedType)
 
     this.httpd.getAccessGroupsTypeById(this.selectedType)
 

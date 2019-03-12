@@ -26,6 +26,9 @@ import { AuthProvider } from '../providers/auth/auth';
 import { SideMenuContentComponent } from '../shared/side-menu-content/side-menu-content.component';
 import { NgCalendarModule  } from 'ionic2-calendar';
 import { MomentsProvider } from '../providers/moments/moments';
+import { DatetimeUtilsProvider } from '../providers/datetime-utils/datetime-utils';
+import { ExpireUtilsProvider } from '../providers/expire-utils/expire-utils';
+import { DayweekUtilsProvider } from '../providers/dayweek-utils/dayweek-utils';
 
 @NgModule({
   declarations: [
@@ -64,7 +67,10 @@ import { MomentsProvider } from '../providers/moments/moments';
     DataInfoProvider,
     UiUtilsProvider,
     AuthProvider,
-    MomentsProvider
+    MomentsProvider,
+    DatetimeUtilsProvider,
+    ExpireUtilsProvider,
+    DayweekUtilsProvider
   ]
 })
 

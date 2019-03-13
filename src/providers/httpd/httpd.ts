@@ -158,11 +158,10 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addAccessProfileExpire", myData, {headers: headers})
   }
 
-  updateAccessProfileExpire(name_, desc_, type_, start0_, end0_, idProfile_, start1_, end1_){
+  updateAccessProfileExpire(name_, desc_, type_, start_, end_, idProfile_){
 
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, 
-      desc: desc_, start0: start0_, end0: end0_, start1: start1_, end1: end1_, 
-      type: type_, idProfile: idProfile_});
+      desc: desc_, start: start_, end: end_, type: type_, idProfile: idProfile_});
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/updateAccessProfileExpire", myData, {headers: headers})

@@ -107,5 +107,35 @@ export class DatetimeUtilsProvider {
     });
   }
 
+  addProfileDateTimes() {    
+   /* let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+    loading.present()
+      
+      this.httpd.addAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource)    
+      .subscribe( () => {
+
+        loading.dismiss()
+
+        this.navCtrl.pop()
+        this.events.publish('refreshProfiles', this.selectedType); 
+        this.uiUtils.showAlertSuccess()
+      })*/
+  } 
+
+  updateProfileDateTimes(){
+   /* let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+      
+      this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
+      .subscribe( () => {
+
+        loading.dismiss()
+
+        this.navCtrl.pop()
+        this.events.publish('refreshProfiles', this.profile.id_type);
+        this.uiUtils.showAlertSuccess()
+      })*/
+  }
+
 
 }

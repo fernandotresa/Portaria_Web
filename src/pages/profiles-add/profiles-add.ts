@@ -2,9 +2,12 @@ import { Component, HostListener } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { MomentsProvider } from '../../providers/moments/moments';
+
 import { DatetimeUtilsProvider } from '../../providers/datetime-utils/datetime-utils';
 import { ExpireUtilsProvider } from '../../providers/expire-utils/expire-utils';
 import { DayweekUtilsProvider } from '../../providers/dayweek-utils/dayweek-utils';
+import { CalendarUtilsProvider } from '../../providers/calendar-utils/calendar-utils';
+
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
@@ -38,25 +41,19 @@ export class ProfilesAddPage {
   updatingDates: Boolean = false
   updatingClick: Boolean = false
 
-  lockSwipe: Boolean = false
-
-  
+  lockSwipe: Boolean = false  
 
   accessTypes: Observable<any>;
   selectedAccessType: string
-  lastSelectedAccessType = new Date();
-  
-  dateStartDate: Date = new Date()
+  lastSelectedDay = new Date();
+    
   dateStart: string
   dateEnd: string
 
   hourStart: any
   hourEnd: any
 
-  placeholderDate: any
-
   shiftClicked: Boolean = false
-  selectDateTimeVisible: Boolean = true
 
   calendar = {
     mode: 'month',
@@ -72,16 +69,7 @@ export class ProfilesAddPage {
 
   @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
     this.shiftClicked = false   
-  }
-
-  customOptions: any = {
-    buttons: [{
-      text: 'Clear',
-      handler: () => {
-        this.placeholderDate = null;
-      }
-    }]
-  };
+  } 
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -93,6 +81,7 @@ export class ProfilesAddPage {
     public datetimeUtils: DatetimeUtilsProvider,
     public expireUtils: ExpireUtilsProvider,
     public dayweekUtils: DayweekUtilsProvider,
+    public calendarUtils: CalendarUtilsProvider,
     public navParams: NavParams) {  
 
       moment.locale('pt-br');       
@@ -110,7 +99,6 @@ export class ProfilesAddPage {
     if(selectedTypeName)
       this.selectedAccessType = selectedTypeName    
     
-    console.log(this.selectedType)
     this.startInterface()  
   }
 
@@ -130,8 +118,6 @@ export class ProfilesAddPage {
     this.onViewTitleChanged(this.selectedMonth)
     this.hourStart = moment(this.selectedDay).startOf('day').format('HH:mm:ss')
     this.hourEnd = moment(this.selectedDay).endOf('day').format('HH:mm:ss')
-    
-    this.selectDateTimeVisible = true
   }
 
   subscribeStuff(){
@@ -149,12 +135,20 @@ export class ProfilesAddPage {
       this.refreshCalendar()
     })
 
+    this.events.subscribe('refreshCalendar', () => {         
+      this.refreshCalendar()
+    })
+
     this.events.subscribe('dateStart', dateStart => {
+      this.updatingDates = true  
       this.dateStart = dateStart
+      this.updatingDates = false
     })
 
     this.events.subscribe('dateEnd', dateEnd => {
+      this.updatingDates = true 
       this.dateEnd = dateEnd
+      this.updatingDates = false
     })
 
     this.events.subscribe('navCtrlPop', () => {
@@ -166,22 +160,21 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('updateDateStart', startDate => {
-      console.log("updateDateStart")
-      console.log(startDate)
       this.updatingDates = true      
       this.dateStart = moment(startDate).format()
-      this.updatingDates = false
+      
+      setTimeout(() => {
+        this.updatingDates = false  
+      });
     })
 
     this.events.subscribe('updateDateEnd', endDate => {
-      console.log("updateDateEnd")
-      console.log(endDate)
-
-
-
       this.updatingDates = true      
       this.dateEnd = moment(endDate).format()
-      this.updatingDates = false      
+      
+      setTimeout(() => {
+        this.updatingDates = false  
+      });
     })
   }
 
@@ -225,18 +218,17 @@ export class ProfilesAddPage {
     this.selectedAccessType = this.profile.type    
 
     let type = this.profile.id_type
-    this.selectDateTimeVisible = true
 
-    if(type === 1){      
-      this.updateItens()
-      this.expireUtils.loadDatesProfileExpire(this.profile.id)
-    }      
+    this.updateItens()
 
-   /* else if(type === 2)    
-      this.loadDatesProfileDatetime()      */
+    if(type === 1)
+      this.expireUtils.loadDatesProfileExpire(this.profile.id)        
+
+   else if(type === 2)    
+      this.datetimeUtils.loadDatesProfileDatetime(this.profile.id)
 
     else if(type === 3)    
-      this.loadWeekdaysProfile()
+      this.dayweekUtils.loadWeekdaysProfile(this.profile.id)
 
     else if(type === 4)    
       this.loadVacationsProfile()
@@ -247,21 +239,17 @@ export class ProfilesAddPage {
     this.name = this.profile.name
     this.desc = this.profile.description
     this.selectedAccessType = this.profile.type  
-    this.selectDateTimeVisible = true    
-
+    this.updatingDates = true
     let type = this.profile.id_type
 
-    if(type === 1){
-      this.updateItens()
-      this.expireUtils.loadDatesProfileExpire(this.profile.id)
-    }
-      
+    if(type === 1)
+      this.expireUtils.loadDatesProfileExpire(this.profile.id)        
 
-    /*else if(type === 2)    
-      this.loadDatesProfileDatetime()      */
+    else if(type === 2)    
+      this.datetimeUtils.loadDatesProfileDatetime(this.profile.id)
 
     else if(type === 3)    
-      this.loadWeekdaysProfile()
+      this.dayweekUtils.loadWeekdaysProfile(this.profile.id)
 
     else if(type === 4)    
       this.loadVacationsProfile()
@@ -277,58 +265,39 @@ export class ProfilesAddPage {
     return new Date(timestampStr)
   };
 
-  loadWeekdaysProfile(){
-
-    let idProfile = this.profile.id
-    this.selectDateTimeVisible = false
-    
-    this.httpd.getProfileInfo(idProfile).subscribe(data => {
-      this.loadWeekdaysProfileContinue(data)
-    })
-  }
-
-  loadWeekdaysProfileContinue(data){
-
-    /*this.calendarDisabled = true
-
-    data.success.forEach(element => {
-      this.populateDaysweek(element)      
-    });    
-
-    setTimeout( () => {
-      this.calendarDisabled = false
-    }, 1000);*/
-  }  
-
+  
   loadVacationsProfile(){    
    // this.loadDatesProfileDatetime()
   }
      
   onTimeSelected(ev) {            
-        
-    if(moment(this.selectedDay).isValid()){
-      this.selectedMonth  = moment(this.selectedDay).format("MMMM")
-      this.onViewTitleChanged(this.selectedMonth)
-    }
-    
-    if(! this.calendarDisabled)
-      this.onTimeSelectedContinue(ev)          
+
+    console.log("onTimeSelected", this.updatingDates,  this.lastSelectedDay)
+
+    if(this.lastSelectedDay === this.selectedDay){
+
+      if(! this.updatingDates && ! this.calendarDisabled){        
+  
+        if(moment(this.selectedDay).isValid()){
+  
+          this.updatingDates = true
+          this.calendarDisabled = true    
+
+          this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+          this.onViewTitleChanged(this.selectedMonth)
+          this.onTimeSelectedContinue(ev)
+        }                  
+      }         
+    }           
+
+    this.lastSelectedDay = this.selectedDay
+
   }
 
   onTimeSelectedContinue(ev){
 
     this.selectedDay = ev.selectedTime;    
 
-    if(this.shiftClicked)
-      this.onTimeSelectedContinueShift(ev)      
-    else
-      this.onTimeSelectedContinueNormal(ev)
-      
-    this.lastSelectedAccessType = this.selectedDay
-  }
-
-  onTimeSelectedContinueShift(ev){
-    
     let refresh = true
 
     let dayClicked = new Date(this.selectedDay)                
@@ -338,59 +307,28 @@ export class ProfilesAddPage {
       let day = new Date()
       let isSame = moment(day).isSame(dayClicked, 'day')    
 
-      if(isSame){
-        this.calendarDisabled = true        
+      if(isSame){            
         this.eventSource.splice(i, 1);
         refresh = false
-        this.refreshCalendar()     
       }
     }
     
     if(refresh)
-      this.checkAccessType(ev)       
-  }
-
-  onTimeSelectedContinueNormal(ev){    
-
-    if(this.lastSelectedAccessType == this.selectedDay){
-
-      let refresh = true
-
-      let dayClicked = new Date(this.selectedDay)                
-
-      for(let i = 0; i < this.eventSource.length; ++i){
-        
-        let day = new Date(this.eventSource[i].startTime)
-        let isSame = moment(day).isSame(dayClicked, 'day')    
-
-        if(isSame){
-          this.calendarDisabled = true
-          this.eventSource.splice(i, 1);
-          refresh = false
-        }
-      }
-      
-      if(refresh)
-      this.checkAccessType(ev)  
-    }        
-  }
+      this.checkAccessType(ev)         
+  }  
 
   checkAccessType(ev){
+        
+    this.updateItens() 
     
     if(this.selectedAccessType === this.dataInfo.titleProfileExpire)
-      this.confirmExpiration(ev)    
+      this.expireUtils.confirmExpiration(ev)
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.confirmDatetime(ev)    
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
       this.confirmDatetime(ev)    
-  }
-
-  confirmExpiration(ev){
-    this.calendarDisabled = true
-    this.updateItens()    
-    this.expireUtils.confirmExpiration(ev)
   }
     
   addEventDate(){ 
@@ -402,6 +340,8 @@ export class ProfilesAddPage {
   }
 
   addEventDateNormal(){    
+
+    console.log("Data valida", moment(this.selectedDay).isValid())
 
     if(moment(this.selectedDay).isValid()){
 
@@ -557,52 +497,18 @@ export class ProfilesAddPage {
       this.expireUtils.addProfileExpire()      
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
-      this.addProfileDateTimes()
+      this.datetimeUtils.addProfileDateTimes()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
-      this.addProfileDayWeek()
+      this.dayweekUtils.addProfileDayWeek()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
       this.addProfileVacation()
   }
-
-  addProfileDateTimes() {    
-    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-    loading.present()
-      
-      this.httpd.addAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource)    
-      .subscribe( () => {
-
-        loading.dismiss()
-
-        this.navCtrl.pop()
-        this.events.publish('refreshProfiles', this.selectedType); 
-        this.uiUtils.showAlertSuccess()
-      })
-  } 
-
+    
   
-  addProfileDayWeek(){
-    /*if(this.populateDayweekData())
-      this.addProfileDayWeekContinue(this.datesWeek)   */   
-  }
-
-  addProfileDayWeekContinue(data){
-    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-    loading.present()
-
-    this.httpd.addAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data)
-      .subscribe( () => {
-
-        loading.dismiss()
-        this.navCtrl.pop()
-        this.events.publish('refreshProfiles', this.selectedType); 
-        this.uiUtils.showAlertSuccess()
-      })
-  }
-
   addProfileVacation(){
-    this.addProfileDateTimes()
+    //this.addProfileDateTimes()
   }
 
   updateProfile(){
@@ -613,51 +519,18 @@ export class ProfilesAddPage {
       this.expireUtils.updateProfileExpire()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
-      this.updateProfileDateTimes()
+      this.datetimeUtils.updateProfileDateTimes()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
-      this.updateProfileDayWeek()
+      this.dayweekUtils.updateProfileDayWeek()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
       this.updateProfileVacation()
-  }
-  
-  updateProfileDateTimes(){
-    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-      loading.present()
-      
-      this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
-      .subscribe( () => {
-
-        loading.dismiss()
-
-        this.navCtrl.pop()
-        this.events.publish('refreshProfiles', this.profile.id_type);
-        this.uiUtils.showAlertSuccess()
-      })
-  }
+  }   
 
   updateProfileVacation(){
-    this.updateProfileDateTimes()
-  }
-
-  updateProfileDayWeek(){        
-
-    /*if(this.populateDayweekData()){
-
-      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-      loading.present()
-  
-      this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, this.datesWeek, this.profile.id)
-        .subscribe( () => {
-  
-          loading.dismiss()        
-          this.navCtrl.pop()
-          this.events.publish('refreshProfiles', this.profile.id_type);
-          this.uiUtils.showAlertSuccess()
-        })
-    }    */
-  }
+    //this.updateProfileDateTimes()
+  }  
 
   restartCalendar(){    
       
@@ -828,15 +701,16 @@ export class ProfilesAddPage {
   
   dataStartChanged(){
 
-    console.log("dataStartChanged", this.updatingDates, this.updatingClick, !this.updatingDates && !this.updatingClick)    
-
     if(!this.updatingDates && !this.updatingClick){      
 
       this.updatingDates = true
+
       this.restartCalendar()
-      this.dateEnd = ""
-     
-      let startDate =  moment(this.dateStart).toDate()
+
+      this.dateEnd = ""           
+
+      let startDate = new Date(moment(this.dateStart).utc().format("YYYY-MM-DDThh:mm:ss"))
+
       startDate.setHours(0, 1, 0)
 
       if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
@@ -848,41 +722,26 @@ export class ProfilesAddPage {
         startDate.setHours(h)
         startDate.setMinutes(m)
         startDate.setSeconds(s)        
-      }        
+      }   
                     
-      this.selectedDay = startDate
-      
+      this.selectedDay = startDate      
       let ev = []    
-      this.updatingDates = false
+      
       this.checkAccessType(ev)         
     }     
   }
 
-  dataEndChanged(){  
-        
-    console.log("dataEndChanged", this.updatingDates, this.updatingClick, !this.updatingDates && !this.updatingClick)    
-    
+  dataEndChanged(){            
 
     if(! this.updatingDates && !this.updatingClick && this.dateEnd.length > 0){
       
-
       if(moment(this.dateStart).isValid()){
 
        this.updatingDates = true
        this.shiftClicked = true
     
-        if(moment(this.dateEnd).isBefore(moment(this.dateStart))){
-          
-          let self = this
-
-          this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleDateendGreaterDateStart)
-
-            .present().then(function(){
-              self.dateEnd = ""
-              self.updatingDates = true
-              self.shiftClicked = true
-            }        
-          )      
+        if(moment(this.dateEnd).isBefore(moment(this.dateStart))){                    
+          this.dateEnd = ""
   
       } else 
           this.dataEndChangedContinue()        
@@ -918,8 +777,6 @@ export class ProfilesAddPage {
 
         this.selectedDay = endDate
         
-        console.log(this.selectedDay)
-
         let ev = []
         this.checkAccessType(ev)   
   
@@ -936,7 +793,6 @@ export class ProfilesAddPage {
     if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
 
     }
-
   }
 
   hourEndChanged(){

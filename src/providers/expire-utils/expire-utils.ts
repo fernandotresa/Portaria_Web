@@ -1,5 +1,6 @@
 import { Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
+import { CalendarUtilsProvider } from '../../providers/calendar-utils/calendar-utils';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
@@ -22,6 +23,7 @@ export class ExpireUtilsProvider {
   constructor(
     public httpd: HttpdProvider,
     public events: Events, 
+    public calendarUtils: CalendarUtilsProvider,
     public uiUtils: UiUtilsProvider) {
 
       this.eventSource = []
@@ -100,28 +102,21 @@ export class ExpireUtilsProvider {
         
     let events = this.eventSource;
 
-    data.success.forEach(element => {
+    let element = data.success[0]
 
-      let dateS = moment(element.datetime_start).utc().format()
-      let dateF = moment(element.datetime_end).utc().format()            
-      
-      let datetime_start = new Date(dateS)
-      let datetime_end = new Date(dateF)
+    let dateS = this.calendarUtils.parseDateBr(moment(element.datetime_start).utc().format())
+    let dateF = this.calendarUtils.parseDateBr(moment(element.datetime_end).format())
+        
+    let datetime_start = moment(dateS).toDate()                       
+    let datetime_end = moment(dateF).toDate()
+    
+    this.dateStart = dateS
+    this.dateEnd = dateF      
 
-      datetime_start.setDate(moment(element.datetime_start).utc().date())
-      datetime_start.setHours(moment(element.datetime_start).utc().hours())
-      datetime_start.setMinutes(moment(element.datetime_start).utc().minutes())
+    let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}            
+    events.push(event);
 
-      datetime_end.setDate(moment(element.datetime_end).utc().date())
-      datetime_end.setHours(moment(element.datetime_end).utc().hours())
-      datetime_end.setMinutes(moment(element.datetime_end).utc().minutes())
-      
-      this.dateStart = dateS
-      this.dateEnd = dateF      
-
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}            
-      events.push(event);
-    });       
+    console.log(events)
     
     this.eventSource = []
     
@@ -138,70 +133,76 @@ export class ExpireUtilsProvider {
 
   confirmExpiration(ev){
   
+    console.log("confirmExpiration", this.eventSource)
+
     let checkOk = this.checkDatesExpiration()    
         
-    if(checkOk)
-      this.addExpiration()        
+    if(! checkOk)
+      this.eventSource = []
+
+    this.addExpiration()           
 
   }
           
   checkDatesExpiration(){
-    let total = this.eventSource.length
-    let start =  total === 0
+    
     let checkOk = true;
 
-    if(!start){
+    if(this.eventSource.length > 0){
       let date0 = this.eventSource[0].startTime
+
       let isBefore = moment(this.selectedDay).isBefore(moment(date0))
 
-      if(isBefore){
-        checkOk = false
-        this.uiUtils.showAlert("Atenção", "Data final não pode ser antes da data inicial").present()
-      }      
+      if(isBefore)
+        checkOk = false       
     }  
+    
 
     return checkOk;
   }   
 
   addExpiration(){    
 
-    console.log(this.dateStart)
-
     if(moment(this.selectedDay).isValid()){
       
       this.events.publish('calendarDisabled', true)
       this.events.publish('updatingDates', true)      
 
-      let events = this.eventSource; 
-    
+      let events = this.eventSource
+
       let startDate = new Date(this.selectedDay)
       startDate.setHours(0, 0, 1) 
       
       let endDate = new Date(this.selectedDay)
       endDate.setHours(23, 59, 0)                     
-      
+    
+      if(this.eventSource.length > 0){
+
+        this.dateStart = moment(this.eventSource[0].startTime).toISOString()
+        startDate = moment(this.dateStart).toDate()               
+
+      } 
       
       let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}        
-      events.push(event);     
+      events.push(event);    
 
-      console.log(event)
-    
       this.eventSource = []          
 
       setTimeout(() => {
-        this.eventSource = events;
-        this.events.publish('calendarDisabled', false)
+        this.eventSource = events;        
+        this.events.publish('eventSource', this.eventSource);        
+        })
+
+      setTimeout(() => {
+        this.populateDates(startDate, endDate)  
+        this.events.publish('calendarDisabled', false)        
         this.events.publish('updatingDates', false)
         this.events.publish('updateInputs', false)
-        this.events.publish('eventSource', this.eventSource);
-        this.populateDates(startDate, endDate)  
-        })
+      })
     }    
   }
 
-  populateDates(startDate, endDate){
-
-    console.log(this.dateStart, this.dateEnd)
+  populateDates(startDate, endDate){  
 
     if(this.dateStart === undefined)
       this.events.publish('updateDateStart', startDate);
@@ -216,7 +217,10 @@ export class ExpireUtilsProvider {
       this.events.publish('updateDateEnd', endDate);
 
     else if(this.dateStart.length > 0 && this.dateEnd.length > 0)
-      this.events.publish('updateDateEnd', endDate);
+      this.events.publish('updateDateEnd', endDate);   
+
+    else 
+      console.log("Condição nao localizada")
   }
 
   addProfileExpire(){ 
@@ -248,8 +252,7 @@ export class ExpireUtilsProvider {
 
       .subscribe( () => {
 
-        loading.dismiss()
-               
+        loading.dismiss()               
         this.events.publish('refreshProfiles', this.selectedType); 
         this.events.publish('navCtrlPop', this.selectedType); 
         this.uiUtils.showAlertSuccess()
@@ -268,33 +271,15 @@ export class ExpireUtilsProvider {
  
   }
 
-  updateProfileContinue(){
+  updateProfileContinue(){    
+   
+    let start = moment(this.dateStart)
+    let end = moment(this.dateEnd)
 
-    let start0 = this.eventSource[0].startTime
-    let end0 = this.eventSource[0].endTime
-
-    let start1 = start0
-    let end1 = end0
-        
-    if(this.eventSource.length > 1){
-
-      start1 = this.eventSource[1].endTime
-      end1 = this.eventSource[1].endTime
-    }
-    
-    let start0F = moment(start0)
-    let start1F = moment(start1)
-
-    if(start1F.isBefore(start0F)){
-      this.uiUtils.showAlert("Atenção", "Data final não pode ser antes da data inicial").present()
-      this.events.publish('restartCalendar', 1); 
-
-    } else {
-
-      let loading = this.uiUtils.showLoading("Favor aguarde")          
+    let loading = this.uiUtils.showLoading("Favor aguarde")          
       loading.present()       
       
-      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start0, end0, this.profile.id, start1, end1)    
+      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end, this.profile.id)    
       .subscribe( () => {
 
         loading.dismiss()
@@ -303,7 +288,6 @@ export class ExpireUtilsProvider {
         this.events.publish('refreshProfiles', this.selectedType); 
         this.uiUtils.showAlertSuccess()
       })
-    }
   }
 
 }

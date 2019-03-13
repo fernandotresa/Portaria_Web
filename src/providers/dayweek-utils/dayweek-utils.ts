@@ -8,7 +8,18 @@ import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 @Injectable()
 export class DayweekUtilsProvider {
 
-  selectedAccessType;
+  eventSource: any = []
+  dateStart: string
+  dateEnd: string
+  selectedDay = new Date();
+  name: string
+  desc: string
+  selectedAccessType: string
+  profile: any
+  selectedType: string;
+  calendarDisabled:Boolean = false
+
+  
   hourStart: string;
   hourEnd: string;
 
@@ -92,6 +103,27 @@ export class DayweekUtilsProvider {
     this.saturdayEnd = this.hourEnd      
     this.sundayEnd = this.hourEnd    
   }
+
+  loadWeekdaysProfile(idProfile: number){    
+    
+    this.httpd.getProfileInfo(idProfile).subscribe(data => {
+      this.loadWeekdaysProfileContinue(data)
+    })
+  }
+
+  loadWeekdaysProfileContinue(data){
+
+    this.calendarDisabled = true
+
+    data.success.forEach(element => {
+      //this.populateDaysweek(element)      
+    });    
+
+    setTimeout( () => {
+      this.calendarDisabled = false
+    }, 1000);
+  }  
+
   
 
   populateDayweekData(){
@@ -179,6 +211,44 @@ export class DayweekUtilsProvider {
     }
 
     return true
+  }
+
+  addProfileDayWeek(){
+    /*if(this.populateDayweekData())
+      this.addProfileDayWeekContinue(this.datesWeek)   */   
+  }
+
+  addProfileDayWeekContinue(data){
+   /* let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+    loading.present()
+
+    this.httpd.addAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data)
+      .subscribe( () => {
+
+        loading.dismiss()
+        this.navCtrl.pop()
+        this.events.publish('refreshProfiles', this.selectedType); 
+        this.uiUtils.showAlertSuccess()
+      })*/
+  }
+
+
+  updateProfileDayWeek(){        
+
+    /*if(this.populateDayweekData()){
+
+      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      loading.present()
+  
+      this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, this.datesWeek, this.profile.id)
+        .subscribe( () => {
+  
+          loading.dismiss()        
+          this.navCtrl.pop()
+          this.events.publish('refreshProfiles', this.profile.id_type);
+          this.uiUtils.showAlertSuccess()
+        })
+    }    */
   }
 
 }

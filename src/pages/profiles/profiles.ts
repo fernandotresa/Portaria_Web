@@ -108,17 +108,21 @@ export class ProfilesPage {
   }
 
   removeContinue(group){
+
     this.httpd.delAccessGroups(group).subscribe(data => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
-        .then( () => {        
-          this.selectedType = 0
+        .then( () => { 
+
+          this.setSelectedType(this.selectedType)
+          
         })
     })
   }
 
   edit(group){
 
-    this.navCtrl.push(ProfilesAddPage, {loadProfile: true, profile: group, 'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})
+    this.navCtrl.push(ProfilesAddPage, {loadProfile: true, profile: group, 
+      'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})
   }
 
   copy(group){
@@ -129,8 +133,6 @@ export class ProfilesPage {
   setSelectedType(type: number){    
 
     this.selectedType = type
-    console.log(this.selectedType)
-
     this.httpd.getAccessGroupsTypeById(this.selectedType)
 
     .subscribe(data => {

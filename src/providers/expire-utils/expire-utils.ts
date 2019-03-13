@@ -124,8 +124,6 @@ export class ExpireUtilsProvider {
     });       
     
     this.eventSource = []
-    console.log(events)
-
     
     setTimeout(() => {
       this.eventSource = events;
@@ -167,6 +165,8 @@ export class ExpireUtilsProvider {
 
   addExpiration(){    
 
+    console.log(this.dateStart)
+
     if(moment(this.selectedDay).isValid()){
       
       this.events.publish('calendarDisabled', true)
@@ -178,25 +178,45 @@ export class ExpireUtilsProvider {
       startDate.setHours(0, 0, 1) 
       
       let endDate = new Date(this.selectedDay)
-      endDate.setHours(23, 59, 0)
-
-      if(events.length === 1){
-        events[0].endTime = endDate
-      }                    
+      endDate.setHours(23, 59, 0)                     
+      
       
       let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}        
       events.push(event);     
+
+      console.log(event)
     
-      this.eventSource = []      
+      this.eventSource = []          
 
       setTimeout(() => {
         this.eventSource = events;
         this.events.publish('calendarDisabled', false)
         this.events.publish('updatingDates', false)
         this.events.publish('updateInputs', false)
-        this.events.publish('eventSource', this.eventSource);		        
+        this.events.publish('eventSource', this.eventSource);
+        this.populateDates(startDate, endDate)  
         })
     }    
+  }
+
+  populateDates(startDate, endDate){
+
+    console.log(this.dateStart, this.dateEnd)
+
+    if(this.dateStart === undefined)
+      this.events.publish('updateDateStart', startDate);
+
+    else if(this.dateStart.length === 0 && this.dateEnd.length === 0)
+      this.events.publish('updateDateStart', startDate);
+
+    else if(this.dateStart.length > 0 && this.dateEnd === undefined)
+      this.events.publish('updateDateEnd', endDate);
+
+    else if(this.dateStart.length > 0 && this.dateEnd.length === 0)
+      this.events.publish('updateDateEnd', endDate);
+
+    else if(this.dateStart.length > 0 && this.dateEnd.length > 0)
+      this.events.publish('updateDateEnd', endDate);
   }
 
   addProfileExpire(){ 
@@ -222,8 +242,6 @@ export class ExpireUtilsProvider {
 
       let loading = this.uiUtils.showLoading("Favor aguarde")
       loading.present()
-
-      console.log(this.name, this.desc, this.selectedAccessType, start0F, end0F, start1F, end1F)
       
       this.httpd.addAccessProfileExpire(this.name, this.desc, this.selectedAccessType, 
         start0F, end0F, start1F, end1F)    
@@ -231,8 +249,7 @@ export class ExpireUtilsProvider {
       .subscribe( () => {
 
         loading.dismiss()
-       
-        
+               
         this.events.publish('refreshProfiles', this.selectedType); 
         this.events.publish('navCtrlPop', this.selectedType); 
         this.uiUtils.showAlertSuccess()
@@ -241,17 +258,30 @@ export class ExpireUtilsProvider {
     }   
   }   
 
-
   updateProfileExpire(){
 
-    console.log(this.eventSource)
+    if(this.eventSource.length === 0)
+      this.uiUtils.showAlert("Atenção", "Favor selecionar datas").present()
+
+    else 
+      this.updateProfileContinue()
+ 
+  }
+
+  updateProfileContinue(){
 
     let start0 = this.eventSource[0].startTime
     let end0 = this.eventSource[0].endTime
 
-    let start1 = this.eventSource[1].endTime
-    let end1 = this.eventSource[1].endTime
+    let start1 = start0
+    let end1 = end0
+        
+    if(this.eventSource.length > 1){
 
+      start1 = this.eventSource[1].endTime
+      end1 = this.eventSource[1].endTime
+    }
+    
     let start0F = moment(start0)
     let start1F = moment(start1)
 
@@ -275,7 +305,5 @@ export class ExpireUtilsProvider {
       })
     }
   }
-
-
 
 }

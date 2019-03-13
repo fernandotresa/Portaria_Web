@@ -145,8 +145,7 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('eventSource', eventSource => {
-      this.eventSource = eventSource
-      console.log(eventSource)
+      this.eventSource = eventSource      
       this.refreshCalendar()
     })
 
@@ -164,6 +163,25 @@ export class ProfilesAddPage {
 
     this.events.subscribe('restartCalendar', () => {
       this.restartCalendar()
+    })
+
+    this.events.subscribe('updateDateStart', startDate => {
+      console.log("updateDateStart")
+      console.log(startDate)
+      this.updatingDates = true      
+      this.dateStart = moment(startDate).format()
+      this.updatingDates = false
+    })
+
+    this.events.subscribe('updateDateEnd', endDate => {
+      console.log("updateDateEnd")
+      console.log(endDate)
+
+
+
+      this.updatingDates = true      
+      this.dateEnd = moment(endDate).format()
+      this.updatingDates = false      
     })
   }
 
@@ -189,9 +207,6 @@ export class ProfilesAddPage {
   }
 
   updateItens(){
-    
-    console.log(this.selectedType)
-
     this.events.publish('setSelectedDay', this.selectedDay)
     this.events.publish('setCalendarDisabled', this.calendarDisabled)
     this.events.publish('setDateStart', this.dateStart)
@@ -447,6 +462,20 @@ export class ProfilesAddPage {
     }    
   }
 
+  setHours(startDate, endDate){
+
+    let h = this.hourStart.substring(0, 2);
+    let m = this.hourStart.substring(3, 5);
+    let s = this.hourStart.substring(6, 8);
+
+    let he = this.hourEnd.substring(0, 2);
+    let me = this.hourEnd.substring(3, 5);
+    let se = this.hourEnd.substring(6, 8);
+
+    startDate.setHours(h, m, s)
+    endDate.setHours(he, me, se)
+  }
+
   addEventDateShift(){    
 
     console.log("addEventDateShift")
@@ -461,18 +490,8 @@ export class ProfilesAddPage {
       let endDate = this.parseTimestamp(moment(this.dateEnd))
 
       if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+          this.setHours(startDate, endDate)
 
-        let h = this.hourStart.substring(0, 2);
-        let m = this.hourStart.substring(3, 5);
-        let s = this.hourStart.substring(6, 8);
-
-        let he = this.hourEnd.substring(0, 2);
-        let me = this.hourEnd.substring(3, 5);
-        let se = this.hourEnd.substring(6, 8);
-
-        startDate.setHours(h, m, s)
-        endDate.setHours(he, me, se)
-        
       } else {
 
         startDate.setHours(0, 0, 0)
@@ -501,16 +520,7 @@ export class ProfilesAddPage {
 
             if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
               
-              let h = this.hourStart.substring(0, 2);
-              let m = this.hourStart.substring(3, 5);
-              let s = this.hourStart.substring(6, 8);
-
-              let he = this.hourEnd.substring(0, 2);
-              let me = this.hourEnd.substring(3, 5);
-              let se = this.hourEnd.substring(6, 8);
-
-              startDateB.setHours(h, m, s)
-              endDateB.setHours(he, me, se)
+              this.setHours(startDate, endDate)
               
             } else {
       
@@ -526,19 +536,8 @@ export class ProfilesAddPage {
         }        
       }
 
-      let self = this 
-
-      setTimeout(() => {
-        self.eventSource = events;
-        
-        setTimeout( () => {
-          self.calendarDisabled = false
-          self.updatingDates = false
-
-          self.updateInputs()
-        }, 1000)
-        
-        })
+      this.refreshCalendar()
+      
     }    
   }
 
@@ -834,12 +833,14 @@ export class ProfilesAddPage {
     if(!this.updatingDates && !this.updatingClick){      
 
       this.updatingDates = true
-      this.restartCalendar()    
+      this.restartCalendar()
       this.dateEnd = ""
-
-      let startDate = this.parseTimestamp(moment(this.dateStart))      
+     
+      let startDate =  moment(this.dateStart).toDate()
+      startDate.setHours(0, 1, 0)
 
       if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
+
         let h = this.hourStart.substring(0, 2);
         let m = this.hourStart.substring(3, 5);
         let s = this.hourStart.substring(6, 8);
@@ -848,12 +849,9 @@ export class ProfilesAddPage {
         startDate.setMinutes(m)
         startDate.setSeconds(s)        
       }        
-        
-      else {
-        startDate.setHours(0, 0, 1)                              
-      }
-        
+                    
       this.selectedDay = startDate
+      
       let ev = []    
       this.updatingDates = false
       this.checkAccessType(ev)         
@@ -863,6 +861,7 @@ export class ProfilesAddPage {
   dataEndChanged(){  
         
     console.log("dataEndChanged", this.updatingDates, this.updatingClick, !this.updatingDates && !this.updatingClick)    
+    
 
     if(! this.updatingDates && !this.updatingClick && this.dateEnd.length > 0){
       

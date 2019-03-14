@@ -29,7 +29,6 @@ import { MomentsProvider } from '../providers/moments/moments';
 import { DatetimeUtilsProvider } from '../providers/datetime-utils/datetime-utils';
 import { ExpireUtilsProvider } from '../providers/expire-utils/expire-utils';
 import { DayweekUtilsProvider } from '../providers/dayweek-utils/dayweek-utils';
-import { CalendarUtilsProvider } from '../providers/calendar-utils/calendar-utils';
 
 @NgModule({
   declarations: [
@@ -71,8 +70,7 @@ import { CalendarUtilsProvider } from '../providers/calendar-utils/calendar-util
     MomentsProvider,
     DatetimeUtilsProvider,
     ExpireUtilsProvider,
-    DayweekUtilsProvider,
-    CalendarUtilsProvider
+    DayweekUtilsProvider
   ]
 })
 

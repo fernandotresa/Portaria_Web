@@ -64,10 +64,12 @@ export class ProfilesAddPage {
 
   @HostListener('document:keydown.Shift', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.shiftClicked = true
+    this.events.publish('shiftClicked', this.shiftClicked)
   }
 
   @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
     this.shiftClicked = false   
+    this.events.publish('shiftClicked', this.shiftClicked)
   } 
 
   constructor(public navCtrl: NavController, 
@@ -137,7 +139,7 @@ export class ProfilesAddPage {
       this.refreshCalendar()
     })
 
-    this.events.subscribe('dateStart', dateStart => {
+    this.events.subscribe('dateStart', dateStart => {      
       this.updatingDates = true  
       this.dateStart = dateStart
       this.updatingDates = false
@@ -158,6 +160,8 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('updateDateStart', startDate => {
+      console.log(startDate)
+
       this.updatingDates = true      
       this.dateStart = moment(startDate).format()
       
@@ -205,6 +209,7 @@ export class ProfilesAddPage {
     this.events.publish('setEventSource', this.eventSource)    
     this.events.publish('setName', this.name)    
     this.events.publish('setDesc', this.desc)
+    this.events.publish('shiftClicked', this.shiftClicked)
     this.events.publish('setSelectedAccessType', this.selectedAccessType)
     this.events.publish('setSelectedType', this.selectedType)
     this.events.publish('setProfile', this.profile)
@@ -274,24 +279,50 @@ export class ProfilesAddPage {
 
     console.log("onTimeSelected", this.updatingDates,  this.lastSelectedDay)
 
-    if(this.lastSelectedDay === this.selectedDay){
+    if(this.selectedAccessType == this.dataInfo.titleProfileDatetime){
 
-      if(! this.updatingDates && ! this.calendarDisabled){        
+      this.onTimeSelectedDateTime(ev)
+
+    } else {
+
+      if(this.lastSelectedDay === this.selectedDay){
+
+        if(! this.updatingDates && ! this.calendarDisabled){        
+    
+          if(moment(this.selectedDay).isValid()){
+    
+            this.updatingDates = true
+            this.calendarDisabled = true    
   
-        if(moment(this.selectedDay).isValid()){
+            this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+            this.onViewTitleChanged(this.selectedMonth)
+            this.onTimeSelectedContinue(ev)
+          }                  
+        }         
+      }           
   
-          this.updatingDates = true
-          this.calendarDisabled = true    
+      this.lastSelectedDay = this.selectedDay
 
-          this.selectedMonth  = moment(this.selectedDay).format("MMMM")
-          this.onViewTitleChanged(this.selectedMonth)
-          this.onTimeSelectedContinue(ev)
-        }                  
-      }         
-    }           
+    }
+    
+  }
+  
+  onTimeSelectedDateTime(ev){
+    console.log("onTimeSelectedDateTime")
 
-    this.lastSelectedDay = this.selectedDay
 
+    if(! this.updatingDates && ! this.calendarDisabled){        
+    
+      if(moment(this.selectedDay).isValid()){
+
+        this.updatingDates = true
+        this.calendarDisabled = true    
+
+        this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+        this.onViewTitleChanged(this.selectedMonth)
+        this.onTimeSelectedContinue(ev)
+      }                  
+    }
   }
 
   onTimeSelectedContinue(ev){

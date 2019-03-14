@@ -9,6 +9,7 @@ import { MomentsProvider } from '../../providers/moments/moments';
 export class DatetimeUtilsProvider {
 
   eventSource: any = []
+
   dateStart: string
   dateEnd: string
   selectedDay = new Date();
@@ -82,6 +83,12 @@ export class DatetimeUtilsProvider {
     this.events.subscribe('setHourEnd', hourEnd => {
       this.hourEnd = hourEnd
     })
+
+    this.events.subscribe('shiftClicked', shiftClicked => {
+      console.log("this.shiftClicked", this.shiftClicked)
+      
+      this.shiftClicked = shiftClicked
+    })
   }
 
   ngOnDestroy() {    
@@ -99,10 +106,74 @@ export class DatetimeUtilsProvider {
 
   confirmDatetime(){
 
+    console.log("confirmDatetime")
+
     if(this.shiftClicked)
       this.addEventDateShift()
     else 
       this.addEventDateNormal()
+  }  
+  
+  refreshCalendar(startDate, endDate, events){
+
+    setTimeout(() => {
+      this.eventSource = events;        
+      this.events.publish('eventSource', this.eventSource);        
+      })
+
+    setTimeout(() => {
+      this.populateDates(startDate, endDate)  
+      this.events.publish('calendarDisabled', false)        
+      this.events.publish('updatingDates', false)
+      this.events.publish('updateInputs', false)      
+    })
+  }
+  
+  addEventDateShift(){    
+
+    console.log("addEventDateShift")
+    
+    if(moment(this.selectedDay).isValid()){      
+      
+      this.events.publish('calendarDisabled', true)
+      this.events.publish('updatingDates', true)
+
+      let events = this.eventSource;    
+
+      let startDate = new Date(this.dateStart)
+      let endDate = new Date(this.dateEnd)
+      this.setHours(startDate, endDate)
+
+      let event = { startTime: startDate, endTime: endDate,  title: 'Carregado automaticamente',  color: "primary"}    
+
+      events.push(event);     
+
+      this.eventSource = []
+
+      if(events.length === 2){    
+        
+        let a = events[0].startTime      
+
+          for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
+
+            let startDateB = new Date(m.format())
+            let endDateB = new Date(m.format())
+
+            this.setHours(startDate, endDate)
+
+            let eventB = { startTime: startDateB, endTime: endDateB, 
+              title: 'Carregado automaticamente',  color: "primary"}    
+
+            events.push(eventB);
+          }
+          
+      }
+
+      console.log(events)
+      
+      this.refreshCalendar(startDate, endDate, events)
+      
+    }    
   }
 
   addEventDateNormal(){    
@@ -139,67 +210,14 @@ export class DatetimeUtilsProvider {
 
       events.push(event);     
     
-      this.eventSource = []
-    
-      setTimeout(() => {
-        this.eventSource = events;        
-        this.events.publish('eventSource', this.eventSource);        
-        })
-
-      setTimeout(() => {
-        this.populateDates(startDate, endDate)  
-        this.events.publish('calendarDisabled', false)        
-        this.events.publish('updatingDates', false)
-        this.events.publish('updateInputs', false)
-        loading.dismiss()
-      })
-    }    
-  }  
-
-  addEventDateShift(){    
-
-    console.log("addEventDateShift")
-    
-    if(moment(this.selectedDay).isValid()){      
+      loading.dismiss()
+      this.eventSource = []         
       
-      this.calendarDisabled = true     
-     // this.updatingDates = true
-      let events = this.eventSource;    
-
-      let startDate = new Date(this.dateStart)
-      let endDate = new Date(this.dateEnd)
-      this.setHours(startDate, endDate)
-
-      let event = { startTime: startDate, endTime: endDate,  title: 'Carregado automaticamente',  color: "primary"}    
-
-      events.push(event);     
-
-      this.eventSource = []
-
-      if(events.length === 2){    
-        
-        let a = events[0].startTime      
-
-          for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
-
-            let startDateB = new Date(m.format())
-            let endDateB = new Date(m.format())
-
-            this.setHours(startDate, endDate)
-
-            let eventB = { startTime: startDateB, endTime: endDateB, 
-              title: 'Carregado automaticamente',  color: "primary"}    
-
-            events.push(eventB);
-          }
-          
-      }
-
-      //this.refreshCalendar()
+      console.log(events)
       
+      this.refreshCalendar(startDate, endDate, events)
     }    
-  }
-
+  } 
 
   loadDatesProfileDatetime(idProfile: number){    
 
@@ -210,23 +228,25 @@ export class DatetimeUtilsProvider {
 
   loadDatesProfileDatetimeContinue(data){    
   
-    this.calendarDisabled = true     
+    this.events.publish('calendarDisabled', true)
+    this.events.publish('updatingDates', true)
+
     let events = this.eventSource;
 
     if(data.success.length > 0){
       this.dateStart = moment(data.success[0].datetime_start).utc().format()
-    }    
+    }      
 
-    let total = data.success.length
-    let atual = 0
+    let datetime_start = new Date()          
+    let datetime_end = new Date()
 
     data.success.forEach(element => {
 
-      let dateS = moment(element.datetime_start).utc().format()
-      let dateF = moment(element.datetime_end).utc().format()
+      let dateS = this.moments.parseDateBr(moment(element.datetime_start).utc().format())
+      let dateF = this.moments.parseDateBr(moment(element.datetime_end).format())
 
-      let datetime_start = new Date(dateS)          
-      let datetime_end = new Date(dateS)
+      datetime_start = new Date(dateS)          
+      datetime_end = new Date(dateS)
 
       datetime_start.setDate(moment(element.datetime_start).utc().date())
       datetime_start.setHours(moment(element.datetime_start).utc().hours())
@@ -240,21 +260,15 @@ export class DatetimeUtilsProvider {
     
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
       events.push(event);
-
-      atual++
     });  
     
     this.eventSource = []
 
-    setTimeout(() => {
-      this.eventSource = events;
+    console.log(events)
 
-      console.log(events)
-      
-      setTimeout( () => {
-        this.calendarDisabled = false
-      }, 1000)
-    });
+    let start = this.moments.parseDateBr(moment(this.dateStart).utc().format())
+    console.log(start)
+    this.refreshCalendar(start, datetime_end, events)
   }
 
   addProfileDateTimes() {    
@@ -305,6 +319,11 @@ export class DatetimeUtilsProvider {
 
   populateDates(startDate, endDate){  
 
+    console.log("populateDates")
+
+    console.log(startDate, endDate)
+    console.log(this.dateStart, this.dateEnd)
+
     if(this.dateStart === undefined)
       this.events.publish('updateDateStart', startDate);
 
@@ -317,8 +336,14 @@ export class DatetimeUtilsProvider {
     else if(this.dateStart.length > 0 && this.dateEnd.length === 0)
       this.events.publish('updateDateEnd', endDate);
 
-    else if(this.dateStart.length > 0 && this.dateEnd.length > 0)
+    else if(this.dateStart.length > 0 && this.dateEnd.length > 0){
+      this.events.publish('updateDateStart', startDate);
       this.events.publish('updateDateEnd', endDate);   
+    }
+      
+
+    else 
+      console.log("???")
   }
 
 

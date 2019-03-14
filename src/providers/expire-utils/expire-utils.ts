@@ -1,6 +1,6 @@
 import { Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
-import { CalendarUtilsProvider } from '../../providers/calendar-utils/calendar-utils';
+import { MomentsProvider } from '../../providers/moments/moments';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
@@ -23,7 +23,7 @@ export class ExpireUtilsProvider {
   constructor(
     public httpd: HttpdProvider,
     public events: Events, 
-    public calendarUtils: CalendarUtilsProvider,
+    public moments: MomentsProvider,
     public uiUtils: UiUtilsProvider) {
 
       this.eventSource = []
@@ -104,8 +104,8 @@ export class ExpireUtilsProvider {
 
     let element = data.success[0]
 
-    let dateS = this.calendarUtils.parseDateBr(moment(element.datetime_start).utc().format())
-    let dateF = this.calendarUtils.parseDateBr(moment(element.datetime_end).format())
+    let dateS = this.moments.parseDateBr(moment(element.datetime_start).utc().format())
+    let dateF = this.moments.parseDateBr(moment(element.datetime_end).format())
         
     let datetime_start = moment(dateS).toDate()                       
     let datetime_end = moment(dateF).toDate()
@@ -115,8 +115,6 @@ export class ExpireUtilsProvider {
 
     let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}            
     events.push(event);
-
-    console.log(events)
     
     this.eventSource = []
     
@@ -133,8 +131,6 @@ export class ExpireUtilsProvider {
 
   confirmExpiration(ev){
   
-    console.log("confirmExpiration", this.eventSource)
-
     let checkOk = this.checkDatesExpiration()    
         
     if(! checkOk)
@@ -218,9 +214,6 @@ export class ExpireUtilsProvider {
 
     else if(this.dateStart.length > 0 && this.dateEnd.length > 0)
       this.events.publish('updateDateEnd', endDate);   
-
-    else 
-      console.log("Condição nao localizada")
   }
 
   addProfileExpire(){ 

@@ -30,4 +30,8 @@ export class MomentsProvider {
     return "23:59"
   }
 
+  parseDateBr(datetime){
+    return moment(datetime).add(3, 'hours').format()
+  }
+
 }

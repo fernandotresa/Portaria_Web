@@ -6,7 +6,6 @@ import { MomentsProvider } from '../../providers/moments/moments';
 import { DatetimeUtilsProvider } from '../../providers/datetime-utils/datetime-utils';
 import { ExpireUtilsProvider } from '../../providers/expire-utils/expire-utils';
 import { DayweekUtilsProvider } from '../../providers/dayweek-utils/dayweek-utils';
-import { CalendarUtilsProvider } from '../../providers/calendar-utils/calendar-utils';
 
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -81,7 +80,6 @@ export class ProfilesAddPage {
     public datetimeUtils: DatetimeUtilsProvider,
     public expireUtils: ExpireUtilsProvider,
     public dayweekUtils: DayweekUtilsProvider,
-    public calendarUtils: CalendarUtilsProvider,
     public navParams: NavParams) {  
 
       moment.locale('pt-br');       
@@ -210,6 +208,8 @@ export class ProfilesAddPage {
     this.events.publish('setSelectedAccessType', this.selectedAccessType)
     this.events.publish('setSelectedType', this.selectedType)
     this.events.publish('setProfile', this.profile)
+    this.events.publish('setHourStart', this.hourStart)
+    this.events.publish('setHourEnd', this.hourEnd)
   }
 
   copyProfileInfo(){
@@ -325,170 +325,12 @@ export class ProfilesAddPage {
       this.expireUtils.confirmExpiration(ev)
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
-      this.confirmDatetime(ev)    
+      this.datetimeUtils.confirmDatetime()
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
-      this.confirmDatetime(ev)    
+      this.datetimeUtils.confirmDatetime()
   }
     
-  addEventDate(){ 
-    
-    if(this.shiftClicked)
-      this.addEventDateShift()
-    else 
-      this.addEventDateNormal()
-  }
-
-  addEventDateNormal(){    
-
-    console.log("Data valida", moment(this.selectedDay).isValid())
-
-    if(moment(this.selectedDay).isValid()){
-
-      this.calendarDisabled = true     
-      this.updatingDates = true
-
-      let events = this.eventSource; 
-
-      let startDate = this.parseTimestamp(moment(this.dateStart))
-      let endDate = this.parseTimestamp(moment(this.dateEnd))
-
-      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-        
-        let h = this.hourStart.substring(0, 2);
-        let m = this.hourStart.substring(3, 5);
-        let s = this.hourStart.substring(6, 8);
-
-        let he = this.hourEnd.substring(0, 2);
-        let me = this.hourEnd.substring(3, 5);
-        let se = this.hourEnd.substring(6, 8);
-
-        startDate.setHours(h, m, s)
-        endDate.setHours(he, me, se)
-        
-      } else {
-
-        startDate.setHours(0, 0, 1)
-        endDate.setHours(23, 59, 0)
-      }        
-      
-      if(this.selectedAccessType === this.dataInfo.titleProfileExpire){
-
-        if(events.length === 1){
-          events[0].endTime = endDate
-        }
-      }
-
-      let colorS = this.getColorStatus(1)      
-      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: colorS}        
-
-      events.push(event);     
-    
-      this.eventSource = []
-
-      let self = this
-
-      setTimeout(() => {
-        self.eventSource = events;
-        self.calendarDisabled = false
-        self.updatingDates = false
-        
-          setTimeout( () => {            
-            self.updateInputs()
-
-          }, 1000)
-        
-        })
-    }    
-  }
-
-  setHours(startDate, endDate){
-
-    let h = this.hourStart.substring(0, 2);
-    let m = this.hourStart.substring(3, 5);
-    let s = this.hourStart.substring(6, 8);
-
-    let he = this.hourEnd.substring(0, 2);
-    let me = this.hourEnd.substring(3, 5);
-    let se = this.hourEnd.substring(6, 8);
-
-    startDate.setHours(h, m, s)
-    endDate.setHours(he, me, se)
-  }
-
-  addEventDateShift(){    
-
-    console.log("addEventDateShift")
-    
-    if(moment(this.selectedDay).isValid()){      
-      
-      this.calendarDisabled = true     
-      this.updatingDates = true
-      let events = this.eventSource;    
-
-      let startDate = this.parseTimestamp(moment(this.dateStart))
-      let endDate = this.parseTimestamp(moment(this.dateEnd))
-
-      if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-          this.setHours(startDate, endDate)
-
-      } else {
-
-        startDate.setHours(0, 0, 0)
-        endDate.setHours(23, 59, 0)
-      }  
-
-      this.updateInputs()
-      let colorS = this.getColorStatus(1)
-
-      let event = { startTime: startDate, endTime: endDate,  title: 'Carregado automaticamente',  color: colorS}    
-
-      events.push(event);     
-
-      this.eventSource = []
-
-      if(events.length === 2){    
-        
-        if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-
-          let a = events[0].startTime      
-
-          for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
-
-            let startDateB = this.parseTimestamp(moment(m))
-            let endDateB = this.parseTimestamp(moment(m))
-
-            if(this.selectedAccessType === this.dataInfo.titleProfileDatetime){
-              
-              this.setHours(startDate, endDate)
-              
-            } else {
-      
-              startDateB.setHours(0, 0, 0)
-              endDateB.setHours(23, 59, 0)
-            }  
-
-            let eventB = { startTime: startDateB, endTime: endDateB, 
-              title: 'Carregado automaticamente',  color: colorS}    
-
-            events.push(eventB);
-          }
-        }        
-      }
-
-      this.refreshCalendar()
-      
-    }    
-  }
-
-  addExpiration(ev){         
-    this.addEventDate()
-  } 
-
-  confirmDatetime(ev){  
-    this.addEventDate()
-  }  
-
   addProfile(){
 
     this.updateItens()

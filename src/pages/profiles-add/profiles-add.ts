@@ -116,8 +116,9 @@ export class ProfilesAddPage {
     this.getAccessTypes()    
     this.selectedMonth  = moment(this.selectedDay).format("MMMM")    
     this.onViewTitleChanged(this.selectedMonth)
-    this.hourStart = moment(this.selectedDay).startOf('day').format('HH:mm:ss')
-    this.hourEnd = moment(this.selectedDay).endOf('day').format('HH:mm:ss')
+
+    this.hourStart = moment().startOf('day').format('HH:mm:ss')
+    this.hourEnd = moment().endOf('day').format('HH:mm:ss')
   }
 
   subscribeStuff(){
@@ -137,6 +138,10 @@ export class ProfilesAddPage {
 
     this.events.subscribe('refreshCalendar', () => {         
       this.refreshCalendar()
+    })
+
+    this.events.subscribe('selectedDay', selectedDay => {         
+      this.selectedDay = selectedDay
     })
 
     this.events.subscribe('dateStart', dateStart => {      
@@ -160,7 +165,6 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('updateDateStart', startDate => {
-      console.log(startDate)
 
       this.updatingDates = true      
       this.dateStart = moment(startDate).format()
@@ -186,6 +190,7 @@ export class ProfilesAddPage {
     this.events.unsubscribe('dateStart');		
     this.events.unsubscribe('dateEnd');		
     this.events.unsubscribe('navCtrlPop');		
+    this.events.unsubscribe('selectedDay');		
     this.events.unsubscribe('restartCalendar');		
   }
     
@@ -202,7 +207,10 @@ export class ProfilesAddPage {
   }
 
   updateItens(){
+
     this.events.publish('setSelectedDay', this.selectedDay)
+    this.events.publish('setHourStart', this.hourStart)
+    this.events.publish('setHourEnd', this.hourEnd)
     this.events.publish('setCalendarDisabled', this.calendarDisabled)
     this.events.publish('setDateStart', this.dateStart)
     this.events.publish('setDateEnd', this.dateEnd)
@@ -213,8 +221,9 @@ export class ProfilesAddPage {
     this.events.publish('setSelectedAccessType', this.selectedAccessType)
     this.events.publish('setSelectedType', this.selectedType)
     this.events.publish('setProfile', this.profile)
-    this.events.publish('setHourStart', this.hourStart)
-    this.events.publish('setHourEnd', this.hourEnd)
+
+    console.log(this.hourStart, this.hourEnd)
+    
   }
 
   copyProfileInfo(){
@@ -246,6 +255,8 @@ export class ProfilesAddPage {
     this.selectedAccessType = this.profile.type  
     this.updatingDates = true
     let type = this.profile.id_type
+
+    this.updateItens()
 
     if(type === 1)
       this.expireUtils.loadDatesProfileExpire(this.profile.id)        

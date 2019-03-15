@@ -12,7 +12,9 @@ export class DatetimeUtilsProvider {
 
   dateStart: string
   dateEnd: string
-  selectedDay = new Date();
+
+  selectedDay: Date;
+
   name: string
   desc: string
   selectedAccessType: string
@@ -32,6 +34,7 @@ export class DatetimeUtilsProvider {
       this.eventSource = []
 
       this.subscribeStuff()
+      this.selectedDay = new Date()
   }
 
   subscribeStuff(){
@@ -84,9 +87,7 @@ export class DatetimeUtilsProvider {
       this.hourEnd = hourEnd
     })
 
-    this.events.subscribe('shiftClicked', shiftClicked => {
-      console.log("this.shiftClicked", this.shiftClicked)
-      
+    this.events.subscribe('shiftClicked', shiftClicked => {      
       this.shiftClicked = shiftClicked
     })
   }
@@ -117,16 +118,36 @@ export class DatetimeUtilsProvider {
   refreshCalendar(startDate, endDate, events){
 
     setTimeout(() => {
-      this.eventSource = events;        
-      this.events.publish('eventSource', this.eventSource);        
-      })
+      this.eventSource = events; 
 
-    setTimeout(() => {
+      this.events.publish('eventSource', this.eventSource);        
       this.populateDates(startDate, endDate)  
       this.events.publish('calendarDisabled', false)        
       this.events.publish('updatingDates', false)
       this.events.publish('updateInputs', false)      
     })
+    
+  }
+
+  addDatesRange(events, startDate, endDate){
+
+    let ev = events
+    let a = events[0].startTime      
+
+    for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
+
+      let startDateB = new Date(m.format())
+      let endDateB = new Date(m.format())
+
+      this.setHours(startDate, endDate)
+
+      let eventB = { startTime: startDateB, endTime: endDateB, 
+        title: 'Carregado automaticamente',  color: "primary"}    
+
+        ev.push(eventB);
+    }
+
+    return ev
   }
   
   addEventDateShift(){    
@@ -150,31 +171,14 @@ export class DatetimeUtilsProvider {
 
       this.eventSource = []
 
-      if(events.length === 2){    
-        
-        let a = events[0].startTime      
-
-          for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
-
-            let startDateB = new Date(m.format())
-            let endDateB = new Date(m.format())
-
-            this.setHours(startDate, endDate)
-
-            let eventB = { startTime: startDateB, endTime: endDateB, 
-              title: 'Carregado automaticamente',  color: "primary"}    
-
-            events.push(eventB);
-          }
-          
-      }
-
-      console.log(events)
+      if(events.length >= 2)        
+        events = this.addDatesRange(events, startDate, endDate)                      
+      
       
       this.refreshCalendar(startDate, endDate, events)
       
     }    
-  }
+  }  
 
   addEventDateNormal(){    
 
@@ -212,9 +216,7 @@ export class DatetimeUtilsProvider {
     
       loading.dismiss()
       this.eventSource = []         
-      
-      console.log(events)
-      
+            
       this.refreshCalendar(startDate, endDate, events)
     }    
   } 
@@ -228,25 +230,29 @@ export class DatetimeUtilsProvider {
 
   loadDatesProfileDatetimeContinue(data){    
   
+    if(data.success.length > 0){
+
+      let loading = this.uiUtils.showLoading("Favor aguarde")    
+    loading.present() 
+    this.shiftClicked = true
+
     this.events.publish('calendarDisabled', true)
     this.events.publish('updatingDates', true)
 
-    let events = this.eventSource;
-
-    if(data.success.length > 0){
-      this.dateStart = moment(data.success[0].datetime_start).utc().format()
-    }      
+    let events = this.eventSource;        
 
     let datetime_start = new Date()          
     let datetime_end = new Date()
 
     data.success.forEach(element => {
 
+      console.log(element)
+
       let dateS = this.moments.parseDateBr(moment(element.datetime_start).utc().format())
       let dateF = this.moments.parseDateBr(moment(element.datetime_end).format())
 
       datetime_start = new Date(dateS)          
-      datetime_end = new Date(dateS)
+      datetime_end = new Date(dateF)
 
       datetime_start.setDate(moment(element.datetime_start).utc().date())
       datetime_start.setHours(moment(element.datetime_start).utc().hours())
@@ -255,20 +261,31 @@ export class DatetimeUtilsProvider {
       datetime_end.setDate(moment(element.datetime_end).utc().date())
       datetime_end.setHours(moment(element.datetime_end).utc().hours())
       datetime_end.setMinutes(moment(element.datetime_end).utc().minutes())
-      
-      this.dateEnd = dateF
-    
+          
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
       events.push(event);
-    });  
+    });          
+
+    if(events.length > 0){
+
+      this.dateStart = this.moments.parseDateBr(events[0].startTime)
+      events[0].endTime = new Date(datetime_end)
+    }
     
-    this.eventSource = []
 
     console.log(events)
 
-    let start = this.moments.parseDateBr(moment(this.dateStart).utc().format())
-    console.log(start)
+    this.addDatesRange(events, datetime_start, datetime_end)
+
+    this.eventSource = []    
+
+    let start = this.moments.parseDateBr(moment(this.dateStart).utc().format())   
+
+    loading.dismiss()
+
     this.refreshCalendar(start, datetime_end, events)
+    
+    }    
   }
 
   addProfileDateTimes() {    
@@ -289,18 +306,20 @@ export class DatetimeUtilsProvider {
   } 
 
   updateProfileDateTimes(){
-   /* let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-      loading.present()
-      
-      this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
-      .subscribe( () => {
+    console.log("updateProfileDateTimes()")
 
-        loading.dismiss()
+    let loading = this.uiUtils.showLoading("Favor aguarde")
+    loading.present()
+    
+    this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
+    .subscribe( () => {
 
-        this.navCtrl.pop()
-        this.events.publish('refreshProfiles', this.profile.id_type);
-        this.uiUtils.showAlertSuccess()
-      })*/
+      loading.dismiss()
+
+      this.events.publish('navCtrlPop', this.selectedType); 
+      this.events.publish('refreshProfiles', this.selectedType); 
+      this.uiUtils.showAlertSuccess()
+    })
   }
 
   setHours(startDate, endDate){
@@ -319,31 +338,9 @@ export class DatetimeUtilsProvider {
 
   populateDates(startDate, endDate){  
 
-    console.log("populateDates")
-
     console.log(startDate, endDate)
-    console.log(this.dateStart, this.dateEnd)
-
-    if(this.dateStart === undefined)
-      this.events.publish('updateDateStart', startDate);
-
-    else if(this.dateStart.length === 0 && this.dateEnd.length === 0)
-      this.events.publish('updateDateStart', startDate);
-
-    else if(this.dateStart.length > 0 && this.dateEnd === undefined)
-      this.events.publish('updateDateEnd', endDate);
-
-    else if(this.dateStart.length > 0 && this.dateEnd.length === 0)
-      this.events.publish('updateDateEnd', endDate);
-
-    else if(this.dateStart.length > 0 && this.dateEnd.length > 0){
-      this.events.publish('updateDateStart', startDate);
-      this.events.publish('updateDateEnd', endDate);   
-    }
-      
-
-    else 
-      console.log("???")
+    this.events.publish('updateDateStart', startDate);
+    this.events.publish('updateDateEnd', endDate);   
   }
 
 

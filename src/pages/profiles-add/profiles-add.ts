@@ -433,8 +433,9 @@ export class ProfilesAddPage {
      
   onTimeSelected(ev) {            
 
-    if(this.selectedAccessType == this.dataInfo.titleProfileDatetime){
-
+    if(this.selectedAccessType === this.dataInfo.titleProfileDatetime 
+      || this.selectedAccessType === this.dataInfo.titleProfileVacation){
+      
       this.onTimeSelectedDateTime(ev)
 
     } else {
@@ -454,26 +455,51 @@ export class ProfilesAddPage {
           }                  
         }         
       }           
-  
-      this.lastSelectedDay = this.selectedDay
     }    
+
+    this.lastSelectedDay = this.selectedDay
+
   }
   
   onTimeSelectedDateTime(ev){
-    console.log("onTimeSelectedDateTime")
-
-    if(! this.updatingDates && ! this.calendarDisabled){        
     
-      if(moment(this.selectedDay).isValid()){
 
-        this.updatingDates = true
-        this.calendarDisabled = true    
+    console.log("onTimeSelectedDateTime", this.updatingDates, this.calendarDisabled)
 
-        this.selectedMonth  = moment(this.selectedDay).format("MMMM")
-        this.onViewTitleChanged(this.selectedMonth)
-        this.onTimeSelectedContinue(ev)
-      }                  
+    let isOk = true
+    let dayClicked = new Date(this.selectedDay)                
+
+    for(let i = 0; i < this.eventSource.length; ++i){
+      
+      let day = new Date(this.eventSource[i].startTime)
+
+      let isSame = moment(day).isSame(dayClicked, 'day')    
+
+      if(isSame){ 
+        console.log('removendo dia')           
+        this.eventSource.splice(i, 1);
+        isOk = false
+        this.refreshCalendar()
+      }      
     }
+
+    console.log("isOk", isOk)
+
+    if(isOk){
+
+      if(! this.updatingDates && ! this.calendarDisabled){        
+    
+        if(moment(this.selectedDay).isValid()){
+  
+          this.updatingDates = true
+          this.calendarDisabled = true    
+  
+          this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+          this.onViewTitleChanged(this.selectedMonth)
+          this.onTimeSelectedContinue(ev)
+        }                  
+      }
+    }    
   }
 
   onTimeSelectedContinue(ev){
@@ -486,10 +512,10 @@ export class ProfilesAddPage {
 
     for(let i = 0; i < this.eventSource.length; ++i){
       
-      let day = new Date()
-      let isSame = moment(day).isSame(dayClicked, 'day')    
+      let isSame = moment().isSame(dayClicked, 'day')    
 
-      if(isSame){            
+      if(isSame){ 
+        console.log('removendo dia')           
         this.eventSource.splice(i, 1);
         refresh = false
       }

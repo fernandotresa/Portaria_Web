@@ -148,8 +148,8 @@ export class DatetimeUtilsProvider {
 
     return ev
   }
-  
-  addEventDateShift(){    
+ 
+  addEventDateShift(){   
     
     if(moment(this.selectedDay).isValid()){      
       
@@ -175,9 +175,8 @@ export class DatetimeUtilsProvider {
         events[0].endTime = new Date(endDate)
       }
       
-      this.refreshCalendar(startDate, endDate, events)
-      
-    }    
+      this.refreshCalendar(startDate, endDate, events)        
+    }     
   }  
 
   addEventDateNormal(){    
@@ -218,7 +217,8 @@ export class DatetimeUtilsProvider {
       this.eventSource = []         
             
       this.refreshCalendar(startDate, endDate, events)
-    }    
+    }
+    
   } 
 
   loadDatesProfileDatetime(idProfile: number){    
@@ -300,7 +300,6 @@ export class DatetimeUtilsProvider {
   } 
 
   updateProfileDateTimes(){
-    console.log("updateProfileDateTimes()")
 
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()

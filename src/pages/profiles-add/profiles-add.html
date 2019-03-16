@@ -55,43 +55,25 @@
       
     </ion-item>
     
-    <ion-item no-lines>
+    <ion-item no-lines *ngIf="showDates">
+
         <ion-row>
             
-            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek && showDates">
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
                 <ion-label>{{dataInfo.titleDayStart}}</ion-label>
             </ion-col>
 
-            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileExpire  && showDates">
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileExpire">
                 <ion-datetime class="stroke-bottom text-green" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: right;"
                     [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>                
             </ion-col>
 
-            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime  && showDates">
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
                 <ion-datetime class="stroke-bottom text-green" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;"
                     [(ngModel)]="dateStart" (ionChange)="dataStartChanged()" min="2000" max="2099"></ion-datetime>                
-            </ion-col> 
-                                
-        <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire">
-            <ion-label>{{dataInfo.titleHourStart}}</ion-label>
-        </ion-col>
-
-        <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire">
-
-            <ion-datetime class="stroke-bottom text-green" displayFormat="HH:mm:ss" pickerFormat="HH:mm:ss" [(ngModel)]="hourStart" style="width: 100%; text-align: right;"
-                (ionChange)="hourStartChanged()"  min="2000" max="2099"></ion-datetime>
-        </ion-col>
-        
-    </ion-row> 
-
-    </ion-item>
-
-
-    <ion-item no-lines>
-        <ion-row>         
-
-            <ion-item *ngIf="showDates">
-                <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
+            </ion-col>    
+            
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek">
                     <ion-label>{{dataInfo.titleDayEnd}}</ion-label>
                 </ion-col>
     
@@ -100,12 +82,27 @@
                         [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
                 </ion-col>         
     
-                <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
-                        <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;" [pickerOptions]="customOptions"
-                            [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
-                    </ion-col>      
-            </ion-item>             
-                        
+            <ion-col *ngIf="selectedAccessType && selectedAccessType === dataInfo.titleProfileDatetime">
+                   <ion-datetime class="stroke-bottom text-red" displayFormat="DD/MM/YYYY" pickerFormat="DD/MM/YYYY" style="width: 100%; text-align: left;" [pickerOptions]="customOptions"
+                      [(ngModel)]="dateEnd" (ionChange)="dataEndChanged()" min="2000" max="2099"></ion-datetime>                
+            </ion-col>     
+        
+    </ion-row> 
+
+    </ion-item>
+
+    <ion-item no-lines>
+        <ion-row>         
+
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire">
+                <ion-label>{{dataInfo.titleHourStart}}</ion-label>
+            </ion-col>
+    
+            <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire">        
+                <ion-datetime class="stroke-bottom text-green" displayFormat="HH:mm:ss" pickerFormat="HH:mm:ss" [(ngModel)]="hourStart" style="width: 100%; text-align: right;"
+                    (ionChange)="hourStartChanged()"  min="2000" max="2099"></ion-datetime>
+            </ion-col>
+                                       
             <ion-col *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileExpire">
                 <ion-label>{{dataInfo.titleHourEnd}}</ion-label>
             </ion-col>
@@ -133,12 +130,11 @@
 
     </ion-list-header>               
 
-        <ion-toolbar no-border-top *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek"  color="primary" class="header-cal">
-
-            <ion-segment mode="md">
-                <button ion-button class="text-white" (click)="lastMonth()"><ion-label>Anterior</ion-label></button>
+        <ion-toolbar no-border-top *ngIf="selectedAccessType && selectedAccessType !== dataInfo.titleProfileDayweek"  color="primary">
+            <ion-segment mode="ios">
+                <button ion-button class="text-white" (click)="lastMonth()"><ion-label>{{dataInfo.titleBefore}}</ion-label></button>
                 <button ion-button class="text-white segment-button-checked" (click)="today()" text-uppercase text-center><ion-label>{{selectedMonth}}</ion-label></button>
-                <button ion-button class="text-white" (click)="nextMonth()"><ion-label>Próximo</ion-label></button>
+                <button ion-button class="text-white" (click)="nextMonth()"><ion-label>{{dataInfo.titleAfter}}</ion-label></button>
             </ion-segment>          
     </ion-toolbar>  
 
@@ -275,7 +271,7 @@
 
     <ion-row>
         <ion-col>            
-            <button ion-button full (click)="clearCal()" [disabled]="eventSource.length > 0">{{dataInfo.titleCleanCal}}</button>
+            <button ion-button full (click)="clearCal()" [disabled]="eventSource.length === 0">{{dataInfo.titleCleanCal}}</button>
         </ion-col>
     
         <ion-col>

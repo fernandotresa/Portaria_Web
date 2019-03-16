@@ -124,6 +124,8 @@ export class DataInfoProvider {
   titleApplyChecked: string = "Aplicar marcados"  
   titleWarning: string = "Atenção"  
   titlePleaseUnselect: string = "Deseja remover a data final?"
+  titleBefore: string = "Anterior"
+  titleAfter: string = "Próximo"
   titleConfirmStart: string = "Confirmar data inicial?"
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'

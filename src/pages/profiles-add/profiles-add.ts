@@ -54,6 +54,34 @@ export class ProfilesAddPage {
 
   shiftClicked: Boolean = false
 
+  monday: Boolean = false;
+  mondayStart: string = new Date().toISOString(); 
+  mondayEnd: string = new Date().toISOString();
+
+  tuesday: Boolean = false;
+  tuesdayStart: string = new Date().toISOString();
+  tuesdayEnd: string = new Date().toISOString();
+
+  wednesday: Boolean = false;
+  wednesdayStart: string = new Date().toISOString();
+  wednesdayEnd: string = new Date().toISOString();
+
+  thursday: Boolean = false;
+  thursdayStart: string = new Date().toISOString();
+  thursdayEnd: string = new Date().toISOString();
+
+  friday: Boolean = false;
+  fridayStart: string = new Date().toISOString();
+  fridayEnd: string = new Date().toISOString();
+
+  saturday: Boolean = false;
+  saturdayStart: string = new Date().toISOString();
+  saturdayEnd: string = new Date().toISOString();
+
+  sunday: Boolean = false;   
+  sundayStart: string = new Date().toISOString();
+  sundayEnd: string = new Date().toISOString();
+
   calendar = {
     mode: 'month',
     locale: 'pt',
@@ -182,6 +210,82 @@ export class ProfilesAddPage {
         this.updatingDates = false  
       });
     })
+
+    this.subscribeDayweekStuff()
+  }
+
+  subscribeDayweekStuff(){
+    this.events.subscribe('setMondayStart', mondayStart => {
+
+      this.monday = true
+      this.mondayStart = mondayStart
+    })    
+
+    this.events.subscribe('setMondayEnd', mondayEnd => {
+      this.monday = true
+      this.mondayEnd = mondayEnd
+    })    
+ 
+    this.events.subscribe('setTuesdayEnd', tuesdayEnd => {
+      this.tuesday = true
+      this.tuesdayEnd = tuesdayEnd
+    })  
+
+    this.events.subscribe('setTuesdayStart', tuesdayStart => {
+      this.tuesday = true
+      this.tuesdayStart = tuesdayStart
+    })  
+
+    this.events.subscribe('setWednesdayStart', wednesdayStart => {
+      this.wednesday = true
+      this.wednesdayStart = wednesdayStart
+    })  
+
+    this.events.subscribe('setWednesdayEnd', wednesdayEnd => {
+      this.wednesday = true
+      this.wednesdayEnd = wednesdayEnd
+    })       
+
+    this.events.subscribe('setThursdayStart', thursdayStart => {
+      this.thursday = true
+      this.thursdayStart = thursdayStart
+    })  
+
+    this.events.subscribe('setThursdayEnd', thursdayEnd => {
+      this.thursday = true
+      this.thursdayEnd = thursdayEnd
+    })  
+
+
+    this.events.subscribe('setFridayStart', fridayStart => {
+      this.friday = true
+      this.fridayStart = fridayStart
+    })
+
+    this.events.subscribe('setFridayEnd', fridayEnd => {
+      this.friday = true
+      this.fridayEnd = fridayEnd
+    })
+
+    this.events.subscribe('setSaturdayStart', saturdayStart => {
+      this.saturday = true
+      this.saturdayStart = saturdayStart
+    })
+
+    this.events.subscribe('setSaturdayEnd', saturdayEnd => {
+      this.saturday = true
+      this.saturdayEnd = saturdayEnd
+    })
+
+    this.events.subscribe('setSundayStart', sundayStart => {
+      this.sunday = true
+      this.sundayStart = sundayStart
+    })
+
+    this.events.subscribe('setSundayEnd', sundayEnd => {
+      this.sunday = true
+      this.sundayEnd = sundayEnd
+    })
   }
 
   ngOnDestroy() {    
@@ -220,10 +324,48 @@ export class ProfilesAddPage {
     this.events.publish('shiftClicked', this.shiftClicked)
     this.events.publish('setSelectedAccessType', this.selectedAccessType)
     this.events.publish('setSelectedType', this.selectedType)
-    this.events.publish('setProfile', this.profile)
+    this.events.publish('setProfile', this.profile)            
+  }
 
-    console.log(this.hourStart, this.hourEnd)
+  updateItensDayweek(){
+
+    this.events.publish('setName', this.name)    
+    this.events.publish('setDesc', this.desc)
+    this.events.publish('shiftClicked', this.shiftClicked)
+    this.events.publish('setSelectedAccessType', this.selectedAccessType)
+    this.events.publish('setSelectedType', this.selectedType)
+    this.events.publish('setProfile', this.profile)            
     
+    this.events.publish('setHourStart', this.hourStart)
+    this.events.publish('setHourEnd', this.hourEnd)
+
+    this.events.publish('monday', this.monday)
+    this.events.publish('mondayStart', this.mondayStart)
+    this.events.publish('mondayEnd', this.mondayEnd)
+
+    this.events.publish('tuesday', this.tuesday)
+    this.events.publish('tuesdayStart', this.tuesdayStart)
+    this.events.publish('tuesdayEnd', this.tuesdayEnd)
+
+    this.events.publish('wednesday', this.wednesday)
+    this.events.publish('wednesdayStart', this.wednesdayStart)
+    this.events.publish('wednesdayEnd', this.wednesdayEnd)
+
+    this.events.publish('thursday', this.thursday)
+    this.events.publish('thursdayStart', this.thursdayStart)
+    this.events.publish('thursdayEnd', this.thursdayEnd)
+
+    this.events.publish('friday', this.friday)
+    this.events.publish('fridayStart', this.fridayStart)
+    this.events.publish('fridayEnd', this.fridayEnd)
+
+    this.events.publish('saturday', this.saturday)
+    this.events.publish('saturdayStart', this.saturdayStart)
+    this.events.publish('saturdayEnd', this.saturdayEnd)
+
+    this.events.publish('sunday', this.sunday)
+    this.events.publish('sundayStart', this.sundayStart)
+    this.events.publish('sundayEnd', this.sundayEnd)
   }
 
   copyProfileInfo(){
@@ -241,11 +383,14 @@ export class ProfilesAddPage {
    else if(type === 2)    
       this.datetimeUtils.loadDatesProfileDatetime(this.profile.id)
 
-    else if(type === 3)    
+    else if(type === 3){
+      
+      this.updateItensDayweek()
       this.dayweekUtils.loadWeekdaysProfile(this.profile.id)
-
+    }
+      
     else if(type === 4)    
-      this.loadVacationsProfile()
+      this.datetimeUtils.loadDatesProfileDatetime(this.profile.id)
   }
 
   loadProfileInfo(){
@@ -268,27 +413,19 @@ export class ProfilesAddPage {
       this.dayweekUtils.loadWeekdaysProfile(this.profile.id)
 
     else if(type === 4)    
-      this.loadVacationsProfile()
+      this.datetimeUtils.loadDatesProfileDatetime(this.profile.id)
   }
 
   getColorStatus(col: number){   
     let color = 'primary'  
     return color;
   }  
-
   
   parseTimestamp(timestampStr) {          
     return new Date(timestampStr)
-  };
-
-  
-  loadVacationsProfile(){    
-   // this.loadDatesProfileDatetime()
-  }
+  };   
      
   onTimeSelected(ev) {            
-
-    console.log("onTimeSelected", this.updatingDates,  this.lastSelectedDay)
 
     if(this.selectedAccessType == this.dataInfo.titleProfileDatetime){
 
@@ -313,14 +450,11 @@ export class ProfilesAddPage {
       }           
   
       this.lastSelectedDay = this.selectedDay
-
-    }
-    
+    }    
   }
   
   onTimeSelectedDateTime(ev){
     console.log("onTimeSelectedDateTime")
-
 
     if(! this.updatingDates && ! this.calendarDisabled){        
     
@@ -383,17 +517,14 @@ export class ProfilesAddPage {
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.datetimeUtils.addProfileDateTimes()
 
-    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
+      this.updateItensDayweek()
       this.dayweekUtils.addProfileDayWeek()
+    }      
 
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
-      this.addProfileVacation()
-  }
-    
-  
-  addProfileVacation(){
-    //this.addProfileDateTimes()
-  }
+      this.datetimeUtils.addProfileDateTimes()
+  }       
 
   updateProfile(){
 
@@ -405,19 +536,15 @@ export class ProfilesAddPage {
     else if(this.selectedAccessType == this.dataInfo.titleProfileDatetime)
       this.datetimeUtils.updateProfileDateTimes()
 
-    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek)
+    else if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
+      this.updateItensDayweek()
       this.dayweekUtils.updateProfileDayWeek()
-
+    }     
     else if(this.selectedAccessType == this.dataInfo.titleProfileVacation)
-      this.updateProfileVacation()
+      this.datetimeUtils.updateProfileDateTimes()
   }   
-
-  updateProfileVacation(){
-    //this.updateProfileDateTimes()
-  }  
-
-  restartCalendar(){    
-      
+ 
+  restartCalendar(){          
       this.eventSource.splice(0, this.eventSource.length)            
       this.refreshCalendar()   
   }

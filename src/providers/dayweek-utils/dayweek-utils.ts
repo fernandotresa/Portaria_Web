@@ -58,6 +58,133 @@ export class DayweekUtilsProvider {
     public events: Events, 
     public moments: MomentsProvider,
     public uiUtils: UiUtilsProvider) {
+
+      this.setDateDefaultDayweeks()
+      this.subscribeStuff()
+  }
+
+  subscribeStuff(){    
+    
+    this.events.subscribe('setName', name => {
+      this.name = name
+    })
+
+    this.events.subscribe('setDesc', desc => {
+      this.desc = desc
+    })
+
+    this.events.subscribe('setSelectedAccessType', selectedAccessType => {
+      this.selectedAccessType = selectedAccessType
+    })
+
+    this.events.subscribe('setSelectedType', selectedType => {
+      this.selectedType = selectedType
+    })
+
+    this.events.subscribe('setProfile', profile => {
+      this.profile = profile
+    })
+
+    this.events.subscribe('setHourStart', hourStart => {
+      this.hourStart = hourStart
+    })
+
+    this.events.subscribe('setHourEnd', hourEnd => {
+      this.hourEnd = hourEnd
+    }) 
+
+    this.events.subscribe('monday', monday => {
+      this.monday = monday
+    })    
+
+    this.events.subscribe('mondayStart', mondayStart => {
+      this.mondayStart = mondayStart
+    })    
+
+    this.events.subscribe('mondayEnd', mondayEnd => {
+      this.mondayEnd = mondayEnd
+    })    
+
+    this.events.subscribe('tuesday', tuesday => {
+      this.tuesday = tuesday
+    })  
+
+    this.events.subscribe('tuesdayEnd', tuesdayEnd => {
+      this.tuesdayEnd = tuesdayEnd
+    })  
+
+    this.events.subscribe('tuesdayStart', tuesdayStart => {
+      this.tuesdayStart = tuesdayStart
+    })  
+
+    this.events.subscribe('wednesday', wednesday => {
+      this.hourEnd = wednesday
+    })  
+
+    this.events.subscribe('wednesdayStart', wednesdayStart => {
+      this.wednesdayStart = wednesdayStart
+    })  
+
+    this.events.subscribe('wednesdayEnd', wednesdayEnd => {
+      this.wednesdayEnd = wednesdayEnd
+    })       
+
+    this.events.subscribe('thursday', thursday => {
+      this.thursday = thursday
+    })  
+
+    this.events.subscribe('thursdayStart', thursdayStart => {
+      this.thursdayStart = thursdayStart
+    })  
+
+    this.events.subscribe('thursdayEnd', thursdayEnd => {
+      this.thursdayEnd = thursdayEnd
+    })  
+
+    this.events.subscribe('friday', friday => {
+      this.friday = friday
+    })  
+
+    this.events.subscribe('fridayStart', fridayStart => {
+      this.fridayStart = fridayStart
+    })
+
+    this.events.subscribe('fridayEnd', fridayEnd => {
+      this.fridayEnd = fridayEnd
+    })
+
+    this.events.subscribe('saturday', saturday => {
+      this.saturday = saturday
+    })
+
+    this.events.subscribe('saturdayStart', saturdayStart => {
+      this.saturdayStart = saturdayStart
+    })
+
+    this.events.subscribe('saturdayEnd', saturdayEnd => {
+      this.saturdayEnd = saturdayEnd
+    })
+
+    this.events.subscribe('sunday', sunday => {
+      this.sunday = sunday
+    })
+
+    this.events.subscribe('sundayStart', sundayStart => {
+      this.sundayStart = sundayStart
+    })
+
+    this.events.subscribe('sundayEnd', sundayEnd => {
+      this.sundayEnd = sundayEnd
+    })
+  }
+
+  ngOnDestroy() {    
+    this.events.unsubscribe('setSelectedDay');		
+    this.events.unsubscribe('setName');		
+    this.events.unsubscribe('setDesc');	
+    this.events.unsubscribe('setSelectedAccessType');	
+    this.events.unsubscribe('setHourStart');	
+    this.events.unsubscribe('setHourEnd');	
   }
 
 
@@ -113,10 +240,11 @@ export class DayweekUtilsProvider {
 
   loadWeekdaysProfileContinue(data){
 
-    this.calendarDisabled = true
+    this.events.publish('calendarDisabled', true)
+    this.events.publish('updatingDates', true)      
 
     data.success.forEach(element => {
-      //this.populateDaysweek(element)      
+      this.populateDaysweek(element)      
     });    
 
     setTimeout( () => {
@@ -124,7 +252,60 @@ export class DayweekUtilsProvider {
     }, 1000);
   }  
 
-  
+  populateDaysweek(element){
+
+    console.log(element)
+
+    let datetime_start = moment(element.datetime_start).format()
+    let datetime_end = moment(element.datetime_end).format()
+    let idDay = element.id_day      
+
+    if(idDay === 1){
+
+      this.monday = true
+      this.mondayStart = datetime_start
+      this.mondayEnd = datetime_end
+    }
+
+    if(idDay === 2){
+      this.tuesday = true
+      this.tuesdayStart = datetime_start
+      this.tuesdayEnd = datetime_end
+    }
+
+    if(idDay === 3){
+      this.wednesday = true
+      this.wednesdayStart = datetime_start
+      this.wednesdayEnd = datetime_end
+    }
+
+    if(idDay === 4){
+      this.thursday = true
+      this.thursdayStart = datetime_start
+      this.thursdayEnd = datetime_end
+    }
+
+    if(idDay === 5){
+      this.friday = true
+      this.fridayStart = datetime_start
+      this.fridayEnd = datetime_end
+    }
+
+    if(idDay === 6){
+      this.saturday = true
+      this.saturdayStart = datetime_start
+      this.saturdayEnd = datetime_end
+    }      
+    
+    if(idDay === 7){
+      this.sunday = true
+      this.sundayStart = datetime_start
+      this.sundayEnd = datetime_end
+    }
+
+    this.updateItensDayweek()
+  }
+
 
   populateDayweekData(){
     this.datesWeek = []
@@ -205,50 +386,99 @@ export class DayweekUtilsProvider {
       if(sundayIsBefore){        
         this.uiUtils.showAlert("Atenção", "Verificar domingo").present()
         return false
+
       } else 
         this.datesWeek.push({id: 7, startTime: this.saturdayStart, endTime: this.saturdayEnd})    
       
     }
+    
+
+    console.log(this.datesWeek)
 
     return true
   }
 
   addProfileDayWeek(){
-    /*if(this.populateDayweekData())
-      this.addProfileDayWeekContinue(this.datesWeek)   */   
+    this.addProfileDayWeekContinue(this.datesWeek)         
   }
 
   addProfileDayWeekContinue(data){
-   /* let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-    loading.present()
+    console.log(data)
 
-    this.httpd.addAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, data)
-      .subscribe( () => {
+    if(this.populateDayweekData()){
 
-        loading.dismiss()
-        this.navCtrl.pop()
-        this.events.publish('refreshProfiles', this.selectedType); 
-        this.uiUtils.showAlertSuccess()
-      })*/
+      let loading = this.uiUtils.showLoading("Favor aguarde")          
+      loading.present()       
+
+      this.httpd.addAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, this.datesWeek)
+        .subscribe( () => {
+
+          loading.dismiss()
+          this.events.publish('navCtrlPop', this.selectedType); 
+          this.events.publish('refreshProfiles', this.selectedType); 
+          this.uiUtils.showAlertSuccess()
+        })
+
+    }    
+  }
+
+  updateItensDayweek(){
+
+    if(this.sunday){
+      this.events.publish('setMondayStart', this.mondayStart)
+      this.events.publish('setMondayEnd', this.mondayEnd)
+    }    
+    
+    if(this.tuesday){
+      this.events.publish('setTuesdayStart', this.tuesdayStart)
+      this.events.publish('setTuesdayEnd', this.tuesdayEnd)
+    }
+    
+    if(this.wednesday){
+      this.events.publish('setWednesdayStart', this.wednesdayStart)
+      this.events.publish('setWednesdayEnd', this.wednesdayEnd)
+    }
+    
+    if(this.thursday){
+      this.events.publish('setThursdayStart', this.thursdayStart)
+      this.events.publish('setThursdayEnd', this.thursdayEnd)
+    }
+    
+    if(this.friday){
+      this.events.publish('setFridayStart', this.fridayStart)
+      this.events.publish('setFridayEnd', this.fridayEnd)
+    }
+
+    if(this.saturday){
+      this.events.publish('setSaturdayStart', this.saturdayStart)
+      this.events.publish('setSaturdayEnd', this.saturdayEnd)
+    }
+
+    if(this.sunday){
+      this.events.publish('setSundayStart', this.sundayStart)
+      this.events.publish('setSundayEnd', this.sundayEnd)
+    }    
   }
 
 
   updateProfileDayWeek(){        
 
-    /*if(this.populateDayweekData()){
+    if(this.populateDayweekData()){
 
-      let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
+      console.log(this.datesWeek)
+
+      let loading = this.uiUtils.showLoading("Favor aguarde")          
       loading.present()
   
       this.httpd.updateAccessProfileDayweek(this.name, this.desc, this.selectedAccessType, this.datesWeek, this.profile.id)
         .subscribe( () => {
   
           loading.dismiss()        
-          this.navCtrl.pop()
+          this.events.publish('navCtrlPop', this.selectedType); 
           this.events.publish('refreshProfiles', this.profile.id_type);
           this.uiUtils.showAlertSuccess()
         })
-    }    */
+    } 
   }
 
 }

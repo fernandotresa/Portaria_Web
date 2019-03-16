@@ -270,17 +270,17 @@ export class ExpireUtilsProvider {
     let end = moment(this.dateEnd)
 
     let loading = this.uiUtils.showLoading("Favor aguarde")          
-      loading.present()       
-      
-      this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end, this.profile.id)    
-      .subscribe( () => {
+    loading.present()       
+    
+    this.httpd.updateAccessProfileExpire(this.name, this.desc, this.selectedAccessType, start, end, this.profile.id)    
+    .subscribe( () => {
 
-        loading.dismiss()
+      loading.dismiss()
 
-        this.events.publish('navCtrlPop', this.selectedType); 
-        this.events.publish('refreshProfiles', this.selectedType); 
-        this.uiUtils.showAlertSuccess()
-      })
+      this.events.publish('navCtrlPop', this.selectedType); 
+      this.events.publish('refreshProfiles', this.selectedType); 
+      this.uiUtils.showAlertSuccess()
+    })
   }
 
 }

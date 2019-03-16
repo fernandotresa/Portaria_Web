@@ -107,8 +107,6 @@ export class DatetimeUtilsProvider {
 
   confirmDatetime(){
 
-    console.log("confirmDatetime")
-
     if(this.shiftClicked)
       this.addEventDateShift()
     else 
@@ -147,12 +145,11 @@ export class DatetimeUtilsProvider {
         ev.push(eventB);
     }
 
+
     return ev
   }
   
   addEventDateShift(){    
-
-    console.log("addEventDateShift")
     
     if(moment(this.selectedDay).isValid()){      
       
@@ -161,8 +158,9 @@ export class DatetimeUtilsProvider {
 
       let events = this.eventSource;    
 
-      let startDate = new Date(this.dateStart)
-      let endDate = new Date(this.dateEnd)
+      let startDate = new Date(this.selectedDay)
+      let endDate = new Date(this.selectedDay)
+
       this.setHours(startDate, endDate)
 
       let event = { startTime: startDate, endTime: endDate,  title: 'Carregado automaticamente',  color: "primary"}    
@@ -170,10 +168,12 @@ export class DatetimeUtilsProvider {
       events.push(event);     
 
       this.eventSource = []
-
-      if(events.length >= 2)        
-        events = this.addDatesRange(events, startDate, endDate)                      
       
+      if(events.length > 0){
+        events = this.addDatesRange(events, startDate, endDate)                      
+        this.dateStart = this.moments.parseDateBr(events[0].startTime)
+        events[0].endTime = new Date(endDate)
+      }
       
       this.refreshCalendar(startDate, endDate, events)
       
@@ -246,8 +246,6 @@ export class DatetimeUtilsProvider {
 
     data.success.forEach(element => {
 
-      console.log(element)
-
       let dateS = this.moments.parseDateBr(moment(element.datetime_start).utc().format())
       let dateF = this.moments.parseDateBr(moment(element.datetime_end).format())
 
@@ -267,14 +265,10 @@ export class DatetimeUtilsProvider {
     });          
 
     if(events.length > 0){
-
       this.dateStart = this.moments.parseDateBr(events[0].startTime)
       events[0].endTime = new Date(datetime_end)
     }
     
-
-    console.log(events)
-
     this.addDatesRange(events, datetime_start, datetime_end)
 
     this.eventSource = []    
@@ -339,6 +333,7 @@ export class DatetimeUtilsProvider {
   populateDates(startDate, endDate){  
 
     console.log(startDate, endDate)
+
     this.events.publish('updateDateStart', startDate);
     this.events.publish('updateDateEnd', endDate);   
   }

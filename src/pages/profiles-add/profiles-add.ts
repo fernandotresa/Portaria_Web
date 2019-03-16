@@ -53,6 +53,9 @@ export class ProfilesAddPage {
   hourEnd: any
 
   shiftClicked: Boolean = false
+  showDates: Boolean = false
+  showDatesModal: Boolean = false
+  showAccessTypes: Boolean = false
 
   monday: Boolean = false;
   mondayStart: string = new Date().toISOString(); 
@@ -92,11 +95,13 @@ export class ProfilesAddPage {
 
   @HostListener('document:keydown.Shift', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.shiftClicked = true
+    console.log(this.shiftClicked)
     this.events.publish('shiftClicked', this.shiftClicked)
   }
 
   @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
     this.shiftClicked = false   
+    console.log(this.shiftClicked)
     this.events.publish('shiftClicked', this.shiftClicked)
   } 
 
@@ -128,6 +133,7 @@ export class ProfilesAddPage {
       this.selectedAccessType = selectedTypeName    
     
     this.startInterface()  
+    this.selectedAccessType = this.dataInfo.titleProfileVacation
   }
 
   ngAfterViewInit() {

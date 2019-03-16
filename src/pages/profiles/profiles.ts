@@ -47,6 +47,7 @@ export class ProfilesPage {
   }  
 
   ionViewDidLoad() {    
+    this.selectedType = 0
   }
 
   ngOnDestroy() {    

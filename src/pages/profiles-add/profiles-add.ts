@@ -85,6 +85,8 @@ export class ProfilesAddPage {
   sundayStart: string = new Date().toISOString();
   sundayEnd: string = new Date().toISOString();
 
+  colorRange: string = "Primary"
+
   calendar = {
     mode: 'month',
     locale: 'pt',
@@ -95,13 +97,13 @@ export class ProfilesAddPage {
 
   @HostListener('document:keydown.Shift', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.shiftClicked = true
-    console.log(this.shiftClicked)
+    this.colorRange = "secondary"
     this.events.publish('shiftClicked', this.shiftClicked)
   }
 
   @HostListener('document:keyup.Shift', ['$event']) onKeyupHandler(event: KeyboardEvent) {    
     this.shiftClicked = false   
-    console.log(this.shiftClicked)
+    this.colorRange = "primary"
     this.events.publish('shiftClicked', this.shiftClicked)
   } 
 
@@ -840,7 +842,10 @@ export class ProfilesAddPage {
   hourEndChanged(){
     if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
     }
+  }
 
+  turnOnShift(){
+    this.shiftClicked != this.shiftClicked
   }
   
 }

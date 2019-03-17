@@ -271,15 +271,19 @@
 
     <ion-row>
         <ion-col>            
-            <button ion-button full (click)="clearCal()" [disabled]="eventSource.length === 0">{{dataInfo.titleCleanCal}}</button>
-        </ion-col>
-    
-        <ion-col>
-            <button ion-button full (click)="addProfile()" color="secondary" [disabled]="! loadProfile">{{dataInfo.titleRegister}}</button>
+            <button ion-button full (click)="clearCal()" color="danger" [disabled]="eventSource.length === 0">{{dataInfo.titleCleanCal}}</button>
         </ion-col>
 
-        <ion-col>
-            <button ion-button full (click)="updateProfile()" color="secondary" [disabled]="loadProfile">{{dataInfo.titleSave}}</button>
+        <ion-col>            
+            <button ion-button full (click)="turnOnShift()" color="{{colorRange}}">{{dataInfo.titleRange}}</button>
+        </ion-col>
+    
+        <ion-col *ngIf="! loadProfile">
+            <button ion-button full (click)="addProfile()" color="secondary">{{dataInfo.titleRegister}}</button>
+        </ion-col>
+
+        <ion-col *ngIf="loadProfile">
+            <button ion-button full (click)="updateProfile()" color="secondary">{{dataInfo.titleSave}}</button>
         </ion-col>
     </ion-row>
                 

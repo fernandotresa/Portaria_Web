@@ -463,11 +463,10 @@ export class ProfilesAddPage {
   
   onTimeSelectedDateTime(ev){
     
-
-    console.log("onTimeSelectedDateTime", this.updatingDates, this.calendarDisabled)
-
     let isOk = true
-    let dayClicked = new Date(this.selectedDay)                
+    let dayClicked = new Date(ev.selectedTime)                
+
+    console.log("onTimeSelectedDateTime", dayClicked, ev)
 
     for(let i = 0; i < this.eventSource.length; ++i){
       

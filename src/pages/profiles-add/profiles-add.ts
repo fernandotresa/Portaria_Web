@@ -219,6 +219,14 @@ export class ProfilesAddPage {
       });
     })
 
+    this.events.subscribe('updateHourStart', hourStart => {      
+      this.hourStart = hourStart
+    })
+
+    this.events.subscribe('updateHourEnd', hourEnd => {      
+      this.hourEnd = hourEnd
+    })
+
     this.subscribeDayweekStuff()
   }
 
@@ -834,14 +842,12 @@ export class ProfilesAddPage {
   }
 
   hourStartChanged(){
-    if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
-
-    }
+    this.events.publish('setHourStart', this.hourStart)    
   }
 
   hourEndChanged(){
-    if(this.selectedAccessType == this.dataInfo.titleProfileDayweek){
-    }
+    this.events.publish('setHourEnd', this.hourEnd)
+    console.log(this.hourEnd)
   }
 
   turnOnShift(){

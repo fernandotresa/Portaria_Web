@@ -2,6 +2,7 @@ import { Events } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import * as momenttz from 'moment-timezone';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { MomentsProvider } from '../../providers/moments/moments';
 
@@ -80,12 +81,18 @@ export class DatetimeUtilsProvider {
     })
 
     this.events.subscribe('setHourStart', hourStart => {
+
       this.hourStart = hourStart
+
+      console.log(this.hourStart)
     })
 
     this.events.subscribe('setHourEnd', hourEnd => {
       this.hourEnd = hourEnd
+      console.log(this.hourEnd)
+
     })
+
 
     this.events.subscribe('shiftClicked', shiftClicked => {      
       this.shiftClicked = shiftClicked
@@ -123,6 +130,8 @@ export class DatetimeUtilsProvider {
       this.events.publish('calendarDisabled', false)        
       this.events.publish('updatingDates', false)
       this.events.publish('updateInputs', false)      
+      this.events.publish('updateHourStart', this.hourStart)      
+      this.events.publish('updateHourEnd', this.hourEnd)      
     })
     
   }
@@ -131,13 +140,13 @@ export class DatetimeUtilsProvider {
 
     let ev = events
     let a = events[0].startTime      
+    this.setHours(startDate, endDate)
 
     for (var m = moment(a); m.isBefore(endDate); m.add(1, 'days')) {
 
       let startDateB = new Date(m.format())
       let endDateB = new Date(m.format())
-
-      this.setHours(startDate, endDate)
+      this.setHours(startDateB, endDateB)      
 
       let eventB = { startTime: startDateB, endTime: endDateB, 
         title: 'Carregado automaticamente',  color: "primary"}    
@@ -209,7 +218,8 @@ export class DatetimeUtilsProvider {
       startDate.setHours(h, m, s)
       endDate.setHours(he, me, se)
 
-      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}        
+      let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}      
+      console.log(event)  
 
       events.push(event);     
     
@@ -246,19 +256,21 @@ export class DatetimeUtilsProvider {
 
     data.success.forEach(element => {
 
-      let dateS = this.moments.parseDateBr(moment(element.datetime_start).utc().format())
-      let dateF = this.moments.parseDateBr(moment(element.datetime_end).format())
+      console.log(element)
 
-      datetime_start = new Date(dateS)          
+      let dateS = momenttz(element.datetime_start).utc().format("YYYY-MM-DDTHH:mm:ss")
+      let dateF = momenttz(element.datetime_end).utc().format("YYYY-MM-DDTHH:mm:ss")
+
+      console.log(dateS)
+      console.log(dateF)
+
+      datetime_start = new Date(this.moments.parseDateBr(dateS))
       datetime_end = new Date(dateF)
 
-      datetime_start.setDate(moment(element.datetime_start).utc().date())
-      datetime_start.setHours(moment(element.datetime_start).utc().hours())
-      datetime_start.setMinutes(moment(element.datetime_start).utc().minutes())
+      this.hourStart = momenttz(element.datetime_start).utc().format("HH:mm:ss")
+      this.hourEnd = momenttz(element.datetime_end).utc().format("HH:mm:ss")
 
-      datetime_end.setDate(moment(element.datetime_end).utc().date())
-      datetime_end.setHours(moment(element.datetime_end).utc().hours())
-      datetime_end.setMinutes(moment(element.datetime_end).utc().minutes())
+      console.log(moment(element.datetime_start).format())
           
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
       events.push(event);
@@ -285,6 +297,8 @@ export class DatetimeUtilsProvider {
   addProfileDateTimes() {    
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()
+
+    console.log(this.eventSource)
       
       this.httpd.addAccessProfileDatetime(this.name, this.desc, 
         this.selectedAccessType, this.eventSource)    
@@ -303,6 +317,8 @@ export class DatetimeUtilsProvider {
 
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()
+
+    console.log(this.eventSource)
     
     this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
     .subscribe( () => {
@@ -335,6 +351,39 @@ export class DatetimeUtilsProvider {
 
     this.events.publish('updateDateStart', startDate);
     this.events.publish('updateDateEnd', endDate);   
+  }
+
+  parseDates(){
+    let events = this.eventSource;        
+    this.eventSource = []
+
+    let datetime_start = new Date()          
+    let datetime_end = new Date()
+
+    
+    events.forEach(element => {
+
+      console.log(element)
+
+      let dateS = momenttz(element.datetime_start).utc().format("YYYY-MM-DDTHH:mm:ss")
+      let dateF = momenttz(element.datetime_end).utc().format("YYYY-MM-DDTHH:mm:ss")
+
+      console.log(dateS)
+      console.log(dateF)
+
+      datetime_start = new Date(this.moments.parseDateBr(dateS))
+      datetime_end = new Date(dateF)
+
+      this.hourStart = momenttz(element.datetime_start).utc().format("HH:mm:ss")
+      this.hourEnd = momenttz(element.datetime_end).utc().format("HH:mm:ss")
+
+      console.log(moment(element.datetime_start).format())
+          
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
+      events.push(event);
+    });          
+
+    this.eventSource = events
   }
 
 

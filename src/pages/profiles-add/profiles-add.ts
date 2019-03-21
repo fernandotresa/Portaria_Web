@@ -168,6 +168,7 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('eventSource', eventSource => {
+      console.log(eventSource)
       this.eventSource = eventSource      
       this.refreshCalendar()
     })
@@ -592,7 +593,8 @@ export class ProfilesAddPage {
     this.eventSource = [];
 
     setTimeout(() => {    
-      this.eventSource = events;      
+      this.eventSource = events;   
+      console.log(this.eventSource)   
       this.calendarDisabled = false            
     });
   }  
@@ -841,7 +843,6 @@ export class ProfilesAddPage {
 
   hourEndChanged(){
     this.events.publish('setHourEnd', this.hourEnd)
-    console.log(this.hourEnd)
   }
 
   turnOnShift(){

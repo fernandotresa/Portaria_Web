@@ -25,6 +25,7 @@ export class DatetimeUtilsProvider {
   hourStart: any
   hourEnd: any
   shiftClicked: Boolean = false
+  updatingHour: Boolean = false
 
   constructor(
     public httpd: HttpdProvider,
@@ -268,6 +269,7 @@ export class DatetimeUtilsProvider {
 
     loading.dismiss()
 
+    console.log(events)
     this.refreshCalendar(start, datetime_end, events)
     
     }    
@@ -308,15 +310,25 @@ export class DatetimeUtilsProvider {
 
   setHours(startDate, endDate){
 
+    this.setHoursStart(startDate)
+    this.setHoursEnd(endDate)
+  }
+
+  setHoursStart(startDate){
+
     let h = this.hourStart.substring(0, 2);
     let m = this.hourStart.substring(3, 5);
-    let s = this.hourStart.substring(6, 8);
+    let s = this.hourStart.substring(6, 8);    
+
+    startDate.setHours(h, m, s)    
+  }
+
+  setHoursEnd(endDate){
 
     let he = this.hourEnd.substring(0, 2);
     let me = this.hourEnd.substring(3, 5);
     let se = this.hourEnd.substring(6, 8);
-
-    startDate.setHours(h, m, s)
+    
     endDate.setHours(he, me, se)
   }
 
@@ -326,41 +338,49 @@ export class DatetimeUtilsProvider {
   }
 
   updateHourStartNew(){
-
     
-    let datetime_start;         
-    let datetime_end;
-    let events = []
+    if(! this.updatingHour){
 
-   for(let i = 0; i < this.eventSource.length; ++i) {
-      
-      let element = this.eventSource[i]
-      console.log(element)
+      this.updatingHour = true
 
-      //this.eventSource.splice(i, 1);
-
-      let dateS = moment(element.startTime).utc().format()
-      let dateF = moment(element.endTime).utc().format()
-
-      datetime_start = new Date(dateS)
-      datetime_end = new Date(dateF)      
-          
-      this.setHours(datetime_start, datetime_end)
-
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
-      events.push(event)
-    };  
+      let datetime_start;         
+      let datetime_end;
+      let events = []
+  
+     for(let i = 0; i < this.eventSource.length; ++i) {
+        
+        let element = this.eventSource[i]
+  
+        let dateS = moment(element.startTime).utc().format()
+        datetime_start = new Date(dateS)
+  
+        let dateF = moment(element.startTime).utc().format()
+        datetime_end = new Date(dateF)
             
-    this.eventSource = []
+        this.setHoursStart(datetime_start)
+        this.setHoursEnd(datetime_end)
+  
+        let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
+        events.push(event)
+      };  
+              
+      this.eventSource = []
+  
+      this.refreshCalendar(datetime_start, datetime_end, events)
 
-    setTimeout(() => {
-      this.eventSource = events; 
-      this.events.publish('eventSource', events);
-    })
+      let self = this
+
+      setTimeout(function(){
+
+        self.updatingHour = false
+      }, 1000)
+    }
+    
   
   }
 
   updateHourEndNew(){
-    console.log(this.hourEnd)      
+    console.log("updateHourEndNew")
+    this.updateHourStartNew()
   }  
 }

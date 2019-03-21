@@ -82,15 +82,13 @@ export class DatetimeUtilsProvider {
 
     this.events.subscribe('setHourStart', hourStart => {
 
-      this.hourStart = hourStart
-
-      console.log(this.hourStart)
+      this.hourStart = hourStart  
+      this.updateHourStartNew()         
     })
 
     this.events.subscribe('setHourEnd', hourEnd => {
-      this.hourEnd = hourEnd
-      console.log(this.hourEnd)
-
+      this.hourEnd = hourEnd      
+      this.updateHourEndNew()
     })
 
 
@@ -200,23 +198,9 @@ export class DatetimeUtilsProvider {
 
       let events = this.eventSource; 
 
-      let startDate = new Date(this.selectedDay)
-      startDate.setHours(0, 0, 1) 
-      
+      let startDate = new Date(this.selectedDay)      
       let endDate = new Date(this.selectedDay)
-      endDate.setHours(23, 59, 0)                     
-    
-
-      let h = this.hourStart.substring(0, 2);
-      let m = this.hourStart.substring(3, 5);
-      let s = this.hourStart.substring(6, 8);
-
-      let he = this.hourEnd.substring(0, 2);
-      let me = this.hourEnd.substring(3, 5);
-      let se = this.hourEnd.substring(6, 8);
-
-      startDate.setHours(h, m, s)
-      endDate.setHours(he, me, se)
+      this.setHours(startDate, endDate)
 
       let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}      
       console.log(event)  
@@ -242,7 +226,7 @@ export class DatetimeUtilsProvider {
   
     if(data.success.length > 0){
 
-      let loading = this.uiUtils.showLoading("Favor aguarde")    
+    let loading = this.uiUtils.showLoading("Favor aguarde")    
     loading.present() 
     this.shiftClicked = true
 
@@ -256,22 +240,17 @@ export class DatetimeUtilsProvider {
 
     data.success.forEach(element => {
 
-      console.log(element)
-
       let dateS = momenttz(element.datetime_start).utc().format("YYYY-MM-DDTHH:mm:ss")
       let dateF = momenttz(element.datetime_end).utc().format("YYYY-MM-DDTHH:mm:ss")
 
-      console.log(dateS)
-      console.log(dateF)
-
-      datetime_start = new Date(this.moments.parseDateBr(dateS))
+      datetime_start = new Date(dateS)
       datetime_end = new Date(dateF)
 
       this.hourStart = momenttz(element.datetime_start).utc().format("HH:mm:ss")
-      this.hourEnd = momenttz(element.datetime_end).utc().format("HH:mm:ss")
-
-      console.log(moment(element.datetime_start).format())
+      this.hourEnd = momenttz(element.datetime_end).utc().format("HH:mm:ss")      
           
+      this.setHours(datetime_start, datetime_end)
+
       let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
       events.push(event);
     });          
@@ -298,8 +277,6 @@ export class DatetimeUtilsProvider {
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()
 
-    console.log(this.eventSource)
-      
       this.httpd.addAccessProfileDatetime(this.name, this.desc, 
         this.selectedAccessType, this.eventSource)    
         
@@ -317,8 +294,6 @@ export class DatetimeUtilsProvider {
 
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()
-
-    console.log(this.eventSource)
     
     this.httpd.updateAccessProfileDatetime(this.name, this.desc, this.selectedAccessType, this.eventSource, this.profile.id)    
     .subscribe( () => {
@@ -346,45 +321,46 @@ export class DatetimeUtilsProvider {
   }
 
   populateDates(startDate, endDate){  
-
-    console.log(startDate, endDate)
-
     this.events.publish('updateDateStart', startDate);
     this.events.publish('updateDateEnd', endDate);   
   }
 
-  parseDates(){
-    let events = this.eventSource;        
-    this.eventSource = []
-
-    let datetime_start = new Date()          
-    let datetime_end = new Date()
+  updateHourStartNew(){
 
     
-    events.forEach(element => {
+    let datetime_start;         
+    let datetime_end;
+    let events = []
 
+   for(let i = 0; i < this.eventSource.length; ++i) {
+      
+      let element = this.eventSource[i]
       console.log(element)
 
-      let dateS = momenttz(element.datetime_start).utc().format("YYYY-MM-DDTHH:mm:ss")
-      let dateF = momenttz(element.datetime_end).utc().format("YYYY-MM-DDTHH:mm:ss")
+      //this.eventSource.splice(i, 1);
 
-      console.log(dateS)
-      console.log(dateF)
+      let dateS = moment(element.startTime).utc().format()
+      let dateF = moment(element.endTime).utc().format()
 
-      datetime_start = new Date(this.moments.parseDateBr(dateS))
-      datetime_end = new Date(dateF)
-
-      this.hourStart = momenttz(element.datetime_start).utc().format("HH:mm:ss")
-      this.hourEnd = momenttz(element.datetime_end).utc().format("HH:mm:ss")
-
-      console.log(moment(element.datetime_start).format())
+      datetime_start = new Date(dateS)
+      datetime_end = new Date(dateF)      
           
-      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
-      events.push(event);
-    });          
+      this.setHours(datetime_start, datetime_end)
 
-    this.eventSource = events
+      let event = { startTime: datetime_start, endTime: datetime_end, title: 'Carregado automaticamente', color: "primary"}      
+      events.push(event)
+    };  
+            
+    this.eventSource = []
+
+    setTimeout(() => {
+      this.eventSource = events; 
+      this.events.publish('eventSource', events);
+    })
+  
   }
 
-
+  updateHourEndNew(){
+    console.log(this.hourEnd)      
+  }  
 }

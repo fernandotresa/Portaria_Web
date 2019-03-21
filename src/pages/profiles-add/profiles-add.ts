@@ -474,9 +474,17 @@ export class ProfilesAddPage {
   onTimeSelectedDateTime(ev){
     
     let isOk = true
-    let dayClicked = new Date(ev.selectedTime)                
+    let dayClicked = new Date(ev.selectedTime)    
 
-    console.log("onTimeSelectedDateTime", dayClicked, ev)
+    let h = this.hourStart.substring(0, 2);
+    let m = this.hourStart.substring(3, 5);
+    let s = this.hourStart.substring(6, 8);
+
+    dayClicked.setHours(h)
+    dayClicked.setMinutes(m)
+    dayClicked.setSeconds(s)                    
+
+    console.log("onTimeSelectedDateTime", dayClicked)
 
     for(let i = 0; i < this.eventSource.length; ++i){
       
@@ -485,25 +493,28 @@ export class ProfilesAddPage {
       let isSame = moment(day).isSame(dayClicked, 'day')    
 
       if(isSame){ 
-        console.log('removendo dia')           
+        console.log('removendo dia')  
+
         this.eventSource.splice(i, 1);
         isOk = false
         this.refreshCalendar()
       }      
     }
 
-    console.log("isOk", isOk)
+    console.log("isOk", isOk, this.updatingDates, this.calendarDisabled)
 
     if(isOk){
 
       if(! this.updatingDates && ! this.calendarDisabled){        
     
-        if(moment(this.selectedDay).isValid()){
+        console.log(moment(ev.selectedTime).isValid())
+
+        if(moment(ev.selectedTime).isValid()){
   
           this.updatingDates = true
           this.calendarDisabled = true    
   
-          this.selectedMonth  = moment(this.selectedDay).format("MMMM")
+          this.selectedMonth  = moment(ev.selectedTime).format("MMMM")
           this.onViewTitleChanged(this.selectedMonth)
           this.onTimeSelectedContinue(ev)
         }                  
@@ -514,24 +525,7 @@ export class ProfilesAddPage {
   onTimeSelectedContinue(ev){
 
     this.selectedDay = ev.selectedTime;    
-
-    let refresh = true
-
-    let dayClicked = new Date(this.selectedDay)                
-
-    for(let i = 0; i < this.eventSource.length; ++i){
-      
-      let isSame = moment().isSame(dayClicked, 'day')    
-
-      if(isSame){ 
-        console.log('removendo dia')           
-        this.eventSource.splice(i, 1);
-        refresh = false
-      }
-    }
-    
-    if(refresh)
-      this.checkAccessType(ev)         
+    this.checkAccessType(ev)     
   }  
 
   checkAccessType(ev){

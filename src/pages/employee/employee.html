@@ -7,7 +7,7 @@
     <ion-toolbar no-border color="primary">
         <ion-searchbar
           [(ngModel)]="searchTerm"
-          (ionInput)="setFilteredItems()"
+          (search)="setFilteredItems()"
           placeholder= "Procurar...">
        </ion-searchbar>
     </ion-toolbar>       

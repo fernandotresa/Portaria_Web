@@ -46,6 +46,8 @@ export class EmployeePage {
   }
 
   setFilteredItems(){
+    console.log("Procurando..", this.searchTerm)
+    
     this.employees = this.httpd.getEmployeesByName(this.searchTerm)
     this.employees.subscribe(data => {
 

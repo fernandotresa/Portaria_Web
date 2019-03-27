@@ -2,6 +2,12 @@
 
     <ion-navbar text-center no-border-bottom color="primary">
       <ion-title> {{dataInfo.titleEmployeers}} </ion-title>                
+
+      <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+        <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+        <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+      </ion-item>
+
     </ion-navbar>
   
     <ion-toolbar no-border color="primary">
@@ -13,6 +19,7 @@
     </ion-toolbar>       
 
   </ion-header>
+  
   
 <ion-content padding>
 
@@ -39,6 +46,7 @@
   
       <ion-card-content class="mgt-10 top-default"> 
         <p><b>{{dataInfo.titleAccessRules}}: </b>{{employee.profiles}}</p>
+        <p><b>{{dataInfo.titleAcls}}: </b>{{employee.acls}}</p>
         <p><b>{{dataInfo.titleName}}: </b>{{employee.name}}</p>
         <p><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
         <p><b>{{dataInfo.titleCompany}}: </b>{{employee.EMPRESA}}</p>

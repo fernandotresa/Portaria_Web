@@ -11,6 +11,10 @@ export class DataInfoProvider {
   userInfo: any;
 
   authorExample: string = 'Diego Queiroz dos Santos'
+  clock: String;
+  ipLocal: string = ""
+  titleAddress: string = "Endereço"
+  titleTime: string = "Horário"
 
   latitude: number = 0
   longitude: number = 0
@@ -38,6 +42,7 @@ export class DataInfoProvider {
   titleHourStart: string = "Hora inicial"
   titleHourEnd: string = "Hora final"
 
+  titleUsername: string = "Usuário"
   titleAdd: string = "Adicionar"
   titleAddAccess: string = "Adicionar acesso"
   titleAccessDenied: string = "Acesso negado"
@@ -177,7 +182,19 @@ export class DataInfoProvider {
       this.isWeb = false;
     }
 
-    moment.locale('pt-br');    
+    moment.locale('pt-br');  
+    this.startClock()    
+  }
+
+  startClock(){
+    let self = this
+    this.clock = moment().format("DD/MM/YY hh:mm")
+
+
+    setInterval(function(){
+
+      self.clock = moment().format("DD/MM/YY hh:mm")
+    }, 10000);   
   }
 
   dataURItoBlob(dataURI) {    

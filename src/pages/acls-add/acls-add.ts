@@ -92,9 +92,7 @@ export class AclsAddPage {
 
   add(){
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
-    loading.present() 
-
-    console.log(this.selectedArray)
+    loading.present()     
 
     this.httpd.addAcl(this.name, this.permission, this.getSelectedSectors())
     .subscribe( () => {

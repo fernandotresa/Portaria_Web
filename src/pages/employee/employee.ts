@@ -79,7 +79,7 @@ export class EmployeePage {
       let str = name + " "
       employee.profiles.push(str)
     });
-  }
+  }  
 
   goPageAdd(){
     this.navCtrl.push(EmployeeAddPage)

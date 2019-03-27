@@ -1,6 +1,6 @@
 side-menu-content {
 
-    $active-color: map-get($colors, primary);
+	$active-color: map-get($colors, primary);		
 
     ion-item.item.item-block.option {
         background-color: #fff;

@@ -23,8 +23,9 @@ export class ProfilesAddPage {
 
   profile: any
 
-  name: string;
-  desc: string;
+
+  name: string = "";
+  desc: string = "";
   loadProfile: Boolean = false
   copyProfile: Boolean = false
 
@@ -118,7 +119,7 @@ export class ProfilesAddPage {
     public expireUtils: ExpireUtilsProvider,
     public dayweekUtils: DayweekUtilsProvider,
     public navParams: NavParams) {  
-
+      
       moment.locale('pt-br');       
   }
 

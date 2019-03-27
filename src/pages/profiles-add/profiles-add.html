@@ -5,6 +5,11 @@
   
   <ion-title> {{dataInfo.titlePermissionsAccess}} </ion-title>   
 
+  <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+    <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+    <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+  </ion-item>
+
     <ion-buttons end>
         <button ion-button color="white_" (click)="goHome()">
         <ion-icon name="home"></ion-icon></button>
@@ -279,11 +284,15 @@
         </ion-col>
     
         <ion-col *ngIf="! loadProfile">
-            <button ion-button full (click)="addProfile()" color="secondary">{{dataInfo.titleRegister}}</button>
+            <button [disabled]="name.length === 0 || desc.length === 0 || eventSource.length === 0" 
+                ion-button full (click)="addProfile()" color="secondary">{{dataInfo.titleRegister}}
+            </button>
         </ion-col>
 
         <ion-col *ngIf="loadProfile">
-            <button ion-button full (click)="updateProfile()" color="secondary">{{dataInfo.titleSave}}</button>
+            <button  [disabled]="name.length === 0 || desc.length === 0 || eventSource.length === 0"
+                 ion-button full (click)="updateProfile()" color="secondary">{{dataInfo.titleSave}}
+            </button>
         </ion-col>
     </ion-row>
                 

@@ -15,6 +15,7 @@ import { FormControl } from '@angular/forms';
 export class UsersPage {
 
   users: Observable<any>;
+  allUsers = []
 
   searchTerm: string = '';
   searching: any = false;
@@ -42,10 +43,21 @@ export class UsersPage {
 
   getUsers(){
     this.users = this.httpd.getUsers()
+
+    this.users.subscribe(data => {
+      this.allUsers = data.success
+
+      this.checkAcls()
+    })
   }
 
   setFilteredItems(){
     this.users = this.httpd.getUserByName(this.searchTerm)    
+
+    this.users.subscribe(data => {
+      this.allUsers = data.success
+      this.checkAcls()
+    })
   } 
 
   showOptions(user) {
@@ -150,10 +162,37 @@ export class UsersPage {
     })
   }
 
+  checkAcls(){
 
+    let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)        
+    loading.present() 
 
+    let total = this.allUsers.length - 1
+    let index = 0
 
+    this.allUsers.forEach(element => {
+      this.httpd.getAclsNameEmployee(element.id).subscribe(data => {      
+        this.checkAclsContinue(element, data)
+        index++
 
-  
+        if(index === total)
+          loading.dismiss()
+      })
+    }); 
+    
+    
 
+  }  
+
+  checkAclsContinue(user, data){
+
+    user.acls = []
+
+    data.success.forEach(element => {
+
+      let name = element.name
+      let str = name + " "
+      user.acls.push(str)
+    });
+  }
 }

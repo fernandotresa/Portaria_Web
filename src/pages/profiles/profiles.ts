@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
 import { ProfilesAddPage } from '../../pages/profiles-add/profiles-add';
+import { IfStmt } from '@angular/compiler';
 
 @IonicPage()
 @Component({
@@ -36,12 +37,8 @@ export class ProfilesPage {
 
       this.searchControl = new FormControl();
 
-      this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
-        this.searching = false;
-        this.setFilteredItems();
-      });  
-      
       this.events.subscribe('refreshProfiles', selected => {
+
         this.setSelectedType(selected)
       });
   }  
@@ -54,13 +51,31 @@ export class ProfilesPage {
     this.events.unsubscribe('refreshProfiles');		
   }
 
-  setFilteredItems(){    
-    this.accessGroups = this.httpd.getAccessGroupsByName(this.searchTerm)    
+  setFilteredItems(){        
+
+    this.accessGroups = this.httpd.getAccessGroupsByName(this.searchTerm, this.selectedType)    
+
+    this.accessGroups.subscribe(data => {
+      this.allAccessGroups = data.success      
+
+      this.searchBySector()
+
+    })
+  }
+
+  searchBySector(){
+    this.httpd.getAccessGroupsBySector(this.searchTerm, this.selectedType)    
+    .subscribe(data => {
+
+      this.searchBySectorCallback(data)
+    })
+  }
+
+  searchBySectorCallback(data){
+    this.allAccessGroups = data.success      
   }
   
   addPermissionGroups(){
-    console.log(this.selectedTypeName, this.selectedType)
-
     this.navCtrl.push(ProfilesAddPage, {'selectedTypeName': this.selectedTypeName, 'selectedType': this.selectedType})  
   }
 

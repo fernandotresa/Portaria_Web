@@ -76,19 +76,19 @@ page-profiles-add {
         color: white;                
     }
 
-    .monthview-selected {
+      .monthview-selected {
         background-color: transparent !important;
         color: black !important;
       }
-    
-      td.monthview-current {
-        color: white;
-    
+
+      td.monthview-selected {        
+        color: white !important;
+
         .calendar-day {
-          background-color: color($colors, 'light') !important;
+          background-color: color($colors, 'secondary') !important;
         }
       }
-    
+           
       .monthview-datetable {
         border: 0 !important;
     
@@ -102,7 +102,7 @@ page-profiles-add {
       .calendar-day {
         border-radius: 6px;
         padding: 3px 5px;
-    
+            
         &.primary {
           background-color: color($colors, 'primary');
           color: white;
@@ -122,7 +122,7 @@ page-profiles-add {
         &.danger {
           background-color: color($colors, 'danger');
           color: white;
-        }
-      }
+        }                  
+      }              
 }
 

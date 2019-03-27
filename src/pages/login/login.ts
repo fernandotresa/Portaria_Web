@@ -34,6 +34,7 @@ export class LoginPage {
     this.storage.set('ion_did_tutorial', 'true')      
   }
 
+
   ionViewDidLoad() {    
     this.autoLogin = this.navParams.get("autoLogin")
 
@@ -89,7 +90,6 @@ export class LoginPage {
     if(data.success.length > 0){
 
       let userInfo = data.success[0]
-      console.log(userInfo)
           
       this.dataInfo.userInfo = userInfo
       this.dataInfo.userId = userInfo.id

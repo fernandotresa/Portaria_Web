@@ -168,7 +168,6 @@ export class ProfilesAddPage {
     })
 
     this.events.subscribe('eventSource', eventSource => {
-      console.log(eventSource)
       this.eventSource = eventSource      
       this.refreshCalendar()
     })
@@ -440,7 +439,17 @@ export class ProfilesAddPage {
   
   parseTimestamp(timestampStr) {          
     return new Date(timestampStr)
-  };   
+  }; 
+  
+  checkMarkToday(ev){    
+
+    let clicked = new Date(ev.selectedTime)
+    let today = new Date()
+    
+    if(moment(clicked).isSame(today, 'day')){
+      console.log("Mudando a cor...", ev)      
+    }
+  }
      
   onTimeSelected(ev) {            
 
@@ -485,8 +494,6 @@ export class ProfilesAddPage {
     dayClicked.setMinutes(m)
     dayClicked.setSeconds(s)                    
 
-    console.log("onTimeSelectedDateTime", dayClicked)
-
     for(let i = 0; i < this.eventSource.length; ++i){
       
       let day = new Date(this.eventSource[i].startTime)
@@ -494,7 +501,6 @@ export class ProfilesAddPage {
       let isSame = moment(day).isSame(dayClicked, 'day')    
 
       if(isSame){ 
-        console.log('removendo dia')  
 
         this.eventSource.splice(i, 1);
         isOk = false
@@ -502,16 +508,14 @@ export class ProfilesAddPage {
       }      
     }
 
-    console.log("isOk", isOk, this.updatingDates, this.calendarDisabled)
-
     if(isOk){
 
-      if(! this.updatingDates && ! this.calendarDisabled){        
-    
-        console.log(moment(ev.selectedTime).isValid())
+      if(! this.updatingDates && ! this.calendarDisabled){                            
 
         if(moment(ev.selectedTime).isValid()){
   
+          this.checkMarkToday(ev)
+
           this.updatingDates = true
           this.calendarDisabled = true    
   
@@ -594,7 +598,6 @@ export class ProfilesAddPage {
 
     setTimeout(() => {    
       this.eventSource = events;   
-      console.log(this.eventSource)   
       this.calendarDisabled = false            
     });
   }  

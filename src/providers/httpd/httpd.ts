@@ -114,10 +114,16 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getAccessGroups", myData, {headers: headers})
   }
 
-  getAccessGroupsByName(name_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+  getAccessGroupsByName(name_, id_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, idAccessGroupType: id_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessGroupsByName", myData, {headers: headers})
+  }
+
+  getAccessGroupsBySector(name_, id_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, idAccessGroupType: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessGroupsBySector", myData, {headers: headers})
   }
 
   getAccessGroupsTypeById(id_){

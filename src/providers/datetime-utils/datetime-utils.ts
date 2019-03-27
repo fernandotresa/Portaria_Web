@@ -204,7 +204,6 @@ export class DatetimeUtilsProvider {
       this.setHours(startDate, endDate)
 
       let event = { startTime: startDate, endTime: endDate, title: 'Carregado automaticamente',  color: "primary"}      
-      console.log(event)  
 
       events.push(event);     
     
@@ -269,7 +268,6 @@ export class DatetimeUtilsProvider {
 
     loading.dismiss()
 
-    console.log(events)
     this.refreshCalendar(start, datetime_end, events)
     
     }    
@@ -375,12 +373,9 @@ export class DatetimeUtilsProvider {
         self.updatingHour = false
       }, 1000)
     }
-    
-  
   }
 
   updateHourEndNew(){
-    console.log("updateHourEndNew")
     this.updateHourStartNew()
   }  
 }

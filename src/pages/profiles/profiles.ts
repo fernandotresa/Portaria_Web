@@ -72,7 +72,10 @@ export class ProfilesPage {
   }
 
   searchBySectorCallback(data){
-    this.allAccessGroups = data.success      
+    data.success.forEach(element => {
+      
+      this.allAccessGroups.push(element)
+    });
   }
   
   addPermissionGroups(){

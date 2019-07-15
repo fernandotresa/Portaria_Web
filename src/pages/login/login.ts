@@ -41,7 +41,7 @@ export class LoginPage {
     if(this.autoLogin == undefined)
       this.autoLogin = true               
       
-      //this.loginContinue("admin", "Restrito2018")  
+      this.loginContinue("admin", "Restrito2018")  
   }
 
   focusEmail(){    
@@ -93,6 +93,7 @@ export class LoginPage {
           
       this.dataInfo.userInfo = userInfo
       this.dataInfo.userId = userInfo.id
+
       this.goHome()
 
     } else 

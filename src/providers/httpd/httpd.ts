@@ -11,7 +11,7 @@ export class HttpdProvider {
   data:any = {};  
   
   address : string = 'http://localhost:8085' 
-             
+
   //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
@@ -89,6 +89,34 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getEmployees", myData, {headers: headers})
+  }
+
+  addEmployee(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_){
+
+
+      console.log(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
+
+    let myData = JSON.stringify({id: this.dataInfo.userId, 
+      name: name_, 
+      commumName: commumName_, 
+      rg: rg_,
+      cpf: cpf_,
+      district: district_,
+      tel: tel_,
+      ramal: ramal_,
+      registration: registration_,
+      badge: badge_,
+      employeeFunction: employeeFunction_,
+      employeeType: employeeType_,
+      employeeSector: employeeSector_,
+      employeeCompany: employeeCompany_,
+      employeeOffice: employeeOffice_    
+    });
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addEmployee", myData, {headers: headers})
   }
 
   getEmployeesByName(name_){

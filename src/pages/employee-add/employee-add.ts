@@ -43,51 +43,37 @@ export class EmployeeAddPage {
   }
 
   ionViewDidLoad() {
+    
     this.startInterface()        
   }
 
   startInterface(){
 
     this.informations = this.navParams.get('informations')
-
+    
     this.workFunctions = this.httpd.getWorkFunctions()
-    this.workFunctions.subscribe(data => {
-      
-      if(this.loadModel){
-        this.employeeFunction = this.informations.FUNCAO
-      }
-    })
+    this.workFunctions.subscribe(data => {        
+      this.employeeFunction = data    
+    })    
 
     this.employeeTypes = this.httpd.getEmployeeTypes()
     this.employeeTypes.subscribe(data => {
-
-      if(this.loadModel){
-        this.employeeType = this.informations.FUNCIONARIO_TIPO
-      }              
+      this.employeeType = data
     })
 
     this.sectors = this.httpd.getSectors()
     this.sectors.subscribe(data => {
-
-      if(this.loadModel){
-        this.employeeSector = this.informations.SETOR
-      }
+      this.employeeSector = data      
     })
 
     this.companies = this.httpd.getCompanies()
     this.companies.subscribe(data => {
-
-      if(this.loadModel){
-        this.employeeCompany = this.informations.EMPRESA
-      }
+      this.employeeCompany = data      
     })
 
     this.offices = this.httpd.getOffices()
-    this.offices.subscribe(data => {
-      
-      if(this.loadModel){
-        this.employeeOffice = this.informations.CARGO
-      }
+    this.offices.subscribe(data => {      
+      this.employeeOffice = data      
     })
 
     if(this.informations)
@@ -103,7 +89,79 @@ export class EmployeeAddPage {
     this.tel = this.informations.telefone
     this.ramal = this.informations.ramal
     this.registration = this.informations.matricula
-    this.badge = this.informations.CRACHA        
+    this.badge = this.informations.CRACHA  
+    this.employeeFunction = this.informations.FUNCAO
+    this.employeeType = this.informations.FUNCIONARIO_TIPO
+    this.employeeSector = this.informations.SETOR
+    this.employeeCompany = this.informations.EMPRESA
+    this.employeeOffice = this.informations.CARGO      
   }
+
+  clear(){
+    this.name = ""
+    this.commumName = ""
+    this.rg = ""
+    this.cpf = ""
+    this.district = ""
+    this.tel = ""
+    this.ramal = ""
+    this.registration = ""
+    this.badge = ""
+    this.employeeFunction = ""
+    this.employeeType = ""
+    this.employeeSector = ""
+    this.employeeCompany = ""
+    this.employeeOffice = ""
+  }
+
+  verificaInputs(){
+    return true;
+  }
+
+  save(){
+    if(this.verificaInputs()){
+
+      let alert = this.uiUtils.showConfirm("Atenção", "Você tem certeza disso?")  
+      alert.then((result) => {
+
+      if(result)  
+        this.update()    
+       })
+    }   
+  }
+
+  update(){
+
+    if(this.verificaInputs()){
+
+    let loading = this.uiUtils.showLoading("Favor aguarde")
+    loading.present()
+
+    let self = this   
+
+    this.httpd.addEmployee(this.name,
+    this.commumName,
+    this.rg,
+    this.cpf,
+    this.district,
+    this.tel,
+    this.ramal,
+    this.registration,
+    this.badge,
+    this.employeeFunction,
+    this.employeeType,
+    this.employeeSector,
+    this.employeeCompany,
+    this.employeeOffice)
+
+    .subscribe( () =>{
+      
+        self.clear()
+        loading.dismiss()
+        self.uiUtils.showAlertSuccess()
+      })
+    }
+  }
+
 
 }

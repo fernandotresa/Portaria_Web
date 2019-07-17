@@ -6,7 +6,7 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
-import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
+import { GuestAddPage } from '../../pages/guest-add/guest-add';
 
 @IonicPage()
 @Component({
@@ -30,17 +30,12 @@ export class GuestPage {
     public modalCtrl: ModalController,
     public navParams: NavParams) {
 
-      this.searchControl = new FormControl();
-
-      /*this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
-        this.searching = false;
-        this.setFilteredItems();
-      });*/
+      this.searchControl = new FormControl();    
   }
 
   ionViewDidLoad() {     
-    /*this.searchTerm = "Crisitian "
-    this.setFilteredItems()*/
+    this.searchTerm = "Crisitian "
+    this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -80,11 +75,12 @@ export class GuestPage {
   }
 
   goPageAdd(){
-    this.navCtrl.push(EmployeeAddPage)
+    this.navCtrl.push(GuestAddPage)
   }
 
   goPageEdit(guest){
     console.log(guest)
+    this.navCtrl.push(GuestAddPage, {informations: guest})
   }
 
   addEvent(guest){   
@@ -97,39 +93,10 @@ export class GuestPage {
         this.uiUtils.showAlertSuccess()
       }
     });
-  }   
-
-  openMenu(guest) {
-
-    let actionSheet = this.actionsheetCtrl.create({
-      title: this.dataInfo.titleSelectOption,
-      cssClass: 'action-sheets-basic-page',
-      buttons: [
-        /*{
-          text: this.dataInfo.titleEdit,
-          role: 'destructive',
-          icon: 'folder-open',
-          handler: () => {
-            //this.goPageEdit(guest)
-          }                
-        }, */  
-        {
-          text: this.dataInfo.titleAccessRules,
-          role: 'destructive',
-          icon: 'clipboard',
-          handler: () => {
-            this.addEvent(guest)
-          }                
-        },          
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          icon: 'close'         
-        }
-      ]
-      
-    });
-    actionSheet.present();
-  }    
+  }
+  
+  remove(guest){
+    console.log(guest)
+  }
 
 }

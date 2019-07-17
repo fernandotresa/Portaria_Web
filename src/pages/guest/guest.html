@@ -24,20 +24,16 @@
 
   <ion-list>
 
-    <ion-card class="trip card" text-wrap *ngFor="let guest of allGuests" no-lines (click)="openMenu(guest)">
+    <ion-card class="trip card" text-wrap *ngFor="let guest of allGuests" no-lines>
 
         <ion-card-header>          
-
           <ion-item>
               <ion-avatar item-start>
                 <img src="./assets/imgs/default-user.png" *ngIf="! guest.photo">
                 <img src="{{guest.photo}}" *ngIf="guest.photo">
-              </ion-avatar>
-      
-              <h2>{{guest.name}}</h2>
-             
+              </ion-avatar>      
+              <h2>{{guest.name}}</h2>             
           </ion-item>
-
       </ion-card-header>
           
     <ion-card-content class="mgt-10 top-default"> 
@@ -46,7 +42,28 @@
       <p><b>{{dataInfo.titleCPF}}</b> {{guest.cpf}} </p>        
       <p><b>{{dataInfo.titleBadge}}</b> {{guest.CRACHA}} </p>      
       <p><b>{{dataInfo.titleCompany}}</b> {{guest.EMPRESA}} </p>      
-    </ion-card-content>                                
+    </ion-card-content>       
+    
+    <ion-row>
+        <ion-col>
+            <button ion-button icon-start clear small (click)="goPageEdit(guest)"> 
+                <ion-icon name="md-clipboard"></ion-icon>                
+              <div>Editar</div>
+            </button>
+          </ion-col>
+          <ion-col>
+          <button ion-button icon-start clear small (click)="addEvent(guest)"> 
+                <ion-icon name="md-hand"></ion-icon>                
+              <div>Perfil de Acesso</div>
+            </button>
+          </ion-col>
+          <ion-col>
+            <button ion-button icon-start clear small (click)="remove(guest)"> 
+                <ion-icon name="trash" color="danger"></ion-icon>                
+              <div>Remover</div>
+            </button>
+          </ion-col>                       
+    </ion-row>
 
   </ion-card>
   

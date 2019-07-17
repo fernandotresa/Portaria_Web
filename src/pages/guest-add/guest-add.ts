@@ -4,16 +4,17 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 
+
 @IonicPage()
 @Component({
-  selector: 'page-employee-add',
-  templateUrl: 'employee-add.html',
+  selector: 'page-guest-add',
+  templateUrl: 'guest-add.html',
 })
-export class EmployeeAddPage {  
+export class GuestAddPage {
 
   name: string;
   endereco: string;
-  commumName: string;
+  autorizadoPor: string;
   rg: string;
   cpf: string;
   district: string;
@@ -29,7 +30,7 @@ export class EmployeeAddPage {
 
   informations: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,     
     public httpd: HttpdProvider, 
     public events: Events,
     public uiUtils: UiUtilsProvider,    
@@ -52,7 +53,7 @@ export class EmployeeAddPage {
 
   loadModel(){
     this.name = this.informations.name
-    this.commumName = this.informations.name_comum
+    this.autorizadoPor = this.informations.autorizadoPor
     this.rg = this.informations.rg
     this.endereco = this.informations.endereco
     this.cpf = this.informations.cpf
@@ -71,7 +72,7 @@ export class EmployeeAddPage {
 
   clear(){
     this.name = ""
-    this.commumName = ""
+    this.autorizadoPor = ""
     this.rg = ""
     this.endereco = ""    
     this.cpf = ""
@@ -124,8 +125,8 @@ export class EmployeeAddPage {
 
     let self = this   
 
-    this.httpd.addEmployee(this.name,
-    this.commumName,
+    this.httpd.addGuest(this.name,
+    this.autorizadoPor,
     this.rg,
     this.cpf,
     this.district,
@@ -144,7 +145,7 @@ export class EmployeeAddPage {
               
         loading.dismiss()
         self.uiUtils.showAlertSuccess()        
-        self.events.publish('search-employee:load', self.name)
+        self.events.publish('search-guest:load', self.name)
         self.clear()
         self.navCtrl.pop()
       })  
@@ -160,7 +161,7 @@ export class EmployeeAddPage {
     this.httpd.editEmployee(
     this.informations.id,
     this.name,
-    this.commumName,
+    this.autorizadoPor,
     this.rg,
     this.cpf,
     this.district,
@@ -179,7 +180,7 @@ export class EmployeeAddPage {
       
         loading.dismiss()
         self.uiUtils.showAlertSuccess()        
-        self.events.publish('search-employee:load', self.name)
+        self.events.publish('search-guest:load', self.name)
         self.clear()
         self.navCtrl.pop()
       })

@@ -1,0 +1,122 @@
+
+<ion-header>
+
+    <ion-navbar text-center no-border-bottom color="primary">  
+    
+    <ion-title>Visitantes</ion-title> 
+  
+    <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+      <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+      <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+    </ion-item>
+  
+    <ion-buttons end>
+        <button ion-button menuToggle color="white_">
+          <ion-icon name="menu"></ion-icon></button>
+     </ion-buttons>   
+     
+   </ion-navbar>  
+  
+  </ion-header>
+  
+  
+  <ion-content padding>
+  
+  <ion-list>
+  
+    <ion-item>
+      <ion-label>{{dataInfo.titleName}}</ion-label>
+      <ion-input type="text" [(ngModel)]="name"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+        <ion-label>Autorizado Por</ion-label>
+        <ion-input type="text" [(ngModel)]="autorizadoPor"></ion-input>
+      </ion-item>
+        
+      <ion-item>
+        <ion-label>{{dataInfo.titleRG}}</ion-label>
+        <ion-input type="text" [(ngModel)]="rg"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleCPF}}</ion-label>
+        <ion-input type="number" [(ngModel)]="cpf"></ion-input>
+      </ion-item>
+      <ion-item>
+  
+        <ion-item>
+            <ion-label>Endereço</ion-label>
+            
+            <ion-input type="text" [(ngModel)]="endereco"></ion-input>
+          </ion-item>
+        
+        <ion-label>{{dataInfo.titleDistrict}}</ion-label>
+        <ion-input type="text" [(ngModel)]="district"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleTel}}</ion-label>
+        <ion-input type="number" [(ngModel)]="tel"></ion-input>
+      </ion-item>
+  
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleRamal}}</ion-label>
+        <ion-input type="number" [(ngModel)]="ramal"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleRegistration}}</ion-label>
+        <ion-input type="text" [(ngModel)]="registration"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleBadge}}</ion-label>
+        <ion-input type="number" [(ngModel)]="badge"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleType}}</ion-label>      
+        <ion-select [(ngModel)]="employeeType">
+          <ion-option  *ngFor="let type of (dataInfo.guestTypes | async)?.success" no-lines>{{type.name}}</ion-option>        
+        </ion-select>
+      </ion-item>
+  
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleOffice}}</ion-label>
+        <ion-select [(ngModel)]="employeeFunction">
+          <ion-option  *ngFor="let funct of (dataInfo.workFunctions | async)?.success" no-lines>{{funct.name}}</ion-option>        
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleSector}}</ion-label>      
+        <ion-select [(ngModel)]="employeeSector">
+          <ion-option  *ngFor="let sector of (dataInfo.sectors | async)?.success" no-lines>{{sector.name}}</ion-option>        
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleCompany}}</ion-label>      
+        <ion-select [(ngModel)]="employeeCompany">
+          <ion-option  *ngFor="let company of (dataInfo.companies | async)?.success" no-lines>{{company.name}}</ion-option>        
+        </ion-select>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>{{dataInfo.titleOffice}}</ion-label>      
+        <ion-select [(ngModel)]="employeeOffice">
+          <ion-option  *ngFor="let office of (dataInfo.offices | async)?.success" no-lines>{{office.name}}</ion-option>        
+        </ion-select>
+      </ion-item>
+  
+    <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
+    <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+    
+  </ion-list>
+    
+  
+  </ion-content>
+  

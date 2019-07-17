@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -28,21 +28,13 @@ export class EmployeePage {
     public uiUtils: UiUtilsProvider,   
     public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
-    public actionsheetCtrl: ActionSheetController,
     public navParams: NavParams) {
-
-      this.searchControl = new FormControl();
-
-      /*this.searchControl.valueChanges.debounceTime(700).subscribe(search => {
-        this.searching = false;
-        this.setFilteredItems();
-      });*/
-
+      this.searchControl = new FormControl();    
   }
 
   ionViewDidLoad() {    
-    //this.searchTerm = "Fernando Augusto"
-    /*this.setFilteredItems()*/
+    this.searchTerm = "Fernando Augusto"
+    this.setFilteredItems()
   }
 
   setFilteredItems(){
@@ -86,42 +78,10 @@ export class EmployeePage {
   }
 
   goPageEdit(employee){
+    console.log(employee)
     this.navCtrl.push(EmployeeAddPage, {informations: employee})
   }  
-
-  openMenu(employee) {
-
-    let actionSheet = this.actionsheetCtrl.create({
-      title: this.dataInfo.titleSelectOption,
-      cssClass: 'action-sheets-basic-page',
-      buttons: [
-        /*{
-          text: this.dataInfo.titleEdit,
-          role: 'destructive',
-          icon: 'folder-open',
-          handler: () => {
-            //this.goPageEdit(employee)
-          }                
-        },   */
-        {
-          text: this.dataInfo.titleAccessRules,
-          role: 'destructive',
-          icon: 'clipboard',
-          handler: () => {
-            this.checkAclUser(employee)
-          }                
-        },          
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          icon: 'close'         
-        }
-      ]
-      
-    });
-    actionSheet.present();
-  }    
-
+ 
   checkAclUser(employee){
 
     this.httpd.getAclsUserSector(this.dataInfo.userInfo.id)
@@ -167,6 +127,10 @@ export class EmployeePage {
         this.uiUtils.showAlertSuccess()
       }              
     });
+  }
+
+  remove(employee){
+    console.log(employee)    
   }
 
 }

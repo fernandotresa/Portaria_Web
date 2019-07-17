@@ -67,6 +67,12 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getEmployeeTypes", myData, {headers: headers})
   }
 
+  getGuestTypes(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getGuestTypes", myData, {headers: headers})
+  }
+
   getSectors(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
@@ -92,7 +98,7 @@ export class HttpdProvider {
   }
 
   addEmployee(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
-    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_){
+    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
 
 
       console.log(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
@@ -100,6 +106,37 @@ export class HttpdProvider {
 
     let myData = JSON.stringify({id: this.dataInfo.userId, 
       name: name_, 
+      endereco: endereco_,
+      commumName: commumName_, 
+      rg: rg_,
+      cpf: cpf_,
+      district: district_,
+      tel: tel_,
+      ramal: ramal_,
+      registration: registration_,
+      badge: badge_,
+      employeeFunction: employeeFunction_,
+      employeeType: employeeType_,
+      employeeSector: employeeSector_,
+      employeeCompany
+      : employeeCompany_,
+      employeeOffice: employeeOffice_    
+    });
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addEmployee", myData, {headers: headers})
+  }
+
+  editEmployee(id_, name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
+
+    console.log(id_, name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
+
+    let myData = JSON.stringify({
+      id: id_, 
+      name: name_, 
+      endereco: endereco_,
       commumName: commumName_, 
       rg: rg_,
       cpf: cpf_,
@@ -116,7 +153,7 @@ export class HttpdProvider {
     });
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
-    return this.http.post(this.address  + "/addEmployee", myData, {headers: headers})
+    return this.http.post(this.address  + "/editEmployee", myData, {headers: headers})
   }
 
   getEmployeesByName(name_){
@@ -124,6 +161,64 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getEmployeesByName", myData, {headers: headers})
   }
+
+  addGuest(name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
+
+      console.log(name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
+
+    let myData = JSON.stringify({id: this.dataInfo.userId, 
+      name: name_, 
+      endereco: endereco_,
+      authorizedBy: authorizedBy_, 
+      rg: rg_,
+      cpf: cpf_,
+      district: district_,
+      tel: tel_,
+      ramal: ramal_,
+      registration: registration_,
+      badge: badge_,
+      employeeFunction: employeeFunction_,
+      employeeType: employeeType_,
+      employeeSector: employeeSector_,
+      employeeCompany: employeeCompany_,
+      employeeOffice: employeeOffice_    
+    });
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addGuest", myData, {headers: headers})
+  }
+
+  editGuest(id_, name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+    employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
+
+    console.log(id_, name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
+        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
+
+    let myData = JSON.stringify({
+      id: id_, 
+      name: name_, 
+      endereco: endereco_,
+      authorizedBy: authorizedBy_, 
+      rg: rg_,
+      cpf: cpf_,
+      district: district_,
+      tel: tel_,
+      ramal: ramal_,
+      registration: registration_,
+      badge: badge_,
+      employeeFunction: employeeFunction_,
+      employeeType: employeeType_,
+      employeeSector: employeeSector_,
+      employeeCompany: employeeCompany_,
+      employeeOffice: employeeOffice_    
+    });
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/editGuest", myData, {headers: headers})
+  }
+
 
   getGuests(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
@@ -333,6 +428,13 @@ export class HttpdProvider {
 
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/saveAclsUser", myData, {headers: headers})
-  }    
+  }   
+    
+  verificaCracha(cracha_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, cracha: cracha_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/verificaCracha", myData, {headers: headers})
+  }
+
 
 }

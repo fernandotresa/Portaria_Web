@@ -1,9 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
+
 
 @Injectable()
 export class DataInfoProvider {  
+
+  workFunctions: Observable<any>;
+  employeeTypes: Observable<any>;
+  guestTypes: Observable<any>;
+  sectors: Observable<any>;
+  companies: Observable<any>;
+  offices: Observable<any>;  
+
+  guestType: any;
+
+  employeeType: any;
+  employeeFunction: any;
+  employeeSector: any;
+  employeeCompany: any;
+  employeeOffice: any;
 
   isWeb: Boolean = true
   serverId: number = 1;

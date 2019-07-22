@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
-
 
 @IonicPage()
 @Component({
@@ -11,6 +10,9 @@ import { DataInfoProvider } from '../../providers/data-info/data-info'
   templateUrl: 'guest-add.html',
 })
 export class GuestAddPage {
+
+  employees: any = []
+  employeeSelected: any
 
   name: string;
   endereco: string;
@@ -31,7 +33,8 @@ export class GuestAddPage {
   informations: any;
 
   constructor(public navCtrl: NavController,     
-    public httpd: HttpdProvider, 
+    public httpd: HttpdProvider,
+    public modalCtrl: ModalController,  
     public events: Events,
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
@@ -67,7 +70,6 @@ export class GuestAddPage {
     this.employeeSector = this.informations.SETOR
     this.employeeCompany = this.informations.EMPRESA
     this.employeeOffice = this.informations.CARGO      
-    console.log(this.employeeOffice)
   }
 
   clear(){
@@ -126,7 +128,7 @@ export class GuestAddPage {
     let self = this   
 
     this.httpd.addGuest(this.name,
-    this.autorizadoPor,
+    this.employeeSelected.id,
     this.rg,
     this.cpf,
     this.district,
@@ -158,10 +160,10 @@ export class GuestAddPage {
 
     let self = this   
 
-    this.httpd.editEmployee(
+    this.httpd.editGuest(
     this.informations.id,
     this.name,
-    this.autorizadoPor,
+    this.employeeSelected.id,
     this.rg,
     this.cpf,
     this.district,
@@ -184,6 +186,29 @@ export class GuestAddPage {
         self.clear()
         self.navCtrl.pop()
       })
+   }
+
+   searchAuthorizedBy(){
+     
+     this.httpd.getUserByName(this.autorizadoPor)
+     .subscribe( data => {
+        this.searchAuthorizedByCallback(data)       
+     })
+   }
+
+   searchAuthorizedByCallback(data){
+    
+    this.employees = []
+    data.success.forEach(element => {
+      this.employees.push(element)
+    });
+   }
+
+   addAuthorizedBy(employee){
+     this.employeeSelected = employee
+     this.autorizadoPor = employee.name
+     this.employees = []
+
    }
 
 }

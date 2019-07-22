@@ -8,7 +8,6 @@ import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
 import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
 
-
 @IonicPage()
 @Component({
   selector: 'page-employee',
@@ -117,7 +116,6 @@ export class EmployeePage {
   }
 
   addProfile(employee){
-
     let modal = this.modalCtrl.create('ProfilesLinkPage', {userInfo: employee, userType: 1});
     modal.present();
     modal.onDidDismiss(data => {

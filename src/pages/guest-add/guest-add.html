@@ -22,25 +22,37 @@
   
   <ion-content padding>
   
-  <ion-list>
-  
-    <ion-item>
-      <ion-label>{{dataInfo.titleName}}</ion-label>
-      <ion-input type="text" [(ngModel)]="name"></ion-input>
+  <ion-list>      
+
+    <ion-item class="autocomplete">                
+        <ion-searchbar
+          placeholder="Autorizado por...  "
+          [(ngModel)]="autorizadoPor"
+          (search)="searchAuthorizedBy()"          
+          debounce=700>
+        </ion-searchbar>        
     </ion-item>
-  
-    <ion-item>
-        <ion-label>Autorizado Por</ion-label>
-        <ion-input type="text" [(ngModel)]="autorizadoPor"></ion-input>
-      </ion-item>
-        
+    
+    <ion-item *ngIf="employees.length > 0">
+        <ion-list>          
+            <ion-item *ngFor="let employee of employees" (click)="addAuthorizedBy(employee)">
+              {{employee.name}}
+            </ion-item>
+          </ion-list>
+    </ion-item>
+
       <ion-item>
-        <ion-label>{{dataInfo.titleRG}}</ion-label>
+          <ion-label>{{dataInfo.titleName}}: </ion-label>
+          <ion-input type="text" [(ngModel)]="name"></ion-input>
+        </ion-item>
+
+      <ion-item>
+        <ion-label>{{dataInfo.titleRG}}: </ion-label>
         <ion-input type="text" [(ngModel)]="rg"></ion-input>
       </ion-item>
   
       <ion-item>
-        <ion-label>{{dataInfo.titleCPF}}</ion-label>
+        <ion-label>{{dataInfo.titleCPF}}: </ion-label>
         <ion-input type="number" [(ngModel)]="cpf"></ion-input>
       </ion-item>
       <ion-item>
@@ -103,14 +115,7 @@
         <ion-select [(ngModel)]="employeeCompany">
           <ion-option  *ngFor="let company of (dataInfo.companies | async)?.success" no-lines>{{company.name}}</ion-option>        
         </ion-select>
-      </ion-item>
-  
-      <ion-item>
-        <ion-label>{{dataInfo.titleOffice}}</ion-label>      
-        <ion-select [(ngModel)]="employeeOffice">
-          <ion-option  *ngFor="let office of (dataInfo.offices | async)?.success" no-lines>{{office.name}}</ion-option>        
-        </ion-select>
-      </ion-item>
+      </ion-item>      
   
     <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
     <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>

@@ -62,7 +62,7 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     UsersPageModule,
     AclsPageModule,
     AclsAddPageModule,
-    GuestAddPageModule
+    GuestAddPageModule    
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

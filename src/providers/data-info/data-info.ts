@@ -207,9 +207,7 @@ export class DataInfoProvider {
     let self = this
     this.clock = moment().format("DD/MM/YY hh:mm")
 
-
     setInterval(function(){
-
       self.clock = moment().format("DD/MM/YY hh:mm")
     }, 10000);   
   }

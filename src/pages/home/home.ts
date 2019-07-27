@@ -13,19 +13,21 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 })
 export class HomePage {  
 
+  initializing: Boolean = true
+
   constructor(public navCtrl: NavController,
     public httpd: HttpdProvider, 
     public dataInfo: DataInfoProvider,    
     public uiUtils: UiUtilsProvider) {
 
+      this.initializing = true
       this.loadData()
   }
 
   loadData(){
 
-    let loading = this.uiUtils.showLoading("Favor aguarde")
+    let loading = this.uiUtils.showLoading("Carregando informações básicas. Favor aguarde")
     loading.present()
-
 
     this.dataInfo.workFunctions = this.httpd.getWorkFunctions()
     this.dataInfo.workFunctions.subscribe(data => {  
@@ -54,6 +56,7 @@ export class HomePage {
 
                   this.dataInfo.guestType = data   
                   loading.dismiss()
+                  this.loadVehiclesInfo()
                 })
 
               })
@@ -61,6 +64,31 @@ export class HomePage {
           })          
       })      
     })
+  }
+
+  loadVehiclesInfo(){
+
+    let loading = this.uiUtils.showLoading("Carregando informações de veículos. Favor aguarde")
+    loading.present()
+
+    this.dataInfo.vehicleTypes = this.httpd.getVehicleTypes()
+    this.dataInfo.vehicleTypes.subscribe(data => { 
+      
+      this.dataInfo.vehicleType = data
+
+        this.dataInfo.vehicleModels = this.httpd.getVehicleModels()
+          this.dataInfo.vehicleModels.subscribe(data => {
+            this.dataInfo.vehicleModel = data      
+
+            this.dataInfo.vehicleBrands = this.httpd.getVehicleBrands()
+            this.dataInfo.vehicleBrands.subscribe(data => {
+              this.dataInfo.vehicleBrand = data
+
+              loading.dismiss()
+              this.uiUtils.showToast("Seja bem Vindo " + this.dataInfo.userInfo.name  )
+            });
+        });
+    });
   }
 
   goPageEmployee(){

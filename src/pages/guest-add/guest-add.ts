@@ -92,23 +92,53 @@ export class GuestAddPage {
 
   verificaCracha(){
     return new Promise((resolve, reject) =>{
+
       this.httpd.verificaCracha(this.badge)
       .subscribe( data => {
           this.verificaCrachaContinue(data)        
+          resolve(true)
+
         });
       })
+  }
+
+  checkInputs(): Boolean {
+
+    if(! this.informations){
+      
+    }
+            
+    return true;
   }
 
   verificaCrachaContinue(data){
     console.log(data.success)
 
-    if(data.success.length > 0){
+    return new Promise((resolve, reject) =>{
 
-      if(! this.informations)
-        this.addContinue()
-      else
-        this.saveContinue()
+      if(data.success.length > 0){
+
+        if(this.checkInputs()){
+
+          if(! this.informations)
+            this.addContinue()
+          else
+            this.saveContinue()
+
+          resolve()
+
+        } else {
+          this.uiUtils.showAlertError("Falha ao salvar")
+          reject()  
+        }
+        
       }
+      else {
+        this.uiUtils.showAlertError("Crachá não localizado")
+        reject()
+      }
+
+    });    
   }      
 
   add(){    
@@ -155,28 +185,32 @@ export class GuestAddPage {
 
   saveContinue(){
 
-    let loading = this.uiUtils.showLoading("Favor aguarde")
-    loading.present()
+    console.log(this.employeeSelected)
 
-    let self = this   
+    return new Promise((resolve, reject) =>{
 
-    this.httpd.editGuest(
-    this.informations.id,
-    this.name,
-    this.employeeSelected.id,
-    this.rg,
-    this.cpf,
-    this.district,
-    this.tel,
-    this.ramal,
-    this.registration,
-    this.badge,
-    this.employeeFunction,
-    this.employeeType,
-    this.employeeSector,
-    this.employeeCompany,
-    this.employeeOffice,
-    this.endereco)
+      let loading = this.uiUtils.showLoading("Favor aguarde")
+      loading.present()
+
+      let self = this   
+
+      this.httpd.editGuest(
+      this.informations.id,
+      this.name,
+      this.employeeSelected.id,
+      this.rg,
+      this.cpf,
+      this.district,
+      this.tel,
+      this.ramal,
+      this.registration,
+      this.badge,
+      this.employeeFunction,
+      this.employeeType,
+      this.employeeSector,
+      this.employeeCompany,
+      this.employeeOffice,
+      this.endereco)
 
     .subscribe( () =>{
       
@@ -185,7 +219,13 @@ export class GuestAddPage {
         self.events.publish('search-guest:load', self.name)
         self.clear()
         self.navCtrl.pop()
+        resolve()
+
       })
+
+    });
+
+    
    }
 
    searchAuthorizedBy(){

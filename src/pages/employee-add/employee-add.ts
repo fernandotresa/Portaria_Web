@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, ModalController } from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
+import { VehicleAddPage } from '../../pages/vehicle-add/vehicle-add';
 
 @IonicPage()
 @Component({
@@ -30,9 +31,10 @@ export class EmployeeAddPage {
   informations: any;
 
   constructor(public navCtrl: NavController, 
-    public httpd: HttpdProvider, 
+    public httpd: HttpdProvider,
     public events: Events,
-    public uiUtils: UiUtilsProvider,    
+    public uiUtils: UiUtilsProvider,
+    public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
     public navParams: NavParams) {
   }
@@ -65,8 +67,7 @@ export class EmployeeAddPage {
     this.employeeType = this.informations.FUNCIONARIO_TIPO
     this.employeeSector = this.informations.SETOR
     this.employeeCompany = this.informations.EMPRESA
-    this.employeeOffice = this.informations.CARGO      
-    console.log(this.employeeOffice)
+    this.employeeOffice = this.informations.CARGO          
   }
 
   clear(){
@@ -184,5 +185,19 @@ export class EmployeeAddPage {
         self.navCtrl.pop()
       })
    }
+
+   addVehicle(){
+
+    let modal = this.modalCtrl.create(VehicleAddPage);
+    modal.present();
+    modal.onDidDismiss(data => {
+      
+      console.log(data)
+
+      if (data){
+        this.uiUtils.showAlertSuccess()
+      }              
+    });
+  }
 
 }

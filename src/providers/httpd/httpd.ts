@@ -11,7 +11,6 @@ export class HttpdProvider {
   data:any = {};  
   
   address : string = 'http://localhost:8085' 
-
   //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
@@ -19,11 +18,7 @@ export class HttpdProvider {
   constructor(public http: HttpClient, 
     public authProvider: AuthProvider,
     public dataInfo: DataInfoProvider) {
-  }  
-
-  GET(url) {
-    return this.http.get(url);
-  }
+  }    
 
   getUsers(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
@@ -100,10 +95,6 @@ export class HttpdProvider {
   addEmployee(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
     employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
 
-
-      console.log(name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
-        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
-
     let myData = JSON.stringify({id: this.dataInfo.userId, 
       name: name_, 
       endereco: endereco_,
@@ -129,10 +120,7 @@ export class HttpdProvider {
 
   editEmployee(id_, name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
     employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
-
-    console.log(id_, name_, commumName_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
-        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
-
+    
     let myData = JSON.stringify({
       id: id_, 
       name: name_, 
@@ -165,9 +153,6 @@ export class HttpdProvider {
   addGuest(name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
     employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
 
-      console.log(name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
-        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
-
     let myData = JSON.stringify({id: this.dataInfo.userId, 
       name: name_, 
       endereco: endereco_,
@@ -192,10 +177,7 @@ export class HttpdProvider {
 
   editGuest(id_, name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
     employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_, endereco_){
-
-    console.log(id_, name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
-        employeeFunction_, employeeType_, employeeSector_, employeeCompany_, employeeOffice_)
-
+    
     let myData = JSON.stringify({
       id: id_, 
       name: name_, 
@@ -436,5 +418,28 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/verificaCracha", myData, {headers: headers})
   }
 
+  getVehicleTypes(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getVehicleTypes", myData, {headers: headers})
+  }
+
+  getVehicleModels(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getVehicleModels", myData, {headers: headers})
+  }
+
+  getVehicleBrands(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getVehicleBrands", myData, {headers: headers})
+  }
+
+  addVehicle(vehicles_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, vehicles: vehicles_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addVehicle", myData, {headers: headers})
+  }
 
 }

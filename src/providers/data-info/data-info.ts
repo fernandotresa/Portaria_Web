@@ -3,7 +3,6 @@ import { Platform } from 'ionic-angular';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 
-
 @Injectable()
 export class DataInfoProvider {  
 
@@ -14,13 +13,21 @@ export class DataInfoProvider {
   companies: Observable<any>;
   offices: Observable<any>;  
 
+  vehicleTypes: Observable<any>;  
+  vehicleModels: Observable<any>;  
+  vehicleBrands: Observable<any>;  
+
   guestType: any;
 
   employeeType: any;
   employeeFunction: any;
   employeeSector: any;
   employeeCompany: any;
-  employeeOffice: any;
+  employeeOffice: any;  
+
+  vehicleType: any;  
+  vehicleModel: any;  
+  vehicleBrand: any;  
 
   isWeb: Boolean = true
   serverId: number = 1;
@@ -43,22 +50,11 @@ export class DataInfoProvider {
   
   clientPicDefault: string = "assets/imgs/100x100.png"
   imgDefaultBackground: string = "assets/imgs/background.jpg"
-  imgDefaultClient: string = "assets/img/avatar-leia.png"
-    
-  titleCheckMonday: string = "Verificar horários de segunda-feira"
-  titleCheckTuesday: string = "Verificar horários de terça-feira"
-  titleCheckWednesday: string =  "Verificar horários de quarta-feira"
-  titleCheckThursday: string = "Verificar horários de quinta-feira"
-  titleCheckFriday: string = "Verificar horários de sexta-feira"
-  titleCheckSaturnday: string = "Verificar horários de sábado"
-  titleCheckSunday: string = "Verificar horários de domingo"
+  imgDefaultClient: string = "assets/img/avatar-leia.png"      
 
-  titlePeriodDays: string = "Período dias"  
-  titleDayStart: string = "Data inicial"
-  titleDayEnd: string = "Data final"
-  titleHourStart: string = "Hora inicial"
-  titleHourEnd: string = "Hora final"
-
+  titlePlate: string = "Placa"
+  titleBrand: string = "Marca"
+  titleModel: string = "Modelo"
   titleUsername: string = "Usuário"
   titleAdd: string = "Adicionar"
   titleAddAccess: string = "Adicionar acesso"
@@ -66,9 +62,10 @@ export class DataInfoProvider {
   titleStart: string = "Inicio"
   titleEnd: string = "Fim"
   titleAllDay: string = "Dia inteiro?"
-
   titleClearSectors: string = "Limpar Setores"
   titleSave: string = "Salvar"
+  titleFunction: string = "Função"
+  titleVehicle: string = "Veículos"
   titleAcls: string = "ACLs"
   titlePermissionType: string = "Tipos de permissões"
   titleRead: string = "Leitura"
@@ -111,8 +108,7 @@ export class DataInfoProvider {
   titleProfileVacation: string = 'Férias, folgas e afastamentos'
   titleSuccess: string = "Sucesso"
   titleTitle: string = "Título"
-  titleSaveError: string = "Erro ao salvar"
-  
+  titleSaveError: string = "Erro ao salvar"  
   titleAcl: string = "Lista de controle de acesso"
   titleProfileCreated: string = "Perfil criado"
   titleProfileUpdated: string = "Perfil atualizado"
@@ -152,8 +148,7 @@ export class DataInfoProvider {
   titleConfirmStart: string = "Confirmar data inicial?"
   titleConfirmEnd: string = "Confirmar data final?"
   titleSelect: string = 'Selecionar'
-  titleBlockUser: string = "Bloquear usuário"
-  
+  titleBlockUser: string = "Bloquear usuário"  
   titleActiveUser: string = "Desbloquear usuário"
   titleSelectOption: string = 'Selecionar Opção'
   titleMultipleUpdate: string = "Atualização múltipla"
@@ -174,21 +169,16 @@ export class DataInfoProvider {
   titleEdit: string = "Editar"
   titleMessageAndAlerts: string = "Mensagens e alertas"
   titleNotInformed: string = "Não informado"
-  titleCopy: string = "Duplicar"
-  
-  titlePeriod: string = "Período"
-  
+  titleCopy: string = "Duplicar"  
+  titlePeriod: string = "Período"  
   pleaseWait: string = "Favor aguarde";
-  uploading: string = "Enviando foto";
-  
+  uploading: string = "Enviando foto";  
   erro: string = "Erro"
   notAvailable: string = "Não acessível do browser"
-  added: string = "Adicionado"
-    
+  added: string = "Adicionado"    
   titleAreYouSure: string = "Tem certeza disso?"  
   titleUsernameMinLenght: string = "Usuário deve ter apartir de 6 caracteres"    
   titleUsers: string = "Usuários"
-
   titlePasswordMinLenght: string = "Senha deve ter apartir de 6 caracteres"    
 
   constructor(public platform: Platform) {    

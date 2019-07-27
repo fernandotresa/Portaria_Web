@@ -24,6 +24,7 @@
 
 <ion-list>
 
+
   <ion-item>
     <ion-label>{{dataInfo.titleName}}</ion-label>
     <ion-input type="text" [(ngModel)]="name"></ion-input>
@@ -61,7 +62,6 @@
       <ion-input type="number" [(ngModel)]="tel"></ion-input>
     </ion-item>
 
-
     <ion-item>
       <ion-label>{{dataInfo.titleRamal}}</ion-label>
       <ion-input type="number" [(ngModel)]="ramal"></ion-input>
@@ -86,7 +86,7 @@
 
 
     <ion-item>
-      <ion-label>{{dataInfo.titleOffice}}</ion-label>
+      <ion-label>{{dataInfo.titleFunction}}</ion-label>
       <ion-select [(ngModel)]="employeeFunction">
         <ion-option  *ngFor="let funct of (dataInfo.workFunctions | async)?.success" no-lines>{{funct.name}}</ion-option>        
       </ion-select>
@@ -113,7 +113,7 @@
       </ion-select>
     </ion-item>
 
-  <button ion-button full (click)="associate()">Associar Veículos</button>
+  <button ion-button full (click)="addVehicle()">Associar Veículos</button>
   <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
   <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
   

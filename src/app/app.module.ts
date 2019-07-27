@@ -4,9 +4,10 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
+
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-
 import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
 import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module';
@@ -16,6 +17,8 @@ import { ProfilesPageModule } from '../pages/profiles/profiles.module';
 import { ProfilesAddPageModule } from '../pages/profiles-add/profiles-add.module';
 import { ProfilesLinkPageModule } from '../pages/profiles-link/profiles-link.module';
 import { UsersPageModule } from '../pages/users/users.module';
+import { VehiclePageModule } from '../pages/vehicle/vehicle.module';
+import { VehicleAddPageModule } from '../pages/vehicle-add/vehicle-add.module';
 import { AclsPageModule } from '../pages/acls/acls.module';
 import { AclsAddPageModule } from '../pages/acls-add/acls-add.module';
 
@@ -35,7 +38,7 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
+    HomePage,   
     SideMenuContentComponent    
   ],
   imports: [
@@ -48,7 +51,7 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
   ],
 
   exports: [
@@ -62,7 +65,9 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     UsersPageModule,
     AclsPageModule,
     AclsAddPageModule,
-    GuestAddPageModule    
+    GuestAddPageModule,
+    VehicleAddPageModule,
+    VehiclePageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

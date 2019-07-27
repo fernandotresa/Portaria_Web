@@ -26,7 +26,6 @@
       </ion-select>
     </ion-item>
 
-
     <ion-item>
       <ion-label>{{dataInfo.titleModel}}</ion-label>
       <ion-select [(ngModel)]="model">
@@ -36,7 +35,7 @@
 
     <ion-item>
       <ion-label>{{dataInfo.titleBrand}}</ion-label>      
-      <ion-select [(ngModel)]="brand">
+      <ion-select [(ngModel)]="brands">
         <ion-option  *ngFor="let brand of (dataInfo.vehicleBrands | async)?.success" no-lines>{{brand.name}}</ion-option>        
       </ion-select>
     </ion-item>
@@ -47,8 +46,25 @@
     </ion-item>
 
   <button ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button ion-button full (click)="clearAll()" color="danger">Limpar</button>
   
-</ion-list>
-  
+</ion-list>  
 
 </ion-content>
+
+<ion-footer class="trips detail-bg">  
+    
+    <ion-list>
+
+        <ion-item class="trip card" text-wrap *ngFor="let vehicle of vehicles" no-lines>                          
+          <p><b>{{dataInfo.titleType}}: </b>{{vehicle.type}}</p>
+          <p><b>{{dataInfo.titleModel}}</b> {{vehicle.model}} </p>      
+          <p><b>{{dataInfo.titleBrand}}</b> {{vehicle.brand}} </p>        
+          <p><b>{{dataInfo.titlePlate}}</b> {{vehicle.plate}} </p>
+      </ion-item>
+      
+    </ion-list>
+
+    <button *ngIf="vehicles.length > 0" ion-button full (click)="save()" color="secondary">Salvar</button>
+
+</ion-footer>

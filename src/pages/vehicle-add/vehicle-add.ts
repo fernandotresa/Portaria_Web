@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 
@@ -15,14 +15,45 @@ export class VehicleAddPage {
   brands: any;
   plate: any;
 
-  constructor(public navCtrl: NavController,                 
+  vehicles: any = []
+
+  constructor(public viewCtrl: ViewController,           
     public uiUtils: UiUtilsProvider,
-    public dataInfo: DataInfoProvider,
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    public dataInfo: DataInfoProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad VehiclePage');
+    
+    this.vehicles = this.navParams.get('vehicles')
+    console.log(this.vehicles)
+
+    if(! this.vehicles)
+      this.vehicles = []
+
+    this.clear()
+  }
+
+  clear(){
+    this.type = ""
+    this.model = ""
+    this.brands = ""
+    this.plate = ""
+  }
+
+  clearAll(){
+    this.clear()
+    this.vehicles = []
+  }
+
+  add(){
+    let data = {type: this.type, model: this.model, brand: this.brands, plate: this.plate}
+    this.vehicles.push(data)
+    this.clear()
+  }
+
+  save(){
+    this.viewCtrl.dismiss(this.vehicles);
   }
 
 }

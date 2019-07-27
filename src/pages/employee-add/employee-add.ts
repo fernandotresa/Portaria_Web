@@ -29,6 +29,7 @@ export class EmployeeAddPage {
   employeeOffice: any;
 
   informations: any;
+  vehicles: any = []
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider,
@@ -89,10 +90,12 @@ export class EmployeeAddPage {
   }
 
   verificaCracha(){
+
     return new Promise((resolve, reject) =>{
       this.httpd.verificaCracha(this.badge)
       .subscribe( data => {
-          this.verificaCrachaContinue(data)        
+          this.verificaCrachaContinue(data)   
+          resolve()     
         });
       })
   }
@@ -178,24 +181,23 @@ export class EmployeeAddPage {
 
     .subscribe( () =>{
       
+        self.httpd.addVehicle(this.vehicles)
         loading.dismiss()
         self.uiUtils.showAlertSuccess()        
         self.events.publish('search-employee:load', self.name)
         self.clear()
         self.navCtrl.pop()
       })
-   }
+   }   
 
    addVehicle(){
 
-    let modal = this.modalCtrl.create(VehicleAddPage);
+    let modal = this.modalCtrl.create(VehicleAddPage, { vehicles: this.vehicles });
     modal.present();
     modal.onDidDismiss(data => {
       
-      console.log(data)
-
       if (data){
-        this.uiUtils.showAlertSuccess()
+        this.vehicles = data
       }              
     });
   }

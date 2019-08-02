@@ -56,4 +56,8 @@ export class VehicleAddPage {
     this.viewCtrl.dismiss(this.vehicles);
   }
 
+  goBack(){
+    this.viewCtrl.dismiss(this.vehicles);
+  }
+
 }

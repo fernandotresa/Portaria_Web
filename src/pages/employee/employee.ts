@@ -22,6 +22,8 @@ export class EmployeePage {
   searching: any = false;
   searchControl: FormControl;
 
+  elementType = 'img';  
+
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,   

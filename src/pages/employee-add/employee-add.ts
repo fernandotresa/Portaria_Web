@@ -12,6 +12,7 @@ import { VehicleAddPage } from '../../pages/vehicle-add/vehicle-add';
 })
 export class EmployeeAddPage {  
 
+  id: number = 0
   name: string;
   endereco: string;
   commumName: string;
@@ -54,6 +55,7 @@ export class EmployeeAddPage {
   }
 
   loadModel(){
+    this.id = this.informations.id
     this.name = this.informations.name
     this.commumName = this.informations.name_comum
     this.rg = this.informations.rg
@@ -68,7 +70,9 @@ export class EmployeeAddPage {
     this.employeeType = this.informations.FUNCIONARIO_TIPO
     this.employeeSector = this.informations.SETOR
     this.employeeCompany = this.informations.EMPRESA
-    this.employeeOffice = this.informations.CARGO          
+    this.employeeOffice = this.informations.CARGO        
+    
+    this.getVehicle()
   }
 
   clear(){
@@ -101,7 +105,6 @@ export class EmployeeAddPage {
   }
 
   verificaCrachaContinue(data){
-    console.log(data.success)
 
     if(data.success.length > 0){
 
@@ -144,13 +147,9 @@ export class EmployeeAddPage {
     this.employeeOffice,
     this.endereco)
 
-    .subscribe( () =>{
-              
+    .subscribe( () =>{              
         loading.dismiss()
-        self.uiUtils.showAlertSuccess()        
-        self.events.publish('search-employee:load', self.name)
-        self.clear()
-        self.navCtrl.pop()
+        this.finishSave()
       })  
   }
 
@@ -158,8 +157,6 @@ export class EmployeeAddPage {
 
     let loading = this.uiUtils.showLoading("Favor aguarde")
     loading.present()
-
-    let self = this   
 
     this.httpd.editEmployee(
     this.informations.id,
@@ -180,15 +177,50 @@ export class EmployeeAddPage {
     this.endereco)
 
     .subscribe( () =>{
-      
-        self.httpd.addVehicle(this.vehicles)
         loading.dismiss()
-        self.uiUtils.showAlertSuccess()        
-        self.events.publish('search-employee:load', self.name)
-        self.clear()
-        self.navCtrl.pop()
+        this.finishSave()     
       })
    }   
+
+   finishSave(){
+
+    if(this.vehicles.length > 0){
+      this.httpd.addVehicle(this.vehicles) 
+      .subscribe( () => {
+          console.log("Veiculos salvos", this.vehicles)        
+      })
+    }
+        
+    this.uiUtils.showAlertSuccess()        
+    this.events.publish('search-employee:load', self.name)
+    this.clear()
+    this.navCtrl.pop()    
+   }
+
+   getVehicle(){
+    let loading = this.uiUtils.showLoading("Carregando informações de veículos. Favor aguarde")
+    loading.present()
+
+    this.httpd.getVehicleByEmployeeId(this.id)
+    .subscribe( data => {
+      
+      loading.dismiss()
+      this.getVehicleCallback(data)
+    })    
+   }
+
+   getVehicleCallback(data){    
+
+    this.vehicles = []
+
+    data.success.forEach(element => {
+    
+      console.log(element)
+      this.vehicles.push(element)
+
+    });
+
+   }
 
    addVehicle(){
 

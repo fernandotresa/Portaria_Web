@@ -53,6 +53,14 @@
         <p><b>{{dataInfo.titleCompany}}: </b>{{employee.EMPRESA}}</p>
         <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
         <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>        
+
+        <ngx-qrcode 
+        [qrc-element-type]="'img'"
+        [qrc-value] = "employee.CRACHA"
+        qrc-class = "aclass"
+        qrc-errorCorrectionLevel = "L">
+      </ngx-qrcode>
+
       </ion-card-content>         
       
       <ion-row>

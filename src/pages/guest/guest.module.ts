@@ -7,7 +7,7 @@ import { GuestPage } from './guest';
     GuestPage,
   ],
   imports: [
-    IonicPageModule.forChild(GuestPage),
+    IonicPageModule.forChild(GuestPage),    
   ],
 })
 export class GuestPageModule {}

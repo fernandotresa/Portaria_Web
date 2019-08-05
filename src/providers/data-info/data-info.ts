@@ -191,6 +191,11 @@ export class DataInfoProvider {
 
     moment.locale('pt-br');  
     this.startClock()    
+
+    this.employeeType = [{
+      id:
+      name, 
+    }]
   }
 
   startClock(){

@@ -140,6 +140,8 @@ export class HttpdProvider {
       employeeOffice: employeeOffice_    
     });
 
+    console.log(myData)
+
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/editEmployee", myData, {headers: headers})
   }

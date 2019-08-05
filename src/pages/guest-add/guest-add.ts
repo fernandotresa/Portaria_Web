@@ -4,6 +4,13 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 
+import { SelectSearchableComponent } from 'ionic-select-searchable';
+import { GuestTypes } from '../../types/guest.type';
+import { CompaniesTypes } from '../../types/companies.types';
+import { SectorTypes } from '../../types/sectors.types';
+import { OfficeTypes } from '../../types/officies.types';
+
+
 @IonicPage()
 @Component({
   selector: 'page-guest-add',
@@ -32,6 +39,13 @@ export class GuestAddPage {
 
   informations: any;
 
+
+  guestTypes: GuestTypes[];
+  companiesTypes: CompaniesTypes[];
+  sectorsTypes: SectorTypes[];
+  officesTypes: OfficeTypes[];
+  
+
   constructor(public navCtrl: NavController,     
     public httpd: HttpdProvider,
     public modalCtrl: ModalController,  
@@ -50,8 +64,45 @@ export class GuestAddPage {
     this.clear()
     this.informations = this.navParams.get('informations')
 
+    this.populateEmployeeType()
+    this.populateSectorsType()
+    this.populateCompaniesType()
+    this.populateOfficesType()
+
     if(this.informations)
         this.loadModel()                                
+  }
+
+  populateEmployeeType(){
+    this.guestTypes = []
+    
+    this.dataInfo.guestType.success.forEach(element => {            
+      this.guestTypes.push(new GuestTypes(element.id, element.name))
+    });
+  }
+
+  populateOfficesType(){
+    this.officesTypes = []
+        
+    this.dataInfo.employeeFunction.success.forEach(element => {            
+      this.officesTypes.push(new OfficeTypes(element.id, element.name))
+    });
+  };
+
+  populateSectorsType(){
+    this.sectorsTypes = []
+        
+    this.dataInfo.employeeSector.success.forEach(element => {            
+      this.sectorsTypes.push(new SectorTypes(element.id, element.name))
+    });
+  }  
+
+  populateCompaniesType(){
+    this.companiesTypes = []
+        
+    this.dataInfo.employeeCompany.success.forEach(element => {            
+      this.companiesTypes.push(new CompaniesTypes(element.id, element.name))
+    });
   }
 
   loadModel(){
@@ -65,11 +116,13 @@ export class GuestAddPage {
     this.ramal = this.informations.ramal
     this.registration = this.informations.matricula
     this.badge = this.informations.CRACHA  
-    this.employeeFunction = this.informations.FUNCAO
-    this.employeeType = this.informations.FUNCIONARIO_TIPO
-    this.employeeSector = this.informations.SETOR
-    this.employeeCompany = this.informations.EMPRESA
-    this.employeeOffice = this.informations.CARGO      
+        
+    console.log(this.informations.TIPO)
+    
+    this.employeeType = new GuestTypes(this.informations.id_tipo, this.informations.TIPO)
+    this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
+    this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)
+    this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)        
   }
 
   clear(){
@@ -102,12 +155,17 @@ export class GuestAddPage {
       })
   }
 
-  checkInputs(): Boolean {
+  checkInputs(): Boolean {             
 
-    if(! this.informations){
-      
+    console.log(this.employeeSelected)
+    
+    if(! this.employeeSelected ){
+      this.uiUtils.showAlertError("Falha ao salvar. Autorizante não informado.")
+      return false
     }
-            
+
+
+
     return true;
   }
 
@@ -127,8 +185,7 @@ export class GuestAddPage {
 
           resolve()
 
-        } else {
-          this.uiUtils.showAlertError("Falha ao salvar")
+        } else {          
           reject()  
         }
         
@@ -166,11 +223,11 @@ export class GuestAddPage {
     this.ramal,
     this.registration,
     this.badge,
-    this.employeeFunction,
-    this.employeeType,
-    this.employeeSector,
-    this.employeeCompany,
-    this.employeeOffice,
+    this.employeeFunction.name,
+    this.employeeType.name,
+    this.employeeSector.name,
+    this.employeeCompany.name,
+    this.employeeOffice.name,
     this.endereco)
 
     .subscribe( () =>{
@@ -205,11 +262,11 @@ export class GuestAddPage {
       this.ramal,
       this.registration,
       this.badge,
-      this.employeeFunction,
-      this.employeeType,
-      this.employeeSector,
-      this.employeeCompany,
-      this.employeeOffice,
+      this.employeeFunction.name,
+      this.employeeType.name,
+      this.employeeSector.name,
+      this.employeeCompany.name,
+      this.employeeOffice.name,
       this.endereco)
 
     .subscribe( () =>{

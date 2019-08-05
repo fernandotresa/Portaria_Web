@@ -4,6 +4,13 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { VehicleAddPage } from '../../pages/vehicle-add/vehicle-add';
+import { SelectSearchableComponent } from 'ionic-select-searchable';
+
+import { EmployeeTypes } from '../../types/employee.type';
+import { FunctionsTypes } from '../../types/functions.types';
+import { CompaniesTypes } from '../../types/companies.types';
+import { SectorTypes } from '../../types/sectors.types';
+import { OfficeTypes } from '../../types/officies.types';
 
 @IonicPage()
 @Component({
@@ -23,6 +30,7 @@ export class EmployeeAddPage {
   ramal: string;
   registration: string;
   badge: string;
+
   employeeType: any;
   employeeFunction: any;
   employeeSector: any;
@@ -31,6 +39,12 @@ export class EmployeeAddPage {
 
   informations: any;
   vehicles: any = []
+
+  employeeTypes: EmployeeTypes[];
+  functionTypes: FunctionsTypes[];
+  companiesTypes: CompaniesTypes[];
+  sectorsTypes: SectorTypes[];
+  officesTypes: OfficeTypes[];
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider,
@@ -46,6 +60,12 @@ export class EmployeeAddPage {
   }
 
   startInterface(){
+
+    this.populateEmployeeType()
+    this.populateFunctionType()
+    this.populateSectorsType()
+    this.populateCompaniesType()
+    this.populateOfficesType()
 
     this.clear()
     this.informations = this.navParams.get('informations')
@@ -66,13 +86,56 @@ export class EmployeeAddPage {
     this.ramal = this.informations.ramal
     this.registration = this.informations.matricula
     this.badge = this.informations.CRACHA  
-    this.employeeFunction = this.informations.FUNCAO
-    this.employeeType = this.informations.FUNCIONARIO_TIPO
-    this.employeeSector = this.informations.SETOR
-    this.employeeCompany = this.informations.EMPRESA
-    this.employeeOffice = this.informations.CARGO        
+
+    this.employeeFunction = new FunctionsTypes(this.informations.FUNCAO_ID, this.informations.FUNCAO)
+    this.employeeType = new EmployeeTypes(this.informations.id_tipo, this.informations.FUNCIONARIO_TIPO)
+    this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
+    this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)
+    this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)        
     
     this.getVehicle()
+
+    console.log(this.employeeFunction)
+  }
+
+  populateEmployeeType(){
+    this.employeeTypes = []
+    
+    this.dataInfo.employeeType.success.forEach(element => {            
+      this.employeeTypes.push(new EmployeeTypes(element.id, element.name))
+    });
+  }
+
+  populateFunctionType(){
+    this.functionTypes = []
+        
+    this.dataInfo.employeeFunction.success.forEach(element => {            
+      this.functionTypes.push(new FunctionsTypes(element.id, element.name))
+    });
+  }
+
+  populateSectorsType(){
+    this.sectorsTypes = []
+        
+    this.dataInfo.employeeSector.success.forEach(element => {            
+      this.sectorsTypes.push(new SectorTypes(element.id, element.name))
+    });
+  }
+
+  populateOfficesType(){
+    this.officesTypes = []
+        
+    this.dataInfo.employeeFunction.success.forEach(element => {            
+      this.officesTypes.push(new OfficeTypes(element.id, element.name))
+    });
+  };
+
+  populateCompaniesType(){
+    this.companiesTypes = []
+        
+    this.dataInfo.employeeCompany.success.forEach(element => {            
+      this.companiesTypes.push(new CompaniesTypes(element.id, element.name))
+    });
   }
 
   clear(){
@@ -127,9 +190,7 @@ export class EmployeeAddPage {
   addContinue(){
 
     let loading = this.uiUtils.showLoading("Favor aguarde")
-    loading.present()
-
-    let self = this   
+    loading.present()    
 
     this.httpd.addEmployee(this.name,
     this.commumName,
@@ -140,11 +201,11 @@ export class EmployeeAddPage {
     this.ramal,
     this.registration,
     this.badge,
-    this.employeeFunction,
-    this.employeeType,
-    this.employeeSector,
-    this.employeeCompany,
-    this.employeeOffice,
+    this.employeeFunction.name,
+    this.employeeType.name,
+    this.employeeSector.name,
+    this.employeeCompany.name,
+    this.employeeOffice.name,
     this.endereco)
 
     .subscribe( () =>{              
@@ -169,11 +230,11 @@ export class EmployeeAddPage {
     this.ramal,
     this.registration,
     this.badge,
-    this.employeeFunction,
-    this.employeeType,
-    this.employeeSector,
-    this.employeeCompany,
-    this.employeeOffice,
+    this.employeeFunction.name,
+    this.employeeType.name,
+    this.employeeSector.name,
+    this.employeeCompany.name,
+    this.employeeOffice.name,
     this.endereco)
 
     .subscribe( () =>{
@@ -234,4 +295,15 @@ export class EmployeeAddPage {
     });
   }
 
+  employeeTypeChanged(event: {
+    component: SelectSearchableComponent,
+    value: any 
+  }) {
+
+    console.log('port:', event.value);
+  }
+
+  
+
 }
+

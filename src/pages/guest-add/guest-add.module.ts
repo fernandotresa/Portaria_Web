@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { GuestAddPage } from './guest-add';
+import { SelectSearchableModule } from 'ionic-select-searchable';
 
 @NgModule({
   declarations: [
@@ -8,6 +9,8 @@ import { GuestAddPage } from './guest-add';
   ],
   imports: [
     IonicPageModule.forChild(GuestAddPage),
+    
+    SelectSearchableModule
   ],
 })
 export class GuestAddPageModule {}

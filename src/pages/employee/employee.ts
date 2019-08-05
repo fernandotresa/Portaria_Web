@@ -79,7 +79,6 @@ export class EmployeePage {
   }
 
   goPageEdit(employee){
-    console.log(employee)
     this.navCtrl.push(EmployeeAddPage, {informations: employee})
   }  
  

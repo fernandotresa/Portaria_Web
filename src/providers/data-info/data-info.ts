@@ -91,6 +91,7 @@ export class DataInfoProvider {
   titleDeselectAll: string = "Deselecionar todos"
   titlePermissions: string = "Gerenciamento de Perfis"  
   titlePermissionsAccess: string = "Gerenciamento de Perfis"
+  titleAccessPoints: string = "Pontos de acesso"
   titleInstagram: string = 'Instagram'
   titleWhatsApp: string = 'WhatsApp'
   titleLoadingInformations: string = "Carregando informações...."

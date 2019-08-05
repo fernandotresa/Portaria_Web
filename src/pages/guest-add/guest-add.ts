@@ -3,8 +3,6 @@ import { IonicPage, NavController, NavParams, Events, ModalController } from 'io
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
-
-import { SelectSearchableComponent } from 'ionic-select-searchable';
 import { GuestTypes } from '../../types/guest.type';
 import { CompaniesTypes } from '../../types/companies.types';
 import { SectorTypes } from '../../types/sectors.types';
@@ -115,10 +113,7 @@ export class GuestAddPage {
     this.tel = this.informations.telefone
     this.ramal = this.informations.ramal
     this.registration = this.informations.matricula
-    this.badge = this.informations.CRACHA  
-        
-    console.log(this.informations.TIPO)
-    
+    this.badge = this.informations.CRACHA            
     this.employeeType = new GuestTypes(this.informations.id_tipo, this.informations.TIPO)
     this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
     this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)

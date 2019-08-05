@@ -438,8 +438,7 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getVehicleBrands", myData, {headers: headers})
   }
 
-  getVehicleByEmployeeId(id_: number){
-    
+  getVehicleByEmployeeId(id_: number){    
     let myData = JSON.stringify({id: id_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getVehicleByEmployeeId", myData, {headers: headers})
@@ -450,6 +449,12 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     console.log(myData)
     return this.http.post(this.address  + "/addVehicle", myData, {headers: headers})
+  }
+
+  getAccessPoints(id_: number){    
+    let myData = JSON.stringify({id: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessPoints", myData, {headers: headers})
   }
 
 }

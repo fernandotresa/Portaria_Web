@@ -85,10 +85,21 @@ export class HomePage {
               this.dataInfo.vehicleBrand = data
 
               loading.dismiss()
+              this.getAccessPoints()
               this.uiUtils.showToast("Seja bem Vindo " + this.dataInfo.userInfo.name  )
             });
         });
     });
+  }
+
+  getAccessPoints(){
+    this.dataInfo.accessPoints = this.httpd.getAccessPoints()
+    this.dataInfo.accessPoints.subscribe(data => { 
+      
+      this.dataInfo.accessPoint = data
+      console.log(data)
+    })
+
   }
 
   goPageEmployee(){

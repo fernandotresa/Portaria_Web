@@ -67,12 +67,32 @@ export class EmployeePage {
     employee.profiles = []
 
     data.success.forEach(element => {
-
       let name = element.name
       let str = name + " "
       employee.profiles.push(str)
     });
-  }  
+
+    this.checkAccessPoints(employee)
+  }
+  
+  checkAccessPoints(employee){
+    
+    this.httpd.getAccessPointsEmployee(employee.id).subscribe(data => {    
+
+      this.checkAccessPointsContinue(employee, data)
+    })
+  }
+
+  checkAccessPointsContinue(employee, data){
+
+    employee.accessPoints = []
+
+    data.success.forEach(element => {
+      let name = element.name
+      let str = name + " "
+      employee.accessPoints.push(str)
+    });    
+  }
 
   goPageAdd(){
     this.navCtrl.push(EmployeeAddPage)

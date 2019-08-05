@@ -4,13 +4,12 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { VehicleAddPage } from '../../pages/vehicle-add/vehicle-add';
-import { SelectSearchableComponent } from 'ionic-select-searchable';
-
 import { EmployeeTypes } from '../../types/employee.type';
 import { FunctionsTypes } from '../../types/functions.types';
 import { CompaniesTypes } from '../../types/companies.types';
 import { SectorTypes } from '../../types/sectors.types';
 import { OfficeTypes } from '../../types/officies.types';
+import { AccessPointsTypes } from '../../types/access_points.types';
 
 @IonicPage()
 @Component({
@@ -36,6 +35,7 @@ export class EmployeeAddPage {
   employeeSector: any;
   employeeCompany: any;
   employeeOffice: any;
+  employeeAccessPoints: any;
 
   informations: any;
   vehicles: any = []
@@ -45,6 +45,7 @@ export class EmployeeAddPage {
   companiesTypes: CompaniesTypes[];
   sectorsTypes: SectorTypes[];
   officesTypes: OfficeTypes[];
+  accessPointsTypes: AccessPointsTypes[];
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider,
@@ -66,6 +67,7 @@ export class EmployeeAddPage {
     this.populateSectorsType()
     this.populateCompaniesType()
     this.populateOfficesType()
+    this.populateAccessPoints()
 
     this.clear()
     this.informations = this.navParams.get('informations')
@@ -92,6 +94,12 @@ export class EmployeeAddPage {
     this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
     this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)
     this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)        
+
+    this.informations.accessPoints.forEach(element => {
+
+      this.employeeAccessPoints = new AccessPointsTypes(element.id, element.name)          
+    });
+    
     
     this.getVehicle()
 
@@ -135,6 +143,14 @@ export class EmployeeAddPage {
         
     this.dataInfo.employeeCompany.success.forEach(element => {            
       this.companiesTypes.push(new CompaniesTypes(element.id, element.name))
+    });
+  }
+
+  populateAccessPoints(){
+    this.accessPointsTypes = []
+        
+    this.dataInfo.accessPoint.success.forEach(element => {            
+      this.accessPointsTypes.push(new AccessPointsTypes(element.id, element.name))
     });
   }
 
@@ -294,16 +310,10 @@ export class EmployeeAddPage {
       }              
     });
   }
-
-  employeeTypeChanged(event: {
-    component: SelectSearchableComponent,
-    value: any 
-  }) {
-
-    console.log('port:', event.value);
-  }
-
   
+  addAccessPoints(){
+
+  }  
 
 }
 

@@ -451,10 +451,16 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addVehicle", myData, {headers: headers})
   }
 
-  getAccessPoints(id_: number){    
-    let myData = JSON.stringify({id: id_});
+  getAccessPoints(){    
+    let myData = JSON.stringify({id: 1});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessPoints", myData, {headers: headers})
+  }
+
+  getAccessPointsEmployee(id_: number){    
+    let myData = JSON.stringify({id: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessPointsEmployee", myData, {headers: headers})
   }
 
 }

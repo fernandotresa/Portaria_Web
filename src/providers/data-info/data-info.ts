@@ -12,11 +12,12 @@ export class DataInfoProvider {
   sectors: Observable<any>;
   companies: Observable<any>;
   offices: Observable<any>;  
-
+  accessPoints: Observable<any>;  
   vehicleTypes: Observable<any>;  
   vehicleModels: Observable<any>;  
   vehicleBrands: Observable<any>;  
 
+  accessPoint: any;  
   guestType: any;
 
   employeeType: any;

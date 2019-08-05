@@ -137,8 +137,19 @@
         </select-searchable>
     </ion-item>   
 
+    <ion-item>
+      <ion-label>{{dataInfo.titleAccessPoints}}</ion-label>
+      <select-searchable
+          item-content
+          [(ngModel)]="employeeAccessPoints"
+          [items]="accessPointsTypes"
+          itemValueField="id"
+          itemTextField="name"
+          [canSearch]="true">
+      </select-searchable>
+  </ion-item>
+
   <button ion-button full (click)="addVehicle()">Associar Veículos</button>
-  <button ion-button full (click)="addAccessPoints()">Associar Pontos</button>
   <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
   <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
   

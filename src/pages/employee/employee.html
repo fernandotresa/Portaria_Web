@@ -55,7 +55,7 @@
         <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
         <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>        
 
-        <ngx-qrcode *ngIf="false"
+        <ngx-qrcode
         [qrc-element-type]="'img'"
         [qrc-value] = "employee.CRACHA"
         qrc-class = "aclass"

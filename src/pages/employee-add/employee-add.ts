@@ -9,7 +9,6 @@ import { FunctionsTypes } from '../../types/functions.types';
 import { CompaniesTypes } from '../../types/companies.types';
 import { SectorTypes } from '../../types/sectors.types';
 import { OfficeTypes } from '../../types/officies.types';
-import { AccessPointsTypes } from '../../types/access_points.types';
 
 @IonicPage()
 @Component({
@@ -45,7 +44,7 @@ export class EmployeeAddPage {
   companiesTypes: CompaniesTypes[];
   sectorsTypes: SectorTypes[];
   officesTypes: OfficeTypes[];
-  accessPointsTypes: AccessPointsTypes[];
+  accessPointsTypes: any;
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider,
@@ -94,16 +93,10 @@ export class EmployeeAddPage {
     this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
     this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)
     this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)        
-
-    this.informations.accessPoints.forEach(element => {
-
-      this.employeeAccessPoints = new AccessPointsTypes(element.id, element.name)          
-    });
-    
-    
+        
     this.getVehicle()
 
-    console.log(this.employeeFunction)
+    console.log(this.employeeAccessPoints)
   }
 
   populateEmployeeType(){
@@ -150,7 +143,7 @@ export class EmployeeAddPage {
     this.accessPointsTypes = []
         
     this.dataInfo.accessPoint.success.forEach(element => {            
-      this.accessPointsTypes.push(new AccessPointsTypes(element.id, element.name))
+      this.accessPointsTypes.push(element.name)
     });
   }
 
@@ -170,6 +163,7 @@ export class EmployeeAddPage {
     this.employeeSector = ""
     this.employeeCompany = ""
     this.employeeOffice = ""
+    this.employeeAccessPoints = ""
   }
 
   verificaCracha(){
@@ -260,18 +254,33 @@ export class EmployeeAddPage {
    }   
 
    finishSave(){
+    this.saveAccessPoints()
+    this.saveVehicles()            
+    this.uiUtils.showAlertSuccess()        
+    this.events.publish('search-employee:load', self.name)
+    this.clear()
+    this.navCtrl.pop()    
+   }
 
+   saveAccessPoints(){
+
+
+    if(this.employeeAccessPoints.length > 0){
+
+      this.httpd.addAccessPointsEmployee(this.employeeAccessPoints, this.badge) 
+        .subscribe( () => {
+          console.log("Pontos de acesso salvos", this.employeeAccessPoints, this.badge)
+        })
+    }
+   }
+
+   saveVehicles(){
     if(this.vehicles.length > 0){
       this.httpd.addVehicle(this.vehicles) 
       .subscribe( () => {
           console.log("Veiculos salvos", this.vehicles)        
       })
     }
-        
-    this.uiUtils.showAlertSuccess()        
-    this.events.publish('search-employee:load', self.name)
-    this.clear()
-    this.navCtrl.pop()    
    }
 
    getVehicle(){
@@ -290,13 +299,9 @@ export class EmployeeAddPage {
 
     this.vehicles = []
 
-    data.success.forEach(element => {
-    
-      console.log(element)
+    data.success.forEach(element => {          
       this.vehicles.push(element)
-
     });
-
    }
 
    addVehicle(){
@@ -311,9 +316,6 @@ export class EmployeeAddPage {
     });
   }
   
-  addAccessPoints(){
-
-  }  
-
+ 
 }
 

@@ -451,6 +451,13 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/addVehicle", myData, {headers: headers})
   }
 
+  addAccessPointsEmployee(accessPoints_, badge_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, accessPoints: accessPoints_, badge: badge_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    console.log(myData)
+    return this.http.post(this.address  + "/addAccessPointsEmployee", myData, {headers: headers})
+  }
+
   getAccessPoints(){    
     let myData = JSON.stringify({id: 1});
     const headers = new HttpHeaders({'Content-Type':'application/json'});

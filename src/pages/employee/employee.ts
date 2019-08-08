@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Events} from 'ionic-angular';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
@@ -27,10 +27,16 @@ export class EmployeePage {
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,   
+    public events: Events,
     public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
     public navParams: NavParams) {
       this.searchControl = new FormControl();    
+
+      this.events.subscribe('search-employee:load', name => {        
+        this.searchTerm = name
+        this.allemployees = []
+      });
   }
 
   ionViewDidLoad() {    
@@ -38,14 +44,16 @@ export class EmployeePage {
     this.setFilteredItems()
   }
 
+  ngOnDestroy() {    
+    this.events.unsubscribe('search-employee:load');		
+  }
+
   setFilteredItems(){
-    console.log("Procurando..", this.searchTerm)
-    
+
     this.employees = this.httpd.getEmployeesByName(this.searchTerm)
     this.employees.subscribe(data => {
-
       this.allemployees = data.success
-      this.checkAllProfiles()
+      this.checkAllProfiles()          
     })    
   } 
 
@@ -78,7 +86,6 @@ export class EmployeePage {
   checkAccessPoints(employee){
     
     this.httpd.getAccessPointsEmployee(employee.id).subscribe(data => {    
-
       this.checkAccessPointsContinue(employee, data)
     })
   }
@@ -88,9 +95,8 @@ export class EmployeePage {
     employee.accessPoints = []
 
     data.success.forEach(element => {
-      let name = element.name
-      let str = name + " "
-      employee.accessPoints.push(str)
+      let name = element.name      
+      employee.accessPoints.push(name)
     });    
   }
 

@@ -53,6 +53,7 @@ export class EmployeeAddPage {
     public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
     public navParams: NavParams) {
+      
   }
 
   ionViewDidLoad() {    
@@ -92,7 +93,8 @@ export class EmployeeAddPage {
     this.employeeType = new EmployeeTypes(this.informations.id_tipo, this.informations.FUNCIONARIO_TIPO)
     this.employeeSector = new SectorTypes(this.informations.SETOR_ID, this.informations.SETOR)
     this.employeeCompany = new CompaniesTypes(this.informations.EMPRESA_ID, this.informations.EMPRESA)
-    this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)        
+    this.employeeOffice = new OfficeTypes(this.informations.CARGO_ID, this.informations.CARGO)     
+    this.employeeAccessPoints = this.informations.accessPoints   
         
     this.getVehicle()
 
@@ -259,11 +261,10 @@ export class EmployeeAddPage {
     this.uiUtils.showAlertSuccess()        
     this.events.publish('search-employee:load', self.name)
     this.clear()
-    this.navCtrl.pop()    
+    this.navCtrl.pop()        
    }
 
    saveAccessPoints(){
-
 
     if(this.employeeAccessPoints.length > 0){
 

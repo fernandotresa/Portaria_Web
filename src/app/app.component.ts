@@ -6,7 +6,10 @@ import { SideMenuContentComponent } from './../shared/side-menu-content/side-men
 
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-//import { UsersPage } from '../pages/users/users';
+import { CompaniesPage } from '../pages/companies/companies';
+import { OfficesPage } from '../pages/offices/offices';
+import { SectorsPage } from '../pages/sectors/sectors';
+import { UsersPage } from '../pages/users/users';
 
 @Component({
   templateUrl: 'app.html'
@@ -75,7 +78,6 @@ export class MyApp {
 			}			
 		});						
 
-
 		this.options.push({
 			iconName: 'briefcase',
 			displayText: 'Colaboradores',
@@ -104,10 +106,32 @@ export class MyApp {
 			{
 				iconName: 'ios-bug',
 				displayText: 'Usuários',
-				component: 'UsersPage',				
+				component: UsersPage,
 			}
 		]
-		});	  
+		});	 
+		
+		this.options.push({
+			displayText: 'Cadastros',
+			suboptions: [
+				{
+					iconName: 'folder-open',
+					displayText: 'Empresas',
+					component: CompaniesPage
+				},
+				{
+					iconName: 'unlock',
+					displayText: 'Cargos',
+					component: OfficesPage
+				},		
+				{
+					iconName: 'ios-bug',
+					displayText: 'Setores',
+					component: SectorsPage		
+					
+				}
+			]
+			});	 
     
 		this.options.push({
 			iconName: 'log-out',

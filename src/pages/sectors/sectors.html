@@ -1,0 +1,50 @@
+
+<ion-header>
+
+  <ion-navbar text-center no-border-bottom color="primary">  
+    <ion-title> Setores </ion-title> 
+
+    <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+        <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+        <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+      </ion-item>
+
+    <ion-buttons end>
+        <button ion-button menuToggle color="white_">
+        <ion-icon name="menu"></ion-icon></button>
+    </ion-buttons>   
+   
+ </ion-navbar>  
+
+ <ion-toolbar no-border color="primary">
+    <ion-searchbar
+      [(ngModel)]="searchTerm"
+      (ionInput)="setFilteredItems()"
+      placeholder= "Procurar...">
+   </ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>          
+
+    <ion-item *ngFor="let office of (all  | async)?.success">
+
+        <button ion-item item-start text-wrap no-lines>            
+            {{office.name}}
+        <ion-icon name='folder-open' item-end (click)="showOptions(acl)" color="primary"></ion-icon>            
+            
+        </button>                      
+        
+    </ion-item>   
+    
+</ion-list>
+
+<ion-fab bottom right >
+    <button ion-fab (click)="addAcl()"><ion-icon name="add"></ion-icon></button>
+</ion-fab>
+
+</ion-content>

@@ -74,16 +74,35 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getSectors", myData, {headers: headers})
   }
 
+
+  getSectorsName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getSectorsByName", myData, {headers: headers})
+  }
+
   getCompanies(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getCompanies", myData, {headers: headers})
   }
 
+  getCompaniesByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getCompaniesByName", myData, {headers: headers})
+  }
+
   getOffices(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getOffices", myData, {headers: headers})
+  }
+
+  getOfficeByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getOfficeByName", myData, {headers: headers})
   }
 
   getEmployees(){
@@ -468,6 +487,65 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: id_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessPointsEmployee", myData, {headers: headers})
+  }
+
+  addCompany(name_, responsavel_, endereco_, bairro_, cnpj_, tel_, status_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, responsavel: responsavel_, endereco: endereco_, 
+      bairro: bairro_, cnpj: cnpj_, tel: tel_, status: status_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addCompany", myData, {headers: headers})
+  }
+
+  saveCompany(id_, name_, responsavel_, endereco_, bairro_, cnpj_, tel_, status_){
+    let myData = JSON.stringify({id: id_, name: name_, responsavel: responsavel_, endereco: endereco_, 
+      bairro: bairro_, cnpj: cnpj_, tel: tel_, status: status_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveCompany", myData, {headers: headers})
+  }
+
+  delCompany(acl_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, acl: acl_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delCompany", myData, {headers: headers})
+  }
+
+  addOffice(name_, obs_, status_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, obs: obs_, status: status_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addOffice", myData, {headers: headers})
+  }
+
+  saveOffice(id_, name_, obs_, status_){
+    let myData = JSON.stringify({id: id_, name: name_, obs: obs_, status: status_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveOffice", myData, {headers: headers})
+  }
+
+  delOffice(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delOffice", myData, {headers: headers})
+  }
+
+  addSector(name_, obs_, status_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, obs: obs_, status: status_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addSector", myData, {headers: headers})
+  }
+
+  saveSector(id_, name_, obs_, status_){
+    let myData = JSON.stringify({id: id_, name: name_, obs: obs_, status: status_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveSector", myData, {headers: headers})
+  }
+
+  delSector(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delSector", myData, {headers: headers})
   }
 
 }

@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import "rxjs/Rx";
 import { FormControl } from '@angular/forms';
 import { ProfilesAddPage } from '../../pages/profiles-add/profiles-add';
-import { IfStmt } from '@angular/compiler';
 
 @IonicPage()
 @Component({

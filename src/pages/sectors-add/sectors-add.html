@@ -1,0 +1,51 @@
+
+<ion-header>
+
+  <ion-navbar text-center no-border-bottom color="primary">  
+  
+  <ion-title>Setores</ion-title> 
+
+  <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+    <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+    <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+  </ion-item>
+
+  <ion-buttons end>
+      <button ion-button menuToggle color="white_">
+        <ion-icon name="menu"></ion-icon></button>
+   </ion-buttons>   
+   
+ </ion-navbar>  
+
+</ion-header>
+
+
+<ion-content padding>
+
+<ion-list>          
+
+    <ion-item>
+        <ion-label>{{dataInfo.titleName}}: </ion-label>
+        <ion-input type="text" [(ngModel)]="name"></ion-input>
+      </ion-item>
+
+    <ion-item>
+      <ion-label>Observação </ion-label>
+      <ion-input type="text" [(ngModel)]="obs"></ion-input>
+    </ion-item>    
+    
+    <ion-item>
+      <ion-label>Status</ion-label>
+      <ion-select [(ngModel)]="status">
+        <ion-option no-lines>Ativo</ion-option> 
+        <ion-option no-lines>Inativo</ion-option> 
+      </ion-select>
+  </ion-item>
+
+  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  
+</ion-list>
+  
+
+</ion-content>

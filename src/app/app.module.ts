@@ -8,6 +8,12 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { CompaniesPageModule } from '../pages/companies/companies.module';
+import { CompaniesAddPageModule } from '../pages/companies-add/companies-add.module';
+import { OfficesPageModule } from '../pages/offices/offices.module';
+import { OfficesAddPageModule } from '../pages/offices-add/offices-add.module';
+import { SectorsPageModule } from '../pages/sectors/sectors.module';
+import { SectorsAddPageModule } from '../pages/sectors-add/sectors-add.module';
 import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
 import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module';
@@ -67,7 +73,13 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     AclsAddPageModule,
     GuestAddPageModule,
     VehicleAddPageModule,
-    VehiclePageModule
+    VehiclePageModule,
+    SectorsAddPageModule,
+    SectorsPageModule,
+    OfficesPageModule,
+    OfficesAddPageModule,
+    CompaniesPageModule,
+    CompaniesAddPageModule
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

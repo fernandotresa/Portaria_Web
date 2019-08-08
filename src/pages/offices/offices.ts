@@ -9,12 +9,12 @@ import { FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-acls',
-  templateUrl: 'acls.html',
+  selector: 'page-offices',
+  templateUrl: 'offices.html',
 })
-export class AclsPage {
+export class OfficesPage {
 
-  allAcls: Observable<any>;
+  all: Observable<any>;
 
   searchTerm: string = '';
   searching: any = false;
@@ -24,6 +24,7 @@ export class AclsPage {
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
+
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
     public actionSheetCtrl: ActionSheetController,
@@ -37,39 +38,27 @@ export class AclsPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('refreshAcls', () => {        
-        this.getAcls()
+      this.events.subscribe('office-reload', () => {        
+        this.get()
       });
   }
-
-  ionViewDidLoad() {  
-    
-    if(this.dataInfo.userInfo.id_type !== 1){
-      this.navCtrl.pop()
-      this.uiUtils.showAlertError(this.dataInfo.titleAccessDenied)
-    }
-      
-    else
-      this.getAcls()
-  }
-
+  
   ngOnDestroy() {    
-    this.events.unsubscribe('refreshAcls');		
+    this.events.unsubscribe('office-reload');		
   }
 
   setFilteredItems(){    
-    this.allAcls = this.httpd.getACLByName(this.searchTerm)    
+    this.all = this.httpd.getOfficeByName(this.searchTerm)
   }
 
-  getAcls(){
-    this.allAcls = this.httpd.getAcls()
-    
-    this.allAcls.subscribe(data => {
+  get(){
+    this.all = this.httpd.getOffices()    
+    this.all.subscribe(data => {
         console.log(data)        
     })
   }
 
-  showOptions(group) {
+  showOptions(office) {
 
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
@@ -77,19 +66,19 @@ export class AclsPage {
         {
           text: this.dataInfo.titleEdit,
           handler: () => {
-            this.edit(group)
+            this.edit(office)
           }
         },
         {
           text: this.dataInfo.titleDuplicate,
           handler: () => {
-            this.copy(group)
+            this.copy(office)
           }
         },
        {
           text: this.dataInfo.titleRemoveProfile,
           handler: () => {
-            this.remove(group)
+            this.remove(office)
           }
         },{
           text: this.dataInfo.titleCancel,
@@ -104,7 +93,7 @@ export class AclsPage {
   }
 
   addAcl(){
-    this.navCtrl.push('AclsAddPage')
+    this.navCtrl.push('OfficesAddPage')
   }
 
   remove(acl){
@@ -118,21 +107,20 @@ export class AclsPage {
   }
 
   removeContinue(acl){
-    this.httpd.delAcl(acl).subscribe( () => {
+    this.httpd.delCompany(acl).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
-          this.getAcls()
+          this.get()
         })
     })
   }
 
-  edit(acl){
-    this.navCtrl.push('AclsAddPage', {loadProfile: true, profile: acl})
+  edit(office){
+    this.navCtrl.push('OfficesAddPage', {load: true, profile: office})
   }
 
-  copy(acl){
-    this.navCtrl.push('AclsAddPage', {loadProfile: false, profile: acl, copyProfile: true})
+  copy(office){
+    this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
   }
-  
 
 }

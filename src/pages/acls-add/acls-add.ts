@@ -59,11 +59,8 @@ export class AclsAddPage {
 
     sector.isChecked = !sector.isChecked
     
-    console.log("Clicando ", sector.isChecked, sector.id, this.selectedArray.length)
-
     if(! sector.isChecked){
       const index = this.selectedArray.indexOf(sector, 0);
-      console.log("Removendo ", index, sector)
 
       if (index > -1) {        
 
@@ -86,7 +83,6 @@ export class AclsAddPage {
         array.push(element)
     });
 
-    console.log("Selecionados: ", array)
     return array;
   }
 
@@ -154,8 +150,6 @@ export class AclsAddPage {
   }
 
   loadSectors(data){
-
-    console.log(data.success)
 
     data.success.forEach(element => {      
       

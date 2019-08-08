@@ -9,12 +9,12 @@ import { FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-acls',
-  templateUrl: 'acls.html',
+  selector: 'page-sectors',
+  templateUrl: 'sectors.html',
 })
-export class AclsPage {
+export class SectorsPage {
 
-  allAcls: Observable<any>;
+  all: Observable<any>;
 
   searchTerm: string = '';
   searching: any = false;
@@ -37,39 +37,27 @@ export class AclsPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('refreshAcls', () => {        
-        this.getAcls()
+      this.events.subscribe('sectors-reload', () => {        
+        this.get()
       });
   }
 
-  ionViewDidLoad() {  
-    
-    if(this.dataInfo.userInfo.id_type !== 1){
-      this.navCtrl.pop()
-      this.uiUtils.showAlertError(this.dataInfo.titleAccessDenied)
-    }
-      
-    else
-      this.getAcls()
-  }
-
   ngOnDestroy() {    
-    this.events.unsubscribe('refreshAcls');		
+    this.events.unsubscribe('sectors-reload');		
   }
 
   setFilteredItems(){    
-    this.allAcls = this.httpd.getACLByName(this.searchTerm)    
+    this.all = this.httpd.getSectorsName(this.searchTerm)
   }
 
-  getAcls(){
-    this.allAcls = this.httpd.getAcls()
-    
-    this.allAcls.subscribe(data => {
+  get(){
+    this.all = this.httpd.getSectors()    
+    this.all.subscribe(data => {
         console.log(data)        
     })
   }
 
-  showOptions(group) {
+  showOptions(sector) {
 
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
@@ -77,19 +65,19 @@ export class AclsPage {
         {
           text: this.dataInfo.titleEdit,
           handler: () => {
-            this.edit(group)
+            this.edit(sector)
           }
         },
         {
           text: this.dataInfo.titleDuplicate,
           handler: () => {
-            this.copy(group)
+            this.copy(sector)
           }
         },
        {
           text: this.dataInfo.titleRemoveProfile,
           handler: () => {
-            this.remove(group)
+            this.remove(sector)
           }
         },{
           text: this.dataInfo.titleCancel,
@@ -104,7 +92,7 @@ export class AclsPage {
   }
 
   addAcl(){
-    this.navCtrl.push('AclsAddPage')
+    this.navCtrl.push('SectorsAddPage')
   }
 
   remove(acl){
@@ -118,21 +106,20 @@ export class AclsPage {
   }
 
   removeContinue(acl){
-    this.httpd.delAcl(acl).subscribe( () => {
+    this.httpd.delSector(acl).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
-          this.getAcls()
+          this.get()
         })
     })
   }
 
-  edit(acl){
-    this.navCtrl.push('AclsAddPage', {loadProfile: true, profile: acl})
+  edit(sector){
+    this.navCtrl.push('SectorsAddPage', {load: true, profile: sector})
   }
 
-  copy(acl){
-    this.navCtrl.push('AclsAddPage', {loadProfile: false, profile: acl, copyProfile: true})
+  copy(sector){
+    this.navCtrl.push('SectorsAddPage', {load: false, profile: sector, copy: true})
   }
-  
 
 }

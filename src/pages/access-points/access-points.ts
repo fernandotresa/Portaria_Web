@@ -18,11 +18,8 @@ export class AccessPointsPage {
   searching: any = false;
   searchControl: FormControl;
 
-  date: string;
-
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
-
     public uiUtils: UiUtilsProvider,    
     public dataInfo: DataInfoProvider,
     public actionSheetCtrl: ActionSheetController,
@@ -36,24 +33,23 @@ export class AccessPointsPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('office-reload', () => {        
+      this.events.subscribe('access-points-reload', () => {        
         this.get()
       });
+
+      this.get()
   }
   
   ngOnDestroy() {    
-    this.events.unsubscribe('office-reload');		
+    this.events.unsubscribe('access-points-reload');		
   }
 
   setFilteredItems(){    
-    this.all = this.httpd.getOfficeByName(this.searchTerm)
+    this.all = this.httpd.getAccessPointsByName(this.searchTerm)
   }
 
   get(){
-    this.all = this.httpd.getOffices()    
-    this.all.subscribe(data => {
-        console.log(data)        
-    })
+    this.all = this.dataInfo.accessPoints
   }
 
   showOptions(office) {
@@ -105,7 +101,7 @@ export class AccessPointsPage {
   }
 
   removeContinue(acl){
-    this.httpd.delCompany(acl).subscribe( () => {
+    this.httpd.delAccessPoints(acl).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.get()
@@ -114,11 +110,11 @@ export class AccessPointsPage {
   }
 
   edit(office){
-    this.navCtrl.push('OfficesAddPage', {load: true, profile: office})
+    this.navCtrl.push('AccessPointsAddPage', {load: true, profile: office})
   }
 
   copy(office){
-    this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
+    this.navCtrl.push('AccessPointsAddPage', {load: false, profile: office, copy: true})
   }
   
 }

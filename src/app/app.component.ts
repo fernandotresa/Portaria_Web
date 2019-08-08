@@ -10,6 +10,9 @@ import { CompaniesPage } from '../pages/companies/companies';
 import { OfficesPage } from '../pages/offices/offices';
 import { SectorsPage } from '../pages/sectors/sectors';
 import { UsersPage } from '../pages/users/users';
+import { BadgesPage } from '../pages/badges/badges';
+import { CamerasPage } from '../pages/cameras/cameras';
+import { AccessPointsPage } from '../pages/access-points/access-points';
 
 @Component({
   templateUrl: 'app.html'
@@ -75,63 +78,79 @@ export class MyApp {
 			displayText: 'Início',			
 			custom: {
 				isHome: true
-			}			
-		});						
-
-		this.options.push({
-			iconName: 'briefcase',
-			displayText: 'Colaboradores',
-			component: 'EmployeePage'			
-		});
-
-		this.options.push({
-			iconName: 'people',
-			displayText: 'Visitantes',
-			component: 'GuestPage'
-		});	
-		
-		this.options.push({
-		displayText: 'Acessos e permissões',
-		suboptions: [
-			{
-				iconName: 'folder-open',
-				displayText: 'Lista de controle',
-				component: 'AclsPage'
-			},
-			{
-				iconName: 'unlock',
-				displayText: 'Perfis de Acessos',
-				component: 'ProfilesPage'
-			},		
-			{
-				iconName: 'ios-bug',
-				displayText: 'Usuários',
-				component: UsersPage,
 			}
-		]
-		});	 
+		});				
 		
 		this.options.push({
 			displayText: 'Cadastros',
+			suboptions: [								
+			{
+				iconName: 'briefcase',
+				displayText: 'Colaboradores',
+				component: 'EmployeePage'			
+			},
+			{
+				iconName: 'people',
+				displayText: 'Visitantes',
+				component: 'GuestPage'
+			},
+			{
+				iconName: 'folder-open',
+				displayText: 'Empresas',
+				component: CompaniesPage
+			},
+			{
+				iconName: 'unlock',
+				displayText: 'Cargos',
+				component: OfficesPage
+			},		
+			{
+				iconName: 'ios-bug',
+				displayText: 'Setores',
+				component: SectorsPage							
+			}
+		   ]
+		});	 
+		this.options.push({
+			displayText: 'Acessos e permissões',
 			suboptions: [
 				{
 					iconName: 'folder-open',
-					displayText: 'Empresas',
-					component: CompaniesPage
+					displayText: 'Lista de controle',
+					component: 'AclsPage'
 				},
 				{
 					iconName: 'unlock',
-					displayText: 'Cargos',
-					component: OfficesPage
-				},		
-				{
-					iconName: 'ios-bug',
-					displayText: 'Setores',
-					component: SectorsPage		
-					
+					displayText: 'Perfis de Acessos',
+					component: 'ProfilesPage'
 				}
 			]
-			});	 
+		});	 
+		this.options.push({
+			displayText: 'Administrativo',
+			suboptions: [
+				{
+					iconName: 'ios-bug',
+					displayText: 'Usuários',
+					component: UsersPage,
+				},
+				{
+					iconName: 'unlock',
+					displayText: 'Pontos de acesso',
+					component: AccessPointsPage
+				},
+				{
+					iconName: 'unlock',
+					displayText: 'Crachás',
+					component: BadgesPage
+				},
+				{
+					iconName: 'unlock',
+					displayText: 'Monitoramento',
+					component: CamerasPage
+				}
+			]
+		});	
     
 		this.options.push({
 			iconName: 'log-out',

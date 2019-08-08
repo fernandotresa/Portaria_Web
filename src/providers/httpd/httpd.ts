@@ -482,6 +482,18 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessPoints", myData, {headers: headers})
   }
+  
+  getAccessPointsByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAccessPointsByName", myData, {headers: headers})
+  }
+
+  delAccessPoints(ap_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, ap: ap_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delAccessPoints", myData, {headers: headers})
+  }
 
   getAccessPointsEmployee(id_: number){    
     let myData = JSON.stringify({id: id_});
@@ -513,7 +525,6 @@ export class HttpdProvider {
 
   addOffice(name_, obs_, status_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, obs: obs_, status: status_});
-
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addOffice", myData, {headers: headers})
   }

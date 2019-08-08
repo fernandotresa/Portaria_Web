@@ -9,10 +9,10 @@ import { FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-offices',
-  templateUrl: 'offices.html',
+  selector: 'page-cameras',
+  templateUrl: 'cameras.html',
 })
-export class OfficesPage {
+export class CamerasPage {
 
   all: Observable<any>;
   searchTerm: string = '';

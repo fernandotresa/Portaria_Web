@@ -4,6 +4,9 @@ import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
 import { DataInfoProvider } from '../../providers/data-info/data-info'
 import { EmployeePage } from '../../pages/employee/employee';
 import { GuestPage } from '../../pages/guest/guest';
+import { OfficesPage } from '../../pages/offices/offices';
+import { CompaniesPage } from '../../pages/companies/companies';
+import { SectorsPage } from '../../pages/sectors/sectors';
 import { ProfilesPage } from '../../pages/profiles/profiles';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 
@@ -58,7 +61,6 @@ export class HomePage {
                   loading.dismiss()
                   this.loadVehiclesInfo()
                 })
-
               })
             })
           })          
@@ -94,12 +96,10 @@ export class HomePage {
 
   getAccessPoints(){
     this.dataInfo.accessPoints = this.httpd.getAccessPoints()
-    this.dataInfo.accessPoints.subscribe(data => { 
-      
+    this.dataInfo.accessPoints.subscribe(data => {       
       this.dataInfo.accessPoint = data
       console.log(data)
     })
-
   }
 
   goPageEmployee(){
@@ -112,6 +112,18 @@ export class HomePage {
 
   goPagePermissions(){
     this.navCtrl.push(ProfilesPage)
+  }
+
+  goPageCompanies(){
+    this.navCtrl.push(CompaniesPage)
+  }
+
+  goPageOffices(){
+    this.navCtrl.push(OfficesPage)
+  }
+
+  goPageSectors(){
+    this.navCtrl.push(SectorsPage)
   }
 
 }

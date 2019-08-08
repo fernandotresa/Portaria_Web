@@ -1,18 +1,89 @@
-<!--
-  Generated template for the AdministratorPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>administrator</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding>
-
-</ion-content>
+    <ion-navbar text-center no-border-bottom color="primary">  
+  
+    <ion-title>Administração</ion-title> 
+  
+    <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+      <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+      <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+    </ion-item>
+  
+    <ion-buttons end>
+        <button ion-button menuToggle color="white_">
+          <ion-icon name="menu"></ion-icon></button>
+     </ion-buttons>
+     
+   </ion-navbar>  
+  </ion-header>
+    
+    <ion-content padding class="trips detail-bg">
+      
+  
+      <div class="trip card" tappable (click)="goPageUsers()" margin-bottom>
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/colaboradores.png'}">
+          <div class="background-filter rlt">
+            <div class="align-bottom" padding-left padding-right>            
+              <h6 class="pull-right text-white" ion-text>Usuários</h6>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>     
+      </div>
+    
+      <div class="trip card" tappable (click)="goPageAccessPoints()" margin-bottom>
+          <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/visitantes.jpg'}">
+            <div class="background-filter rlt">
+              <div class="align-bottom" padding-left padding-right>
+                <h6 class="pull-right text-white" ion-text>Pontos de acesso</h6>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>        
+        </div> 
+    
+        <div class="trip card" tappable (click)="goPageBadges()" margin-bottom>
+          <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/notifications.jpg'}">
+            <div class="background-filter rlt">
+              <div class="align-bottom" padding-left padding-right>
+                <h6 class="pull-right text-white" ion-text>Crachás</h6>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>               
+        </div>  
+  
+        <div class="trip card" tappable (click)="goPageMonitor()" margin-bottom>
+            <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/notifications.jpg'}">
+              <div class="background-filter rlt">
+                <div class="align-bottom" padding-left padding-right>
+                  <h6 class="pull-right text-white" ion-text>Cameras</h6>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>               
+          </div>
+  
+        <div class="trip card" tappable (click)="goPageImport()" margin-bottom>
+            <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/notifications.jpg'}">
+              <div class="background-filter rlt">
+                <div class="align-bottom" padding-left padding-right>
+                  <h6 class="pull-right text-white" ion-text>Importação</h6>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>               
+          </div>
+  
+        <div class="trip card" tappable (click)="goPageSystem()" margin-bottom>
+            <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/notifications.jpg'}">
+              <div class="background-filter rlt">
+                <div class="align-bottom" padding-left padding-right>
+                  <h6 class="pull-right text-white" ion-text>Configurações do sistema</h6>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>               
+          </div>
+  
+  </ion-content>
+  

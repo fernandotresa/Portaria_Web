@@ -9,15 +9,15 @@ import { FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-offices',
-  templateUrl: 'offices.html',
+  selector: 'page-access-points',
+  templateUrl: 'access-points.html',
 })
-export class OfficesPage {
-
+export class AccessPointsPage {
   all: Observable<any>;
   searchTerm: string = '';
   searching: any = false;
   searchControl: FormControl;
+
   date: string;
 
   constructor(public navCtrl: NavController, 
@@ -120,5 +120,5 @@ export class OfficesPage {
   copy(office){
     this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
   }
-
+  
 }

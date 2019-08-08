@@ -9,15 +9,16 @@ import { FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-offices',
-  templateUrl: 'offices.html',
+  selector: 'page-badges',
+  templateUrl: 'badges.html',
 })
-export class OfficesPage {
+export class BadgesPage {
 
   all: Observable<any>;
   searchTerm: string = '';
   searching: any = false;
   searchControl: FormControl;
+
   date: string;
 
   constructor(public navCtrl: NavController, 

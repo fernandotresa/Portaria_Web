@@ -4,10 +4,9 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
-
-
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { AdministratorPageModule } from '../pages/administrator/administrator.module';
 import { CompaniesPageModule } from '../pages/companies/companies.module';
 import { CompaniesAddPageModule } from '../pages/companies-add/companies-add.module';
 import { OfficesPageModule } from '../pages/offices/offices.module';
@@ -27,6 +26,15 @@ import { VehiclePageModule } from '../pages/vehicle/vehicle.module';
 import { VehicleAddPageModule } from '../pages/vehicle-add/vehicle-add.module';
 import { AclsPageModule } from '../pages/acls/acls.module';
 import { AclsAddPageModule } from '../pages/acls-add/acls-add.module';
+
+import { AccessPointsPageModule } from '../pages/access-points/access-points.module';
+import { AccessPointsAddPageModule } from '../pages/access-points-add/access-points-add.module';
+import { BadgesPageModule } from '../pages/badges/badges.module';
+import { BadgesAddPageModule } from '../pages/badges-add/badges-add.module';
+import { CamerasPageModule } from '../pages/cameras/cameras.module';
+import { CamerasAddPageModule } from '../pages/cameras-add/cameras-add.module';
+import { ImportsPageModule } from '../pages/imports/imports.module';
+import { SystemsPageModule } from '../pages/systems/systems.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -61,6 +69,7 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
   ],
 
   exports: [
+    AdministratorPageModule,
     LoginPageModule,
     EmployeePageModule,
     GuestPageModule,
@@ -79,7 +88,16 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     OfficesPageModule,
     OfficesAddPageModule,
     CompaniesPageModule,
-    CompaniesAddPageModule
+    CompaniesAddPageModule,
+    AccessPointsPageModule,
+    AccessPointsAddPageModule,
+    BadgesPageModule,
+    BadgesAddPageModule,
+    CamerasPageModule,
+    CamerasAddPageModule,
+    ImportsPageModule,
+    SystemsPageModule
+
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},

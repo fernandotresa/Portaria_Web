@@ -86,7 +86,7 @@ export class AccessPointsPage {
     actionSheet.present();
   }
 
-  addAcl(){
+  add(){
     this.navCtrl.push('OfficesAddPage')
   }
 

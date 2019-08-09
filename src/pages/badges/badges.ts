@@ -37,21 +37,21 @@ export class BadgesPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('office-reload', () => {        
+      this.events.subscribe('badge-reload', () => {        
         this.get()
       });
   }
   
   ngOnDestroy() {    
-    this.events.unsubscribe('office-reload');		
+    this.events.unsubscribe('badge-reload');		
   }
 
   setFilteredItems(){    
-    this.all = this.httpd.getOfficeByName(this.searchTerm)
+    this.all = this.httpd.getBadgesNumber(this.searchTerm)
   }
 
   get(){
-    this.all = this.httpd.getOffices()    
+    this.all = this.httpd.getBadges()    
     this.all.subscribe(data => {
         console.log(data)        
     })
@@ -92,7 +92,7 @@ export class BadgesPage {
   }
 
   addAcl(){
-    this.navCtrl.push('OfficesAddPage')
+    this.navCtrl.push('BadgesAddPage')
   }
 
   remove(acl){
@@ -115,11 +115,11 @@ export class BadgesPage {
   }
 
   edit(office){
-    this.navCtrl.push('OfficesAddPage', {load: true, profile: office})
+    this.navCtrl.push('BadgesAddPage', {load: true, profile: office})
   }
 
   copy(office){
-    this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
+    this.navCtrl.push('BadgesAddPage', {load: false, profile: office, copy: true})
   }
 
 }

@@ -559,4 +559,40 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/delSector", myData, {headers: headers})
   }
 
+  addAccessPoint(name_, status_, apType_, apCu_, ipAddress_, ipCameras_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, status: status_, apType: apType_,
+      apCu: apCu_, ipAddress: ipAddress_, ipCameras: ipCameras_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addAccessPoint", myData, {headers: headers})
+  }
+
+  saveAccessPoint(id_, name_, status_, apType_, apCu_, ipAddress_, ipCameras_){
+    
+    let myData = JSON.stringify({id: id_, name: name_, status: status_, apType: apType_,
+      apCu: apCu_, ipAddress: ipAddress_, ipCameras: ipCameras_});
+
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveAccessPoint", myData, {headers: headers})
+  }
+
+  delAccessPoint(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delAccessPoint", myData, {headers: headers})
+  }
+
+  getBadges(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getBadges", myData, {headers: headers})
+  }
+
+  getBadgesNumber(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getBadgesNumber", myData, {headers: headers})
+  }
+
+
 }

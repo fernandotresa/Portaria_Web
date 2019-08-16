@@ -40,8 +40,8 @@ export class EmployeePage {
   }
 
   ionViewDidLoad() {    
-    this.searchTerm = "Fernando Augusto"
-    this.setFilteredItems()
+    //this.searchTerm = "Fernando Augusto"
+    //this.setFilteredItems()
   }
 
   ngOnDestroy() {    
@@ -50,11 +50,15 @@ export class EmployeePage {
 
   setFilteredItems(){
 
-    this.employees = this.httpd.getEmployeesByName(this.searchTerm)
-    this.employees.subscribe(data => {
-      this.allemployees = data.success
-      this.checkAllProfiles()          
-    })    
+    if(this.searchTerm && this.searchTerm.length > 5){
+      
+      this.employees = this.httpd.getEmployeesByName(this.searchTerm)
+      this.employees.subscribe(data => {
+        this.allemployees = data.success
+        this.checkAllProfiles()          
+      })    
+    }
+    
   } 
 
   checkAllProfiles(){

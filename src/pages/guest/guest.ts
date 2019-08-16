@@ -34,19 +34,24 @@ export class GuestPage {
   }
 
   ionViewDidLoad() {     
-    this.searchTerm = "Crisitian "
-    this.setFilteredItems()
+    //this.searchTerm = "Crisitian "
+    //this.setFilteredItems()
   }
 
   setFilteredItems(){
-    this.searching = false;
-    this.guests = this.httpd.getGuestsByName(this.searchTerm)    
 
-    this.guests.subscribe(data => {
+    if(this.searchTerm && this.searchTerm.length > 5){
 
-      this.allGuests = data.success
-      this.checkAllProfiles()
-    })  
+      this.searching = false;
+      this.guests = this.httpd.getGuestsByName(this.searchTerm)    
+  
+      this.guests.subscribe(data => {
+  
+        this.allGuests = data.success
+        this.checkAllProfiles()
+      })  
+    }
+    
   } 
 
   checkAllProfiles(){
@@ -79,7 +84,6 @@ export class GuestPage {
   }
 
   goPageEdit(guest){
-    console.log(guest)
     this.navCtrl.push(GuestAddPage, {informations: guest})
   }
 

@@ -82,9 +82,9 @@ export class EmployeeAddPage implements OnInit {
       rg: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(14)]],
       cpf: ['',[Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
       endereco: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      district: ['',[Validators.required, Validators.minLength(3), Validators.minLength(40)]],
+      district: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       tel:  ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      ramal: ['',[Validators.minLength(11), Validators.maxLength(11)]],
+      ramal: ['',[Validators.minLength(1), Validators.maxLength(11)]],
       registration: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       badge: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(10)]],      
     });
@@ -205,13 +205,30 @@ export class EmployeeAddPage implements OnInit {
       }
   }      
 
-  add(){    
-    let alert = this.uiUtils.showConfirm("Atenção", "Você tem certeza disso?")  
-    alert.then((result) => {
+  add(){   
 
-    if(result)  
-      this.verificaCracha()    
-    })
+    if(this.dataInfo.validacpf(this.formGroup.value.cpf)){
+
+      if(this.formGroup.valid){
+
+        let msg = "Confirmar novo colaborador?"
+  
+        if(this.informations)
+          msg = "Confirmar edição?"
+  
+        let alert = this.uiUtils.showConfirm("Atenção", msg)  
+        alert.then((result) => {
+  
+        if(result)  
+          this.verificaCracha()    
+        })
+      } else {
+        this.uiUtils.showAlertError("Favor verificar inputs")
+      }
+    }
+    else {
+      this.uiUtils.showAlertError("CPF inválido")
+    }        
   }
 
   addContinue(){

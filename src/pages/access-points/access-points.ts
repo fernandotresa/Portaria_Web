@@ -87,7 +87,7 @@ export class AccessPointsPage {
   }
 
   add(){
-    this.navCtrl.push('OfficesAddPage')
+    this.navCtrl.push('AccessPointAddPage')
   }
 
   remove(acl){

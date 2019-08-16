@@ -19,129 +19,169 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
 <ion-list>
 
+  <form [formGroup]="formGroup" class="pagseguro" no-padding no-margin margin-top>
 
-  <ion-item>
-    <ion-label>{{dataInfo.titleName}}</ion-label>
-    <ion-input type="text" [(ngModel)]="name"></ion-input>
-  </ion-item>
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('name').valid && formGroup.get('name').touched && ! formGroup.get('name').hasError('minlength') && !formGroup.get('name').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('name').hasError('minlength')">Quantidade de caracteres do nome deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('name').hasError('maxlength')">Quantidade de caracteres do nome deve ser menor que 60</ion-note>
 
-  <ion-item>
-      <ion-label>{{dataInfo.titleComumName}}</ion-label>
-      <ion-input type="text" [(ngModel)]="commumName"></ion-input>
+    <ion-item>
+      <ion-label>{{dataInfo.titleName}}</ion-label>
+      <ion-input type="text" formControlName="name" [attr.maxlength]="60"></ion-input>
     </ion-item>
+    
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('commumName').valid && formGroup.get('commumName').touched && ! formGroup.get('commumName').hasError('minlength') && !formGroup.get('commumName').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('commumName').hasError('minlength')">Quantidade de caracteres do nome comum deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('commumName').hasError('maxlength')">Quantidade de caracteres do nome comum deve ser menor que 40</ion-note>
 
+    <ion-item>
+      <ion-label>{{dataInfo.titleComumName}}</ion-label>
+      <ion-input type="text"  formControlName="commumName" [attr.maxlength]="40"></ion-input>
+    </ion-item>
+    
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('rg').valid && formGroup.get('rg').touched && ! formGroup.get('rg').hasError('minlength') && !formGroup.get('rg').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('rg').hasError('minlength')">Quantidade de caracteres do RG deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('rg').hasError('maxlength')">Quantidade de caracteres do RG deve ser menor que 14</ion-note>
     
     <ion-item>
       <ion-label>{{dataInfo.titleRG}}</ion-label>
-      <ion-input type="text" [(ngModel)]="rg"></ion-input>
+      <ion-input type="text"  formControlName="rg" [attr.maxlength]="14"></ion-input>
     </ion-item>
 
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('cpf').valid && formGroup.get('cpf').touched && ! formGroup.get('cpf').hasError('minlength') && !formGroup.get('cpf').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('cpf').hasError('minlength')">Quantidade de caracteres do CPF deve ser igual a 14</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('cpf').hasError('maxlength')">Quantidade de caracteres do CPF deve ser igual a 14</ion-note>
+  
     <ion-item>
       <ion-label>{{dataInfo.titleCPF}}</ion-label>
-      <ion-input type="number" [(ngModel)]="cpf"></ion-input>
-    </ion-item>
-    <ion-item>
+      <ion-input type="number"  formControlName="cpf" [attr.maxlength]="14"></ion-input>
+    </ion-item>      
 
-      <ion-item>
-          <ion-label>Endereço</ion-label>
-          
-          <ion-input type="text" [(ngModel)]="endereco"></ion-input>
-        </ion-item>
-      
-      <ion-label>{{dataInfo.titleDistrict}}</ion-label>
-      <ion-input type="text" [(ngModel)]="district"></ion-input>
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('endereco').valid && formGroup.get('endereco').touched && ! formGroup.get('endereco').hasError('minlength') && !formGroup.get('endereco').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('endereco').hasError('minlength')">Quantidade de caracteres do endereço deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('endereco').hasError('maxlength')">Quantidade de caracteres do endereço deve ser menor que 40</ion-note>
+  
+    <ion-item>
+      <ion-label>Endereço</ion-label>                  
+      <ion-input type="text"  formControlName="endereco" [attr.maxlength]="40"></ion-input>
     </ion-item>
+          
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('district').valid && formGroup.get('district').touched && ! formGroup.get('district').hasError('minlength') && !formGroup.get('district').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('district').hasError('minlength')">Quantidade de caracteres do bairro deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('district').hasError('maxlength')">Quantidade de caracteres do bairro deve ser menor que 40</ion-note>
+
+    <ion-item>
+      <ion-label>{{dataInfo.titleDistrict}}</ion-label>
+      <ion-input type="text"  formControlName="district" [attr.maxlength]="40"></ion-input>
+    </ion-item>
+      
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('tel').valid && formGroup.get('tel').touched && ! formGroup.get('tel').hasError('minlength') && !formGroup.get('tel').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('tel').hasError('minlength')">Quantidade de caracteres do telefone deve ser igual a 11</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('tel').hasError('maxlength')">Quantidade de caracteres do telefone deve ser igual a 11</ion-note>
 
     <ion-item>
       <ion-label>{{dataInfo.titleTel}}</ion-label>
-      <ion-input type="number" [(ngModel)]="tel"></ion-input>
+      <ion-input type="number"  formControlName="tel" [attr.maxlength]="11"></ion-input>
     </ion-item>
+  
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('ramal').valid && formGroup.get('ramal').touched && ! formGroup.get('ramal').hasError('minlength') && !formGroup.get('ramal').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('ramal').hasError('minlength')">Quantidade de caracteres do ramal deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('ramal').hasError('maxlength')">Quantidade de caracteres do ramal deve ser menor que 11</ion-note>
 
     <ion-item>
       <ion-label>{{dataInfo.titleRamal}}</ion-label>
-      <ion-input type="number" [(ngModel)]="ramal"></ion-input>
+      <ion-input type="number"  formControlName="ramal" [attr.maxlength]="11"></ion-input>
     </ion-item>
+    
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('registration').valid && formGroup.get('registration').touched && ! formGroup.get('registration').hasError('minlength') && !formGroup.get('registration').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('registration').hasError('minlength')">Quantidade de caracteres da matrícula deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('registration').hasError('maxlength')">Quantidade de caracteres da matrícula deve ser menor que 40</ion-note>
 
     <ion-item>
       <ion-label>{{dataInfo.titleRegistration}}</ion-label>
-      <ion-input type="text" [(ngModel)]="registration"></ion-input>
+      <ion-input type="text" formControlName="registration" [attr.maxlength]="40"></ion-input>
     </ion-item>
+    
+    <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('badge').valid && formGroup.get('badge').touched && ! formGroup.get('badge').hasError('minlength') && !formGroup.get('badge').hasError('maxlength')">Campo obrigatório</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('badge').hasError('minlength')">Quantidade de caracteres do crachá deve ser maior que 3</ion-note>
+    <ion-note margin-left ion-text color="danger" *ngIf="formGroup.get('badge').hasError('maxlength')">Quantidade de caracteres do crachá deve ser menor que 10</ion-note>
 
     <ion-item>
       <ion-label>{{dataInfo.titleBadge}}</ion-label>
-      <ion-input type="number" [(ngModel)]="badge"></ion-input>
+      <ion-input type="number" formControlName="badge" [attr.maxlength]="10"></ion-input>
     </ion-item>    
+              
+  </form>  
 
-    <ion-item>
-        <ion-label>{{dataInfo.titleType}}</ion-label>
-        <select-searchable
-            item-content
-            [(ngModel)]="employeeType"
-            [items]="employeeTypes"
-            itemValueField="id"
-            itemTextField="name"
-            [canSearch]="true">
-        </select-searchable>       
-    </ion-item>
-
-    <ion-item>
-        <ion-label>{{dataInfo.titleFunction}}</ion-label>
-        <select-searchable
-            item-content
-            [(ngModel)]="employeeFunction"
-            [items]="functionTypes"
-            itemValueField="id"
-            itemTextField="name"
-            [canSearch]="true">
-        </select-searchable>
-    </ion-item>   
-
-    <ion-item>
-        <ion-label>{{dataInfo.titleSector}}</ion-label>
-        <select-searchable
-            item-content
-            [(ngModel)]="employeeSector"
-            [items]="sectorsTypes"
-            itemValueField="id"
-            itemTextField="name"
-            [canSearch]="true">
-        </select-searchable>
-    </ion-item>   
-
-    <ion-item>
-        <ion-label>{{dataInfo.titleCompany}}</ion-label>
-        <select-searchable
-            item-content
-            [(ngModel)]="employeeCompany"
-            [items]="companiesTypes"
-            itemValueField="id"
-            itemTextField="name"
-            [canSearch]="true">
-        </select-searchable>
-    </ion-item>   
-
-    <ion-item>
-        <ion-label>{{dataInfo.titleOffice}}</ion-label>
-        <select-searchable
-            item-content
-            [(ngModel)]="employeeOffice"
-            [items]="officesTypes"
-            itemValueField="id"
-            itemTextField="name"
-            [canSearch]="true">
-        </select-searchable>
-    </ion-item>   
-
-    <ion-item>
-      <ion-label>{{dataInfo.titleAccessPoints}}</ion-label>
-      <ion-select [(ngModel)]="employeeAccessPoints" multiple="true">
-        <ion-option  *ngFor="let accessPoint of accessPointsTypes" no-lines>{{accessPoint}}</ion-option>        
-      </ion-select>
+  <ion-item>
+    <ion-label>{{dataInfo.titleType}}</ion-label>
+    <select-searchable
+        item-content
+        [(ngModel)]="employeeType"
+        [items]="employeeTypes"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true">
+    </select-searchable>       
+</ion-item>
+      
+<ion-item>
+    <ion-label>{{dataInfo.titleFunction}}</ion-label>
+    <select-searchable
+        item-content
+        [(ngModel)]="employeeFunction"
+        [items]="functionTypes"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true">
+    </select-searchable>
+  </ion-item>   
+        
+  <ion-item>
+      <ion-label>{{dataInfo.titleSector}}</ion-label>
+      <select-searchable
+          item-content
+          [(ngModel)]="employeeSector"
+          [items]="sectorsTypes"
+          itemValueField="id"
+          itemTextField="name"
+          [canSearch]="true">
+      </select-searchable>
+  </ion-item>   
+              
+  <ion-item>
+      <ion-label>{{dataInfo.titleCompany}}</ion-label>
+      <select-searchable
+          item-content
+          [(ngModel)]="employeeCompany"
+          [items]="companiesTypes"
+          itemValueField="id"
+          itemTextField="name"
+          [canSearch]="true">
+      </select-searchable>
+  </ion-item>   
+              
+  <ion-item>
+      <ion-label>{{dataInfo.titleOffice}}</ion-label>
+      <select-searchable
+          item-content
+          [(ngModel)]="employeeOffice"
+          [items]="officesTypes"
+          itemValueField="id"
+          itemTextField="name"
+          [canSearch]="true">
+      </select-searchable>
+  </ion-item>   
+              
+  <ion-item>
+    <ion-label>{{dataInfo.titleAccessPoints}}</ion-label>
+    <ion-select [(ngModel)]="employeeAccessPoints" multiple="true">
+      <ion-option  *ngFor="let accessPoint of accessPointsTypes" no-lines>{{accessPoint}}</ion-option>        
+    </ion-select>
   </ion-item>
 
   <button ion-button full (click)="addVehicle()">Associar Veículos</button>

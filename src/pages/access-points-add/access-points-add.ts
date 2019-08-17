@@ -36,10 +36,10 @@ export class AccessPointsAddPage {
     this.copyProfile = this.navParams.get('copy')
     this.info = this.navParams.get('info')
 
-    if(this.load)
+    if(this.loadProfile)
       this.load()
     
-    else if(this.copyProfile)
+    if(this.copyProfile)
       this.copy()
   }
 

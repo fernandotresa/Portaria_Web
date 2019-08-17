@@ -85,7 +85,7 @@ export class AccessPointsPage {
     });
     actionSheet.present();
   }
-
+/*  */
   add(){
     this.navCtrl.push('AccessPointAddPage')
   }

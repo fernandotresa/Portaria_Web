@@ -37,22 +37,23 @@ export class CompaniesAddPage {
     this.copyProfile = this.navParams.get('copy')
     this.info = this.navParams.get('info')
 
-    if(this.load)
+    if(this.loadProfile)
       this.load()
     
     else if(this.copyProfile)
-      this.copy()
+      this.copy()   
   }
 
   load(){
-      this.id = this.info.id
-      this.name = this.info.name
-      this.responsavel = this.info.responsavel
-      this.endereco = this.info.endereco
-      this.bairro = this.info.bairro
-      this.cnpj = this.info.cnpj
-      this.tel = this.info.tel
-      this.status = this.info.status      
+    console.log(this.info)
+    this.id = this.info.id
+    this.name = this.info.name
+    this.responsavel = this.info.responsavel
+    this.endereco = this.info.endereco
+    this.bairro = this.info.bairro
+    this.cnpj = this.info.cnpj
+    this.tel = this.info.telefone
+    this.status = this.info.status === 1 ? "Ativo" : "Inativo"
   }
 
   copy(){
@@ -62,13 +63,16 @@ export class CompaniesAddPage {
     this.endereco = this.endereco + " - Copia"
     this.bairro = this.bairro + " - Copia"
     this.cnpj = this.cnpj + " - Copia"    
+    this.status = this.info.status === 1 ? "Ativo" : "Inativo"
   }
   
   add(){
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present()     
 
-    this.httpd.addCompany(this.name, this.responsavel, this.endereco, this.bairro, this.cnpj, this.tel, this.status)
+    let status = this.status === "Ativo" ? 1 : 0
+
+    this.httpd.addCompany(this.name, this.responsavel, this.endereco, this.bairro, this.cnpj, this.tel, status)
     .subscribe( () => {
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
       .then( () => {
@@ -97,7 +101,9 @@ export class CompaniesAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.saveCompany(this.id, this.name, this.responsavel, this.endereco, this.bairro, this.cnpj, this.tel, this.status)
+    let status = this.status === "Ativo" ? 1 : 0
+
+    this.httpd.saveCompany(this.id, this.name, this.responsavel, this.endereco, this.bairro, this.cnpj, this.tel, status)
     .subscribe( () => {
 
         loading.dismiss()

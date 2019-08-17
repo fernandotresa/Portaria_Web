@@ -33,7 +33,7 @@ export class SectorsAddPage {
     this.copyProfile = this.navParams.get('copy')
     this.info = this.navParams.get('info')
 
-    if(this.load)
+    if(this.loadProfile)
       this.load()
     
     else if(this.copyProfile)
@@ -43,12 +43,13 @@ export class SectorsAddPage {
   load(){
       this.id = this.info.id
       this.name = this.info.name
-      this.status = this.info.status      
+      this.status = this.info.status === 1 ? "Ativo" : "Inativo"
   }
 
   copy(){
     this.load()
     this.name = this.name + " - Copia"
+    this.status = this.info.status === 1 ? "Ativo" : "Inativo"
   }
 
   add(){

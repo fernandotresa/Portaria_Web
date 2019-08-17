@@ -69,7 +69,7 @@ export class EmployeeAddPage implements OnInit {
     this.informations = this.navParams.get('informations')
 
     if(this.informations)
-        this.loadModel()                                
+      this.loadModel()                                
   }
 
 
@@ -80,7 +80,7 @@ export class EmployeeAddPage implements OnInit {
       name: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
       commumName: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       rg: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(14)]],
-      cpf: ['',[Validators.required, Validators.minLength(11), Validators.maxLength(14)]],
+      cpf: ['',[Validators.required, Validators.minLength(14), Validators.maxLength(14)]],
       endereco: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       district: ['',[Validators.required, Validators.minLength(3), Validators.maxLength(40)]],
       tel:  ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],

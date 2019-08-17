@@ -28,7 +28,7 @@
         <ion-input type="text" [(ngModel)]="name"></ion-input>
       </ion-item>
 
-    <ion-item>
+    <ion-item *ngIf="false">
       <ion-label>Observação </ion-label>
       <ion-input type="text" [(ngModel)]="obs"></ion-input>
     </ion-item>    
@@ -41,8 +41,8 @@
       </ion-select>
   </ion-item>
 
-  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  <button *ngIf="! info" [disabled]="!name || !status" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="info" [disabled]="!name || !status"  ion-button full (click)="save()" color="secondary">Salvar</button>
   
 </ion-list>
   

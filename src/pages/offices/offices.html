@@ -34,7 +34,7 @@
 
         <button ion-item item-start text-wrap no-lines>            
             {{office.name}}
-        <ion-icon name='folder-open' item-end (click)="showOptions(acl)" color="primary"></ion-icon>            
+        <ion-icon name='folder-open' item-end (click)="showOptions(office)" color="primary"></ion-icon>            
             
         </button>                      
         
@@ -43,7 +43,7 @@
 </ion-list>
 
 <ion-fab bottom right >
-    <button ion-fab (click)="addAcl()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab (click)="add()"><ion-icon name="add"></ion-icon></button>
 </ion-fab>
 
 </ion-content>

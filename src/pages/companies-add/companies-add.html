@@ -62,8 +62,8 @@
       </ion-select>
   </ion-item>
 
-  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  <button *ngIf="! info" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="info" ion-button full (click)="save()" color="secondary">Salvar</button>
   
 </ion-list>
   

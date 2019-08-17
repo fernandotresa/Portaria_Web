@@ -94,8 +94,8 @@ export class CompaniesPage {
     actionSheet.present();
   }
 
-  addAcl(){
-    this.navCtrl.push('CompaniesAddPage')
+  add(){
+    this.navCtrl.push('CompaniesAddPage', {load: false, copy: false})
   }
 
   remove(acl){    
@@ -121,7 +121,7 @@ export class CompaniesPage {
   }
 
   copy(company){
-    this.navCtrl.push('CompaniesPage', {load: false, info: company, copy: true})
+    this.navCtrl.push('CompaniesAddPage', {load: false, info: company, copy: true})
   }
 
 }

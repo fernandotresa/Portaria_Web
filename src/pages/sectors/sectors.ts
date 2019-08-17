@@ -75,7 +75,7 @@ export class SectorsPage {
           }
         },
        {
-          text: this.dataInfo.titleRemoveProfile,
+          text: this.dataInfo.titleRemove,
           handler: () => {
             this.remove(sector)
           }
@@ -91,22 +91,22 @@ export class SectorsPage {
     actionSheet.present();
   }
 
-  addAcl(){
+  add(){
     this.navCtrl.push('SectorsAddPage')
   }
 
-  remove(acl){
+  remove(sector){
     
     this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
-        this.removeContinue(acl)
+        this.removeContinue(sector)
       }
     })    
   }
 
-  removeContinue(acl){
-    this.httpd.delSector(acl).subscribe( () => {
+  removeContinue(sector){
+    this.httpd.delSector(sector).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.get()
@@ -115,11 +115,11 @@ export class SectorsPage {
   }
 
   edit(sector){
-    this.navCtrl.push('SectorsAddPage', {load: true, profile: sector})
+    this.navCtrl.push('SectorsAddPage', {load: true, info: sector})
   }
 
   copy(sector){
-    this.navCtrl.push('SectorsAddPage', {load: false, profile: sector, copy: true})
+    this.navCtrl.push('SectorsAddPage', {load: false, info: sector, copy: true})
   }
 
 }

@@ -1,7 +1,26 @@
+.segment-button {
+    color: $indigo !important;
+    text-transform: none !important;
+    font-size: 1.6rem !important;
+    font-weight: 600 !important;
+    opacity: 1 !important;
+    border: 0 !important;
+	font-family: $indigo;
+	
+
+    &.activated, &.segment-activated {
+      border-top: 0;
+      border-right: 0;
+      border-bottom: 2px solid $blue !important;
+      border-left: 0;
+      color: $indigo !important;
+      background: transparent !important;
+    }
+  }
+
 ion-input {
   input {
     text-align: right;
-    /* IF YOU ALSO WANT TO PUSH PLACHEHOLDER TO THE RIGHT USE THE FOLLOWING, IF NOT JUST DELETE THE ::-webkit-input-placeholder*/
     ::-webkit-input-placeholder {
       text-align: right;
     }
@@ -374,10 +393,6 @@ ion-list.accordion-menu {
 	background: linear-gradient(to bottom right, $lot, $phan) !important; /* Standard syntax */
 }
 
-
-
-
-
 .transparent{
 	background: transparent !important;
 }
@@ -481,11 +496,6 @@ ion-list.accordion-menu {
 	background: $white-opct-2 !important;
 }
 
-
-
-
-
-
 .shadow-0{
 	box-shadow: none !important;
 }
@@ -509,13 +519,6 @@ ion-list.accordion-menu {
 .shadow-inset-3{
 	box-shadow: $shadow-inset-3 !important;
 }
-
-
-
-
-
-
-
 
 .opct-0{
 	opacity: 0;
@@ -563,7 +566,6 @@ ion-list.accordion-menu {
 	border-style: solid;
 }
 
-
 .stroke-1{
 	border-width: 1px !important;
 }
@@ -573,7 +575,6 @@ ion-list.accordion-menu {
 .stroke-3{
 	border-width: 3px !important;
 }
-
 
 .stroke-left{
 	border-left: solid;
@@ -587,11 +588,6 @@ ion-list.accordion-menu {
 .stroke-bottom{
 	border-bottom: solid;
 }
-
-
-
-
-
 
 .stroke-black-opct    {
 	border-color: $black-opct !important;
@@ -612,9 +608,6 @@ ion-list.accordion-menu {
 .stroke-white-opct-2    {
 	border-color: $white-opct-2 !important;
 }
-
-
-
 
 .stroke-black    {
 	border-color: $black !important;
@@ -698,10 +691,6 @@ ion-list.accordion-menu {
 	border-color: $blue-grey !important;
 }
 
-
-
-
-
 .bdra-0{
 	border-radius: 0px;
 }
@@ -763,20 +752,12 @@ ion-list.accordion-menu {
 	border-radius: 50%;
 }
 
-
-
-
-
-
 .text-ellipsis{
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	display: block;
 	overflow: hidden;
 }
-
-
-
 
 .text-left{
 	text-align: left;
@@ -788,11 +769,9 @@ ion-list.accordion-menu {
 	text-align: right;
 }
 
-
 .text-italic{
 	font-style: italic;
 }
-
 
 .uppercase{
 	text-transform: uppercase !important;
@@ -804,8 +783,6 @@ ion-list.accordion-menu {
 	text-transform: capitalize !important;
 }
 
-
-
 .underline{
 	text-decoration: underline !important;
 }
@@ -815,8 +792,6 @@ ion-list.accordion-menu {
 .overline{
 	text-decoration: overline !important;
 }
-
-
 
 .spacing-1{
 	letter-spacing: 1px;
@@ -833,9 +808,6 @@ ion-list.accordion-menu {
 .spacing-5{
 	letter-spacing: 5px;
 }
-
-
-
 
 .text-black{
 	color: $black !important;
@@ -1081,14 +1053,6 @@ ion-list.accordion-menu {
 		color: $blue-grey !important;
 	}
 }
-
-
-
-
-
-
-
-
 
 .fs-5{
 	font-size: 5px !important;

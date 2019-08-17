@@ -6,7 +6,7 @@
       <ion-item detail-none no-lines class="backgroundPainel" text-center>  
         <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
         <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
-      </ion-item>
+      </ion-item>         
 
     </ion-navbar>
   
@@ -21,10 +21,16 @@
   </ion-header>
   
   
-<ion-content padding>
+<ion-content padding>    
 
-  
-    <ion-list> 
+    <ion-segment [(ngModel)]="segmentStatus" (ionChange)="onSegmentChange()">
+
+    <ion-segment-button value="active"> Ativos</ion-segment-button>
+        <ion-segment-button value="inactive">Inativos
+        </ion-segment-button>
+    </ion-segment>
+
+  <ion-list> 
 
       <ion-card class="trip card" text-wrap *ngFor="let employee of allemployees" no-lines>
 
@@ -86,6 +92,7 @@
       </ion-row>      
 
     </ion-card>
+    
     
   </ion-list>
 

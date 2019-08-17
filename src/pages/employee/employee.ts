@@ -16,6 +16,7 @@ import { EmployeeAddPage } from '../../pages/employee-add/employee-add';
 export class EmployeePage {
 
   employees: Observable<any>;
+
   allemployees: any = [];
 
   searchTerm: string = '';
@@ -23,6 +24,7 @@ export class EmployeePage {
   searchControl: FormControl;
 
   elementType = 'img';  
+  segmentStatus: any
 
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
@@ -31,6 +33,7 @@ export class EmployeePage {
     public modalCtrl: ModalController, 
     public dataInfo: DataInfoProvider,
     public navParams: NavParams) {
+
       this.searchControl = new FormControl();    
 
       this.events.subscribe('search-employee:load', name => {        
@@ -39,9 +42,21 @@ export class EmployeePage {
       });
   }
 
+
   ionViewDidLoad() {    
     //this.searchTerm = "Fernando Augusto"
-    //this.setFilteredItems()
+    //this.setFilteredItems()    
+  }
+
+  ionViewWillEnter(){
+    this.segmentStatus = 'active'
+    console.log(this.segmentStatus)
+    
+  }
+
+  onSegmentChange(){
+    console.log(this.segmentStatus)
+    this.setFilteredItems()
   }
 
   ngOnDestroy() {    
@@ -51,15 +66,29 @@ export class EmployeePage {
   setFilteredItems(){
 
     if(this.searchTerm && this.searchTerm.length > 5){
-      
-      this.employees = this.httpd.getEmployeesByName(this.searchTerm)
+      if(this.segmentStatus === 'active')      
+        this.searchActive()
+      else
+        this.searchInactive()
+    }    
+  } 
+
+
+  searchActive(){
+    this.employees = this.httpd.getEmployeesByName(this.searchTerm)
       this.employees.subscribe(data => {
         this.allemployees = data.success
         this.checkAllProfiles()          
       })    
-    }
-    
-  } 
+  }
+
+  searchInactive(){
+    this.employees = this.httpd.getEmployeesByNameInactive(this.searchTerm)
+      this.employees.subscribe(data => {
+        this.allemployees = data.success
+        this.checkAllProfiles()          
+      })    
+  }
 
   checkAllProfiles(){
     this.allemployees.forEach(element => {
@@ -159,7 +188,21 @@ export class EmployeePage {
   }
 
   remove(employee){
-    console.log(employee)    
+    this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
+    .then(res => {
+      if(res){
+        this.removeContinue(employee)
+      }
+    })    
+  }
+
+  removeContinue(employee){
+    this.httpd.delEmployee(employee).subscribe( () => {
+        this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
+        .then( () => {        
+          this.allemployees = []
+        })
+    })
   }
 
 }

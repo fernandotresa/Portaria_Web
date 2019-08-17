@@ -74,7 +74,7 @@ export class OfficesPage {
           }
         },
        {
-          text: this.dataInfo.titleRemoveProfile,
+          text: this.dataInfo.titleRemove,
           handler: () => {
             this.remove(office)
           }
@@ -90,22 +90,24 @@ export class OfficesPage {
     actionSheet.present();
   }
 
-  addAcl(){
+  add(){
     this.navCtrl.push('OfficesAddPage')
   }
 
-  remove(acl){
+  remove(office){
     
-    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
+    this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
-        this.removeContinue(acl)
+        this.removeContinue(office)
       }
     })    
   }
 
-  removeContinue(acl){
-    this.httpd.delCompany(acl).subscribe( () => {
+  removeContinue(office){
+    console.log(office)
+    
+    this.httpd.delOffice(office).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.get()
@@ -114,11 +116,11 @@ export class OfficesPage {
   }
 
   edit(office){
-    this.navCtrl.push('OfficesAddPage', {load: true, profile: office})
+    this.navCtrl.push('OfficesAddPage', {load: true, info: office})
   }
 
   copy(office){
-    this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
+    this.navCtrl.push('OfficesAddPage', {load: false, info: office, copy: true})
   }
 
 }

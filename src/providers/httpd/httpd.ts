@@ -159,16 +159,26 @@ export class HttpdProvider {
       employeeOffice: employeeOffice_    
     });
 
-    console.log(myData)
-
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/editEmployee", myData, {headers: headers})
   }
+
+  delEmployee(id_){
+    let myData = JSON.stringify({id: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delEmployee", myData, {headers: headers})
+  }  
 
   getEmployeesByName(name_){
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getEmployeesByName", myData, {headers: headers})
+  }
+
+  getEmployeesByNameInactive(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getEmployeesByNameInactive", myData, {headers: headers})
   }
 
   addGuest(name_, authorizedBy_, rg_, cpf_, district_, tel_, ramal_, registration_, badge_, 
@@ -517,8 +527,8 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/saveCompany", myData, {headers: headers})
   }
 
-  delCompany(acl_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, acl: acl_});
+  delCompany(info_){
+    let myData = JSON.stringify({info: info_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/delCompany", myData, {headers: headers})
   }
@@ -530,13 +540,13 @@ export class HttpdProvider {
   }
 
   saveOffice(id_, name_, obs_, status_){
-    let myData = JSON.stringify({id: id_, name: name_, obs: obs_, status: status_});
+    let myData = JSON.stringify({id: id_, name: name_, obs: obs_, status: status_});    
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/saveOffice", myData, {headers: headers})
   }
 
-  delOffice(name_){
-    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+  delOffice(info_){
+    let myData = JSON.stringify({info: info_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/delOffice", myData, {headers: headers})
   }

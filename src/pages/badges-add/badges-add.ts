@@ -15,10 +15,7 @@ export class BadgesAddPage {
   id: number = 0
   name: string
   status: string
-  apType: string    
-  apCU: string
-  ipAddress: string
-  apCameras: string
+  badgeType: string    
   
   loadProfile: Boolean = false
   copyProfile: Boolean = false
@@ -47,18 +44,25 @@ export class BadgesAddPage {
       this.id = this.info.id
       this.name = this.info.name
       this.status = this.info.status      
+      this.badgeType= this.info.id_tipo
   }
 
   copy(){
     this.load()
     this.name = this.name + " - Copia"
   }
+
+  onChange(event){
+    console.log(event)
+  }
   
   add(){
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present()     
 
-    this.httpd.addAccessPoint(this.name, this.status, this.apType, this.apCU, this.ipAddress, this.apCameras)
+    console.log(this.name, this.status, this.badgeType)
+    
+    this.httpd.addBadges(this.name, this.status, this.badgeType)
     .subscribe( () => {
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
       .then( () => {
@@ -87,7 +91,7 @@ export class BadgesAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.saveAccessPoint(this.id, this.name, this.status, this.apType, this.apCU, this.ipAddress, this.apCameras)
+    this.httpd.addBadges(this.name, this.status, this.badgeType)
     .subscribe( () => {
 
         loading.dismiss()

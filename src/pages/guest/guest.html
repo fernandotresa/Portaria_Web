@@ -22,6 +22,11 @@
 
 <ion-content padding>
 
+  <ion-segment [(ngModel)]="segmentStatus" (ionChange)="onSegmentChange()">      
+      <ion-segment-button value="active"> Ativos</ion-segment-button>
+      <ion-segment-button value="inactive">Inativos</ion-segment-button>
+    </ion-segment>
+
   <ion-list>
 
     <ion-card class="trip card" text-wrap *ngFor="let guest of allGuests" no-lines>

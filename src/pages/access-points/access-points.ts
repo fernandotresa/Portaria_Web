@@ -52,7 +52,7 @@ export class AccessPointsPage {
     this.all = this.dataInfo.accessPoints
   }
 
-  showOptions(office) {
+  showOptions(ap) {
 
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
@@ -60,19 +60,19 @@ export class AccessPointsPage {
         {
           text: this.dataInfo.titleEdit,
           handler: () => {
-            this.edit(office)
+            this.edit(ap)
           }
         },
         {
           text: this.dataInfo.titleDuplicate,
           handler: () => {
-            this.copy(office)
+            this.copy(ap)
           }
         },
        {
-          text: this.dataInfo.titleRemoveProfile,
+          text: this.dataInfo.titleRemove,
           handler: () => {
-            this.remove(office)
+            this.remove(ap)
           }
         },{
           text: this.dataInfo.titleCancel,
@@ -87,21 +87,21 @@ export class AccessPointsPage {
   }
 /*  */
   add(){
-    this.navCtrl.push('AccessPointAddPage')
+    this.navCtrl.push('AccessPointsAddPage')
   }
 
-  remove(acl){
+  remove(ap){
     
-    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
+    this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
-        this.removeContinue(acl)
+        this.removeContinue(ap)
       }
     })    
   }
 
-  removeContinue(acl){
-    this.httpd.delAccessPoints(acl).subscribe( () => {
+  removeContinue(ap){
+    this.httpd.delAccessPoints(ap).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.get()
@@ -109,12 +109,12 @@ export class AccessPointsPage {
     })
   }
 
-  edit(office){
-    this.navCtrl.push('AccessPointsAddPage', {load: true, profile: office})
+  edit(ap){
+    this.navCtrl.push('AccessPointsAddPage', {load: true, info: ap})
   }
 
-  copy(office){
-    this.navCtrl.push('AccessPointsAddPage', {load: false, profile: office, copy: true})
+  copy(ap){
+    this.navCtrl.push('AccessPointsAddPage', {load: false, info: ap, copy: true})
   }
   
 }

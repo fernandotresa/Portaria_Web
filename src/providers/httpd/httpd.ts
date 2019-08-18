@@ -244,6 +244,12 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getGuestsByName", myData, {headers: headers})
   }
+
+  getGuestsByNameInactive(name_){    
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getGuestsByNameInactive", myData, {headers: headers})
+  }
  
   getAccessGroups(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
@@ -602,6 +608,30 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getBadgesNumber", myData, {headers: headers})
+  }
+
+  getCameraPonto(id_){
+    let myData = JSON.stringify({id: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getCameraPonto", myData, {headers: headers})
+  }
+
+  getCameras(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getCameras", myData, {headers: headers})
+  }
+
+  getBadgesTypes(){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getBadgesTypes", myData, {headers: headers})
+  }
+
+  addBadges(idCracha, idType, status){
+    let myData = JSON.stringify({id: this.dataInfo.userId});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addBadges", myData, {headers: headers})
   }
 
 

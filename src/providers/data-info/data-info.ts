@@ -20,6 +20,7 @@ export class DataInfoProvider {
   companies: Observable<any>;
   offices: Observable<any>;  
   accessPoints: Observable<any>;  
+  badgeTypes: Observable<any>;  
   vehicleTypes: Observable<any>;  
   vehicleModels: Observable<any>;  
   vehicleBrands: Observable<any>;  
@@ -55,6 +56,11 @@ export class DataInfoProvider {
   appName: string = 'Portaria Web'
   isAdmin: Boolean = true;
   addressServer: string = "localhost"
+
+  camerasAccessPoints: Observable<any>;  
+  camerasMonitor: any = []
+
+  crachasTipos: any = []
   
   clientPicDefault: string = "assets/imgs/100x100.png"
   imgDefaultBackground: string = "assets/imgs/background.jpg"
@@ -205,6 +211,8 @@ export class DataInfoProvider {
       id:
       name, 
     }]
+
+    this.camerasMonitor = []
   }
 
   startClock(){

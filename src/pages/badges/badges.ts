@@ -75,7 +75,7 @@ export class BadgesPage {
           }
         },
        {
-          text: this.dataInfo.titleRemoveProfile,
+          text: this.dataInfo.titleRemove,
           handler: () => {
             this.remove(office)
           }
@@ -91,13 +91,13 @@ export class BadgesPage {
     actionSheet.present();
   }
 
-  addAcl(){
+  add(){
     this.navCtrl.push('BadgesAddPage')
   }
 
   remove(acl){
     
-    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
+    this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
         this.removeContinue(acl)

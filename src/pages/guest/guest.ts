@@ -22,6 +22,8 @@ export class GuestPage {
   searching: any = false;
   searchControl: FormControl;
 
+  segmentStatus: any
+
   constructor(public navCtrl: NavController, 
     public httpd: HttpdProvider, 
     public uiUtils: UiUtilsProvider,    
@@ -38,21 +40,46 @@ export class GuestPage {
     //this.setFilteredItems()
   }
 
+  ionViewWillEnter(){
+    this.segmentStatus = 'active'    
+  }
+
+  onSegmentChange(){
+    this.setFilteredItems()
+  }
+
   setFilteredItems(){
 
     if(this.searchTerm && this.searchTerm.length > 5){
-
-      this.searching = false;
-      this.guests = this.httpd.getGuestsByName(this.searchTerm)    
-  
-      this.guests.subscribe(data => {
-  
-        this.allGuests = data.success
-        this.checkAllProfiles()
-      })  
-    }
-    
+      if(this.segmentStatus === 'active')      
+        this.searchActive()
+      else
+        this.searchInactive()        
+    }    
   } 
+
+  searchActive(){
+    this.searching = false;
+    this.guests = this.httpd.getGuestsByName(this.searchTerm)    
+
+    this.guests.subscribe(data => {
+
+      this.allGuests = data.success
+      this.checkAllProfiles()
+    })
+  }
+
+  searchInactive(){
+
+    this.searching = false;
+    this.guests = this.httpd.getGuestsByNameInactive(this.searchTerm)    
+
+    this.guests.subscribe(data => {
+
+      this.allGuests = data.success
+      this.checkAllProfiles()
+    })
+  }
 
   checkAllProfiles(){
     this.allGuests.forEach(element => {

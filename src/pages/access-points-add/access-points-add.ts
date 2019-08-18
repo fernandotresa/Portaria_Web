@@ -18,7 +18,7 @@ export class AccessPointsAddPage {
   apType: string    
   apCU: string
   ipAddress: string
-  apCameras: string
+  apCameras: any
   
   loadProfile: Boolean = false
   copyProfile: Boolean = false
@@ -34,6 +34,7 @@ export class AccessPointsAddPage {
   ionViewDidLoad() {
     this.loadProfile = this.navParams.get('load')
     this.copyProfile = this.navParams.get('copy')
+
     this.info = this.navParams.get('info')
 
     if(this.loadProfile)
@@ -43,10 +44,31 @@ export class AccessPointsAddPage {
       this.copy()
   }
 
-  load(){
-      this.id = this.info.id
-      this.name = this.info.name
-      this.status = this.info.status      
+  load(){    
+    this.id = this.info.id
+    this.name = this.info.name
+
+    this.status = this.info.status === 1 ? "Ativo" : "Inativo"
+    this.apType = this.info.id_tipo === 0 ? "Catraca" : "Cancela"    
+    this.ipAddress = this.info.ip
+    this.apCU = this.info.codigo === 0 ? "Entrada" : "Saída"
+
+    this.loadCameras()  
+  }
+
+  loadCameras(){
+    this.httpd.getCameraPonto(this.id)
+    .subscribe( data => {
+      this.loadCamerasCallback(data)
+    })
+  }
+
+  loadCamerasCallback(data){
+    this.apCameras = []
+
+    data.success.forEach(element => {
+      this.apCameras.push(element.name)
+    });
   }
 
   copy(){
@@ -58,7 +80,13 @@ export class AccessPointsAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present()     
 
-    this.httpd.addAccessPoint(this.name, this.status, this.apType, this.apCU, this.ipAddress, this.apCameras)
+    let status = this.status === "Ativo" ? 1 : 0
+    let type = this.apType === "Catraca" ? 0 : 1
+    let cu = this.apCU === "Entrada" ? 0 : 1
+    
+    console.log(this.id, this.name, status, cu, this.apCU, this.ipAddress, this.apCameras)
+
+    this.httpd.addAccessPoint(this.name, status, type, cu, this.ipAddress, this.apCameras)
     .subscribe( () => {
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
       .then( () => {
@@ -87,7 +115,13 @@ export class AccessPointsAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.saveAccessPoint(this.id, this.name, this.status, this.apType, this.apCU, this.ipAddress, this.apCameras)
+    let status = this.status === "Ativo" ? 1 : 0
+    let type = this.apType === "Catraca" ? 0 : 1
+    let cu = this.apCU === "Entrada" ? 0 : 1
+
+    console.log(this.id, this.name, status, type, cu, this.ipAddress, this.apCameras)
+
+    this.httpd.saveAccessPoint(this.id, this.name, status, type, cu, this.ipAddress, this.apCameras)
     .subscribe( () => {
 
         loading.dismiss()

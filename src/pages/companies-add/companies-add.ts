@@ -45,7 +45,6 @@ export class CompaniesAddPage {
   }
 
   load(){
-    console.log(this.info)
     this.id = this.info.id
     this.name = this.info.name
     this.responsavel = this.info.responsavel

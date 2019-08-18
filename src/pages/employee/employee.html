@@ -23,11 +23,9 @@
   
 <ion-content padding>    
 
-    <ion-segment [(ngModel)]="segmentStatus" (ionChange)="onSegmentChange()">
-
-    <ion-segment-button value="active"> Ativos</ion-segment-button>
-        <ion-segment-button value="inactive">Inativos
-        </ion-segment-button>
+    <ion-segment [(ngModel)]="segmentStatus" (ionChange)="onSegmentChange()">      
+      <ion-segment-button value="active"> Ativos</ion-segment-button>
+      <ion-segment-button value="inactive">Inativos</ion-segment-button>
     </ion-segment>
 
   <ion-list> 
@@ -93,7 +91,7 @@
 
     </ion-card>
     
-    
+
   </ion-list>
 
   <ion-fab bottom right>

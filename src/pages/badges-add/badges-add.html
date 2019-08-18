@@ -36,16 +36,16 @@
         </ion-select>
     </ion-item>
 
-      <ion-item>
+    <ion-item>
+
         <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="apType">
-          <ion-option no-lines>Catraca</ion-option> 
-          <ion-option no-lines>Cancela</ion-option> 
+        <ion-select [(ngModel)]="badgeType" ionChange="onChange($event)">
+          <ion-option  *ngFor="let type of dataInfo.crachasTipos.success" no-lines>{{type.name}}</ion-option>        
         </ion-select>
-    </ion-item>
+      </ion-item>    
       
-  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  <button *ngIf="! info" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="info" ion-button full (click)="add()" color="secondary">Salvar</button>
   
 </ion-list>
   

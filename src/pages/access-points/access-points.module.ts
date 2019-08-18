@@ -8,6 +8,7 @@ import { AccessPointsPage } from './access-points';
   ],
   imports: [
     IonicPageModule.forChild(AccessPointsPage),
+    
   ],
 })
 export class AccessPointsPageModule {}

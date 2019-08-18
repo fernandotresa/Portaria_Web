@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar text-center no-border-bottom color="primary">    
-  <ion-title>Cargos</ion-title> 
+  <ion-title>Pontos de acesso</ion-title> 
 
   <ion-item detail-none no-lines class="backgroundPainel" text-center>  
     <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
@@ -28,6 +28,7 @@
         <ion-input type="text" [(ngModel)]="name"></ion-input>
       </ion-item>
 
+
       <ion-item>
         <ion-label>Status</ion-label>
         <ion-select [(ngModel)]="status">
@@ -46,7 +47,7 @@
     
     <ion-item>
       <ion-label>Código Unico</ion-label>
-      <ion-select [(ngModel)]="apCu">
+      <ion-select [(ngModel)]="apCu">        
         <ion-option no-lines>Entrada</ion-option> 
         <ion-option no-lines>Saída</ion-option> 
       </ion-select>
@@ -59,14 +60,13 @@
 
   <ion-item>
     <ion-label>Monitoramento</ion-label>
-    <ion-select [(ngModel)]="apCameras">
-      <ion-option no-lines>Camera 1</ion-option> 
-      <ion-option no-lines>Camera 2</ion-option> 
+    <ion-select [(ngModel)]="apCameras" multiple="true">
+      <ion-option  *ngFor="let camera of dataInfo.camerasMonitor.success" no-lines>{{camera.name}}</ion-option>        
     </ion-select>
-</ion-item>
-
-  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  </ion-item>
+  
+  <button *ngIf="! info" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="info" ion-button full (click)="add()" color="secondary">Salvar</button>
   
 </ion-list>
   

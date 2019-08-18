@@ -49,13 +49,10 @@ export class EmployeePage {
   }
 
   ionViewWillEnter(){
-    this.segmentStatus = 'active'
-    console.log(this.segmentStatus)
-    
+    this.segmentStatus = 'active'    
   }
 
   onSegmentChange(){
-    console.log(this.segmentStatus)
     this.setFilteredItems()
   }
 

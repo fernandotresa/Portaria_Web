@@ -88,17 +88,33 @@ export class HomePage {
 
               loading.dismiss()
               this.getAccessPoints()
-              this.uiUtils.showToast("Seja bem Vindo " + this.dataInfo.userInfo.name  )
             });
         });
     });
-  }
+  }  
 
   getAccessPoints(){
     this.dataInfo.accessPoints = this.httpd.getAccessPoints()
     this.dataInfo.accessPoints.subscribe(data => {       
-      this.dataInfo.accessPoint = data
-      console.log(data)
+      this.dataInfo.accessPoint = data      
+      this.loadCameras()
+    })
+  }
+
+  loadCameras(){
+    this.dataInfo.camerasAccessPoints = this.httpd.getCameras()
+    this.dataInfo.camerasAccessPoints.subscribe(data => {       
+      this.dataInfo.camerasMonitor = data      
+      this.loadBadgeTypes()
+    })
+  }
+
+  loadBadgeTypes(){
+    this.dataInfo.badgeTypes = this.httpd.getBadgesTypes()
+    this.dataInfo.badgeTypes.subscribe(data => {       
+      this.dataInfo.crachasTipos = data      
+
+      this.uiUtils.showToast("Seja bem Vindo " + this.dataInfo.userInfo.name  )
     })
   }
 

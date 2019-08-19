@@ -10,8 +10,8 @@ export class HttpdProvider {
 
   data:any = {};  
   
-  address : string = 'http://localhost:8085' 
-  //address : string = 'http://suporte.3a.com.br:8085'    
+  //address : string = 'http://localhost:8085' 
+  address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
@@ -622,17 +622,54 @@ export class HttpdProvider {
     return this.http.post(this.address  + "/getCameras", myData, {headers: headers})
   }
 
+  getCamerasByName(name_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getCamerasByName", myData, {headers: headers})
+  }
+
+  addCamera(name_, status_, ip_, url_, channel_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, name: name_, ip: ip_, status: status_, url: url_, channel: channel_, type: 1});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/addCamera", myData, {headers: headers})
+  }
+
+  saveCamera(id_, name_, status_, ip_, url_, channel_){
+    let myData = JSON.stringify({id: id_, name: name_, ip: ip_, status: status_, url: url_, channel: channel_, type: 1});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveCamera", myData, {headers: headers})
+  }
+
+  delCamera(info_){
+    let myData = JSON.stringify({info: info_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delCamera", myData, {headers: headers})
+  }
+
   getBadgesTypes(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getBadgesTypes", myData, {headers: headers})
   }
 
-  addBadges(idCracha, idType, status){
-    let myData = JSON.stringify({id: this.dataInfo.userId});
+  addBadges(idCracha_, idType_, status_){
+    let myData = JSON.stringify({id: this.dataInfo.userId, idCracha: idCracha_, idTipo: idType_, status: status_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/addBadges", myData, {headers: headers})
   }
+
+  saveBadge(id_, idCracha_, idType_, status_){
+    let myData = JSON.stringify({id: id_, idCracha: idCracha_, idTipo: idType_, status: status_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/saveBadge", myData, {headers: headers})
+  }
+
+  delBadge(info_){
+    let myData = JSON.stringify({info: info_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/delBadge", myData, {headers: headers})
+  }
+ 
 
 
 }

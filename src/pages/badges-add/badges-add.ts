@@ -13,7 +13,7 @@ export class BadgesAddPage {
 
   info: any
   id: number = 0
-  name: string
+  code: string
   status: string
   badgeType: string    
   
@@ -41,15 +41,21 @@ export class BadgesAddPage {
   }
 
   load(){
-      this.id = this.info.id
-      this.name = this.info.name
-      this.status = this.info.status      
-      this.badgeType= this.info.id_tipo
+    
+    this.id = this.info.id
+    this.code = String(this.info.id_cracha)
+    this.status = this.info.id_status === 1 ? "Ativo" : "Inativo" 
+    
+    this.dataInfo.crachasTipos.success.forEach(element => {
+      if(element.id === this.info.id_tipo)
+        this.badgeType = element.name
+    });
+    
   }
 
   copy(){
     this.load()
-    this.name = this.name + " - Copia"
+    this.code = this.code + " - Copia"
   }
 
   onChange(event){
@@ -60,9 +66,10 @@ export class BadgesAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present()     
 
-    console.log(this.name, this.status, this.badgeType)
+    let status = this.status === "Ativo" ? 1 : 0
+    console.log(this.code, status, this.badgeType)
     
-    this.httpd.addBadges(this.name, this.status, this.badgeType)
+    this.httpd.addBadges(this.code, this.badgeType, status)
     .subscribe( () => {
       this.uiUtils.showAlert(this.dataInfo.titleWarning, this.dataInfo.titleSuccess).present()
       .then( () => {
@@ -91,7 +98,10 @@ export class BadgesAddPage {
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
 
-    this.httpd.addBadges(this.name, this.status, this.badgeType)
+    let status = this.status === "Ativo" ? 1 : 0
+    console.log(this.code, status, this.badgeType)
+
+    this.httpd.saveBadge(this.id, this.code , this.badgeType, status)
     .subscribe( () => {
 
         loading.dismiss()

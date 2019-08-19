@@ -57,7 +57,7 @@ export class BadgesPage {
     })
   }
 
-  showOptions(office) {
+  showOptions(badge) {
 
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
@@ -65,19 +65,19 @@ export class BadgesPage {
         {
           text: this.dataInfo.titleEdit,
           handler: () => {
-            this.edit(office)
+            this.edit(badge)
           }
         },
         {
           text: this.dataInfo.titleDuplicate,
           handler: () => {
-            this.copy(office)
+            this.copy(badge)
           }
         },
        {
           text: this.dataInfo.titleRemove,
           handler: () => {
-            this.remove(office)
+            this.remove(badge)
           }
         },{
           text: this.dataInfo.titleCancel,
@@ -95,31 +95,31 @@ export class BadgesPage {
     this.navCtrl.push('BadgesAddPage')
   }
 
-  remove(acl){
+  remove(badge){
     
     this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
-        this.removeContinue(acl)
+        this.removeContinue(badge)
       }
     })    
   }
 
-  removeContinue(acl){
-    this.httpd.delCompany(acl).subscribe( () => {
+  removeContinue(badge){
+    this.httpd.delBadge(badge).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
-          this.get()
+          this.setFilteredItems()
         })
     })
   }
 
-  edit(office){
-    this.navCtrl.push('BadgesAddPage', {load: true, profile: office})
+  edit(badge){
+    this.navCtrl.push('BadgesAddPage', {load: true, info: badge})
   }
 
   copy(office){
-    this.navCtrl.push('BadgesAddPage', {load: false, profile: office, copy: true})
+    this.navCtrl.push('BadgesAddPage', {load: false, info: office, copy: true})
   }
 
 }

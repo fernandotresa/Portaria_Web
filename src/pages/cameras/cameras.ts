@@ -36,27 +36,33 @@ export class CamerasPage {
         this.setFilteredItems();
       });  
       
-      this.events.subscribe('office-reload', () => {        
+      this.events.subscribe('cameras-reload', () => {        
         this.get()
       });
   }
+
+  ionViewDidLoad() {  
+    this.get()
+  }
   
   ngOnDestroy() {    
-    this.events.unsubscribe('office-reload');		
+    this.events.unsubscribe('cameras-reload');		
   }
 
   setFilteredItems(){    
-    this.all = this.httpd.getOfficeByName(this.searchTerm)
+    this.all = this.httpd.getCamerasByName(this.searchTerm)
   }
 
   get(){
-    this.all = this.httpd.getOffices()    
+
+    this.all = this.httpd.getCameras()    
+
     this.all.subscribe(data => {
         console.log(data)        
     })
   }
 
-  showOptions(office) {
+  showOptions(cam) {
 
     const actionSheet = this.actionSheetCtrl.create({
       title: this.dataInfo.titleSelect,
@@ -64,19 +70,19 @@ export class CamerasPage {
         {
           text: this.dataInfo.titleEdit,
           handler: () => {
-            this.edit(office)
+            this.edit(cam)
           }
         },
         {
           text: this.dataInfo.titleDuplicate,
           handler: () => {
-            this.copy(office)
+            this.copy(cam)
           }
         },
        {
-          text: this.dataInfo.titleRemoveProfile,
+          text: this.dataInfo.titleRemove,
           handler: () => {
-            this.remove(office)
+            this.remove(cam)
           }
         },{
           text: this.dataInfo.titleCancel,
@@ -90,13 +96,13 @@ export class CamerasPage {
     actionSheet.present();
   }
 
-  addAcl(){
-    this.navCtrl.push('OfficesAddPage')
+  add(){
+    this.navCtrl.push('CamerasAddPage')
   }
 
   remove(acl){
     
-    this.uiUtils.showConfirm(this.dataInfo.titleRemoveProfile, this.dataInfo.titleDoYouWantRemove)
+    this.uiUtils.showConfirm(this.dataInfo.titleRemove, this.dataInfo.titleDoYouWantRemove)
     .then(res => {
       if(res){
         this.removeContinue(acl)
@@ -105,7 +111,7 @@ export class CamerasPage {
   }
 
   removeContinue(acl){
-    this.httpd.delCompany(acl).subscribe( () => {
+    this.httpd.delCamera(acl).subscribe( () => {
         this.uiUtils.showAlert(this.dataInfo.titleSuccess, this.dataInfo.titleOperationSuccess).present()
         .then( () => {        
           this.get()
@@ -113,12 +119,12 @@ export class CamerasPage {
     })
   }
 
-  edit(office){
-    this.navCtrl.push('OfficesAddPage', {load: true, profile: office})
+  edit(cam){
+    this.navCtrl.push('CamerasAddPage', {load: true, info: cam})
   }
 
-  copy(office){
-    this.navCtrl.push('OfficesAddPage', {load: false, profile: office, copy: true})
+  copy(cam){
+    this.navCtrl.push('CamerasAddPage', {load: false, info: cam, copy: true})
   }
 
 }

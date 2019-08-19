@@ -34,33 +34,25 @@
           <ion-option no-lines>Ativo</ion-option> 
           <ion-option no-lines>Inativo</ion-option> 
         </ion-select>
-    </ion-item>
-
-      <ion-item>
-        <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="apType">
-          <ion-option no-lines>Catraca</ion-option> 
-          <ion-option no-lines>Cancela</ion-option> 
-        </ion-select>
-    </ion-item>
+    </ion-item>    
 
     <ion-item>
       <ion-label>Endereço IP </ion-label>
-      <ion-input type="text" [(ngModel)]="name"></ion-input>
+      <ion-input type="text" [(ngModel)]="ipAddress"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>Canal</ion-label>
-      <ion-input type="text" [(ngModel)]="name"></ion-input>
+      <ion-input type="text" [(ngModel)]="channel"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>URL de acesso</ion-label>
-      <ion-input type="text" [(ngModel)]="name"></ion-input>
+      <ion-input type="text" [(ngModel)]="url"></ion-input>
     </ion-item>
     
-  <button *ngIf="! informations" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="informations" ion-button full (click)="add()" color="secondary">Salvar</button>
+  <button *ngIf="! info" ion-button full (click)="add()" color="primary">Adicionar</button>
+  <button *ngIf="info" ion-button full (click)="save()" color="secondary">Salvar</button>
   
 </ion-list>
   

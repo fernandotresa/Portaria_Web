@@ -25,7 +25,7 @@
 
     <ion-item>
         <ion-label>Número do crachá </ion-label>
-        <ion-input type="text" [(ngModel)]="name"></ion-input>
+        <ion-input type="text" [(ngModel)]="code"></ion-input>
       </ion-item>
 
       <ion-item>
@@ -45,7 +45,7 @@
       </ion-item>    
       
   <button *ngIf="! info" ion-button full (click)="add()" color="primary">Adicionar</button>
-  <button *ngIf="info" ion-button full (click)="add()" color="secondary">Salvar</button>
+  <button *ngIf="info" ion-button full (click)="save()" color="secondary">Salvar</button>
   
 </ion-list>
   

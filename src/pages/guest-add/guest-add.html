@@ -68,7 +68,7 @@
     
       <ion-item>
         <ion-label>{{dataInfo.titleCPF}}</ion-label>
-        <ion-input type="number"  formControlName="cpf" [attr.maxlength]="14"></ion-input>
+        <ion-input type="number" class="no-validation-line" formControlName="cpf" [attr.maxlength]="14"></ion-input>
       </ion-item>      
   
       <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('endereco').valid && formGroup.get('endereco').touched && ! formGroup.get('endereco').hasError('minlength') && !formGroup.get('endereco').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -77,7 +77,7 @@
     
       <ion-item>
         <ion-label>Endereço</ion-label>                  
-        <ion-input type="text"  formControlName="endereco" [attr.maxlength]="40"></ion-input>
+        <ion-input type="text" formControlName="endereco" [attr.maxlength]="40"></ion-input>
       </ion-item>
             
       <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('district').valid && formGroup.get('district').touched && ! formGroup.get('district').hasError('minlength') && !formGroup.get('district').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -95,7 +95,7 @@
 
       <ion-item>
         <ion-label>{{dataInfo.titleTel}}</ion-label>
-        <ion-input type="number"  formControlName="tel" [attr.maxlength]="11"></ion-input>
+        <ion-input type="number" class="no-validation-line" formControlName="tel" [attr.maxlength]="11"></ion-input>
       </ion-item>
   
       <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('badge').valid && formGroup.get('badge').touched && ! formGroup.get('badge').hasError('minlength') && !formGroup.get('badge').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -104,7 +104,7 @@
 
     <ion-item>
       <ion-label>{{dataInfo.titleBadge}}</ion-label>
-      <ion-input type="number" formControlName="badge" [attr.maxlength]="10"></ion-input>
+      <ion-input type="number" class="no-validation-line" formControlName="badge" [attr.maxlength]="10"></ion-input>
     </ion-item>    
               
   </form>  

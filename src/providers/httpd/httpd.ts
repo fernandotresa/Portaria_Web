@@ -11,6 +11,8 @@ export class HttpdProvider {
   data:any = {};  
   
   //address : string = 'http://localhost:8085' 
+  
+
   address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
@@ -231,7 +233,6 @@ export class HttpdProvider {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/editGuest", myData, {headers: headers})
   }
-
 
   getGuests(){
     let myData = JSON.stringify({id: this.dataInfo.userId});
@@ -515,6 +516,12 @@ export class HttpdProvider {
     let myData = JSON.stringify({id: id_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/getAccessPointsEmployee", myData, {headers: headers})
+  }
+
+  getLastAccessEmployee(id_: number){    
+    let myData = JSON.stringify({id: id_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getLastAccessEmployee", myData, {headers: headers})
   }
 
   addCompany(name_, responsavel_, endereco_, bairro_, cnpj_, tel_, status_){

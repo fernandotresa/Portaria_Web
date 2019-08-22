@@ -42,7 +42,6 @@ export class EmployeePage {
       });
   }
 
-
   ionViewDidLoad() {    
     //this.searchTerm = "Fernando Augusto"
     //this.setFilteredItems()    
@@ -128,6 +127,27 @@ export class EmployeePage {
       let name = element.name      
       employee.accessPoints.push(name)
     });    
+
+
+    this.checkLastAccess(employee)
+  }
+
+  checkLastAccess(employee){
+    
+    this.httpd.getLastAccessEmployee(employee.id).subscribe(data => {    
+      this.checkLastAccessContinue(employee, data)
+    })
+  }
+
+  checkLastAccessContinue(employee, data){
+
+    employee.lastAccess = ""
+
+    data.success.forEach(element => {    
+      employee.lastAccess = element.name
+    });   
+
+    console.log(employee.lastAccess) 
   }
 
   goPageAdd(){
@@ -200,6 +220,14 @@ export class EmployeePage {
           this.allemployees = []
         })
     })
+  }
+
+  userDetails(employee){
+    employee.details = !employee.details
+  }
+
+  userQrCode(employee){
+    employee.showQrCode = !employee.showQrCode
   }
 
 }

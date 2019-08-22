@@ -58,7 +58,7 @@
   
     <ion-item>
       <ion-label>{{dataInfo.titleCPF}}</ion-label>
-      <ion-input type="number"  formControlName="cpf" [attr.maxlength]="14"></ion-input>
+      <ion-input type="number" class="no-validation-line"  formControlName="cpf" [attr.maxlength]="14"></ion-input>
     </ion-item>      
 
     <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('endereco').valid && formGroup.get('endereco').touched && ! formGroup.get('endereco').hasError('minlength') && !formGroup.get('endereco').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -85,7 +85,7 @@
 
     <ion-item>
       <ion-label>{{dataInfo.titleTel}}</ion-label>
-      <ion-input type="number"  formControlName="tel" [attr.maxlength]="11"></ion-input>
+      <ion-input type="number" class="no-validation-line"  formControlName="tel" [attr.maxlength]="11"></ion-input>
     </ion-item>
   
     <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('ramal').valid && formGroup.get('ramal').touched && ! formGroup.get('ramal').hasError('minlength') && !formGroup.get('ramal').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -94,7 +94,7 @@
 
     <ion-item>
       <ion-label>{{dataInfo.titleRamal}}</ion-label>
-      <ion-input type="number"  formControlName="ramal" [attr.maxlength]="11"></ion-input>
+      <ion-input type="number" class="no-validation-line"  formControlName="ramal" [attr.maxlength]="11"></ion-input>
     </ion-item>
     
     <ion-note margin-left ion-text color="danger" *ngIf="!formGroup.get('registration').valid && formGroup.get('registration').touched && ! formGroup.get('registration').hasError('minlength') && !formGroup.get('registration').hasError('maxlength')">Campo obrigatório</ion-note>
@@ -112,7 +112,7 @@
 
     <ion-item>
       <ion-label>{{dataInfo.titleBadge}}</ion-label>
-      <ion-input type="number" formControlName="badge" [attr.maxlength]="10"></ion-input>
+      <ion-input type="number" class="no-validation-line"  formControlName="badge" [attr.maxlength]="10"></ion-input>
     </ion-item>    
               
   </form>  

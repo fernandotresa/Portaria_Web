@@ -12,6 +12,25 @@ page-employee {
         border-bottom: 0px solid transparent; 
     }
 
+
+    .ani-left-to-right{
+        animation-name: left-to-right;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-direction: alternate;
+    }
+
+    .ani-bottom-to-top{
+        animation-name: bottom-to-top;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-direction: alternate;
+    }
+
+    .qrbar {
+        width: 20%;
+        height: 20%;
+    }
     
     
 }

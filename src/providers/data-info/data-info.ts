@@ -66,6 +66,7 @@ export class DataInfoProvider {
   imgDefaultBackground: string = "assets/imgs/background.jpg"
   imgDefaultClient: string = "assets/img/avatar-leia.png"      
 
+  titleLastAccess: string = "Último acesso"
   titlePlate: string = "Placa"
   titleBrand: string = "Marca"
   titleModel: string = "Modelo"

@@ -18,7 +18,7 @@ export class LoginPage {
   @ViewChild('inputPassword') inputPassword;
 
   allConfigs: Observable<any>;
-  autoLogin: Boolean = true
+  autoLogin: Boolean = false
   username: string
   password: string
 
@@ -36,10 +36,14 @@ export class LoginPage {
 
 
   ionViewDidLoad() {    
+    
+  }
+
+  loginAuto(){
     this.autoLogin = this.navParams.get("autoLogin")
 
     if(this.autoLogin == undefined)
-      this.autoLogin = true               
+      this.autoLogin = false               
       
       this.loginContinue("admin", "Restrito2018")  
   }

@@ -30,51 +30,66 @@
 
   <ion-list> 
 
-      <ion-card class="trip card" text-wrap *ngFor="let employee of allemployees" no-lines>
-
+      <ion-card class="trip card ani-bottom-to-top" text-wrap *ngFor="let employee of allemployees" no-lines>
+          
         <ion-card-header>
                       
             <ion-item>
                 <ion-avatar item-start>
                   <img src="./assets/imgs/default-user.png" *ngIf="! employee.foto_web">                  
                   <img [src]="employee.foto_web" *ngIf="employee.foto_web">
-                </ion-avatar>
-        
+                </ion-avatar>                                
+
+                <ion-item  item-right class="ani-left-to-right qrbar">
+                    <ngx-qrcode
+                    [qrc-element-type]="'img'"
+                    [qrc-value] = "employee.CRACHA"
+                    qrc-class = "aclass"
+                    qrc-errorCorrectionLevel = "L">
+                  </ngx-qrcode>
+                </ion-item>
+          
                 <h2>{{employee.name}}</h2>
                 <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
                 <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
                 <p *ngIf="! employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{dataInfo.titleNotInformed}}</p>
                 <p *ngIf="employee.matricula"><b>{{dataInfo.titleRegistration}}: </b>{{employee.matricula}}</p>                                
+              
             </ion-item>
 
-          </ion-card-header>                  
+      </ion-card-header>                  
   
       <ion-card-content class="mgt-10 top-default"> 
-        <p><b>{{dataInfo.titleAccessRules}}: </b>{{employee.profiles}}</p>
-        <p><b>{{dataInfo.titleAcls}}: </b>{{employee.acls}}</p>
-        <p><b>{{dataInfo.titleAccessPoints}}: </b>{{employee.accessPoints}}</p>
-        <p><b>{{dataInfo.titleName}}: </b>{{employee.name}}</p>
-        <p><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
+
         <p><b>{{dataInfo.titleCompany}}: </b>{{employee.EMPRESA}}</p>
         <p><b>{{dataInfo.titleBadge}}: </b>{{employee.CRACHA}}</p>
-        <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>        
-
-        <ngx-qrcode
-        [qrc-element-type]="'img'"
-        [qrc-value] = "employee.CRACHA"
-        qrc-class = "aclass"
-        qrc-errorCorrectionLevel = "L">
-      </ngx-qrcode>
+        <p *ngIf="employee.lastAccess"><b>{{dataInfo.titleLastAccess}}: </b>{{employee.lastAccess}}</p>                
 
       </ion-card-content>         
+
+      <ion-item  class="ani-left-to-right" *ngIf="employee.details">
+        <p><b>{{dataInfo.titleAccessRules}}: </b>{{employee.profiles}}</p>
+        <p><b>{{dataInfo.titleAcls}}: </b>{{employee.acls}}</p>
+        <p><b>{{dataInfo.titleAccessPoints}}: </b>{{employee.accessPoints}}</p>      
+        <p><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
+        <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>                                          
+      </ion-item>      
       
       <ion-row>
+          <ion-col *ngIf="! employee.details">
+              <button ion-button icon-start clear small (click)="userDetails(employee)"> 
+                  <ion-icon name="search"></ion-icon>                
+                <div>Detalhes</div>
+              </button>
+            </ion-col>            
+
           <ion-col>
               <button ion-button icon-start clear small (click)="goPageEdit(employee)"> 
                   <ion-icon name="md-clipboard"></ion-icon>                
                 <div>Editar</div>
               </button>
             </ion-col>
+
             <ion-col>
             <button ion-button icon-start clear small (click)="checkAclUser(employee)"> 
                   <ion-icon name="md-hand"></ion-icon>                
@@ -86,7 +101,8 @@
                   <ion-icon name="trash" color="danger"></ion-icon>                
                 <div>Remover</div>
               </button>
-            </ion-col>                       
+            </ion-col>    
+
       </ion-row>      
 
     </ion-card>

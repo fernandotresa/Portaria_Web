@@ -29,7 +29,7 @@
 <ion-content padding>
 
   <ion-list>          
-    <ion-item *ngFor="let ap of (all | async)?.success">
+    <ion-item *ngFor="let ap of (all | async)?.success" class="ani-bottom-to-top">
         <button ion-item item-start text-wrap no-lines>            
             {{ap.name}} {{ap.ip}}
         <ion-icon name='folder-open' item-end (click)="showOptions(ap)" color="primary"></ion-icon>                        

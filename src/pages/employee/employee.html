@@ -39,16 +39,8 @@
                   <img src="./assets/imgs/default-user.png" *ngIf="! employee.foto_web">                  
                   <img [src]="employee.foto_web" *ngIf="employee.foto_web">
                 </ion-avatar>                                
-
-                <ion-item  item-right class="ani-left-to-right qrbar">
-                    <ngx-qrcode
-                    [qrc-element-type]="'img'"
-                    [qrc-value] = "employee.CRACHA"
-                    qrc-class = "aclass"
-                    qrc-errorCorrectionLevel = "L">
-                  </ngx-qrcode>
-                </ion-item>
-          
+                
+                
                 <h2>{{employee.name}}</h2>
                 <p *ngIf="! employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{dataInfo.titleNotInformed}}</p>
                 <p *ngIf="employee.FUNCIONARIO_TIPO"><b>{{dataInfo.titleType}}: </b>{{employee.FUNCIONARIO_TIPO}}</p>
@@ -72,7 +64,17 @@
         <p><b>{{dataInfo.titleAcls}}: </b>{{employee.acls}}</p>
         <p><b>{{dataInfo.titleAccessPoints}}: </b>{{employee.accessPoints}}</p>      
         <p><b>{{dataInfo.titleSector}}: </b>{{employee.SETOR}}</p>
-        <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>                                          
+        <p><b>{{dataInfo.titleOffice}}: </b>{{employee.CARGO}}</p>
+
+        <ion-item  item-right class="qrbar">
+            <ngx-qrcode
+            [qrc-element-type]="'img'"
+            [qrc-value] = "employee.CRACHA"
+            qrc-class = "aclass"
+            qrc-errorCorrectionLevel = "L">
+          </ngx-qrcode>
+        </ion-item>
+
       </ion-item>      
       
       <ion-row>

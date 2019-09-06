@@ -53,7 +53,7 @@ export class DataInfoProvider {
   longitude: number = 0
   userType: number = 2
   
-  appName: string = 'Portaria Web'
+  appName: string = 'Portaria'
   isAdmin: Boolean = true;
   addressServer: string = "localhost"
 

@@ -7,6 +7,9 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { AuthProvider } from '../../providers/auth/auth';
 import { HomePage } from '../../pages/home/home';
 import { Storage } from '@ionic/storage';
+//import { OfficesPage } from '../../pages/offices/offices';
+import { GatekeeperPage } from '../../pages/gatekeeper/gatekeeper';
+
 
 @Component({
   selector: 'page-login',
@@ -36,16 +39,11 @@ export class LoginPage {
 
 
   ionViewDidLoad() {    
-    
+    this.loginAuto()
   }
 
-  loginAuto(){
-    this.autoLogin = this.navParams.get("autoLogin")
-
-    if(this.autoLogin == undefined)
-      this.autoLogin = false               
-      
-      this.loginContinue("admin", "Restrito2018")  
+  loginAuto(){   
+    this.loginContinue("admin", "Restrito2018")  
   }
 
   focusEmail(){    
@@ -59,7 +57,8 @@ export class LoginPage {
   }  
   
   goHome(){
-    this.navCtrl.setRoot(HomePage, {primeiroUso: false});
+    //this.navCtrl.setRoot(HomePage, {primeiroUso: false});
+    this.navCtrl.setRoot(GatekeeperPage)
   }
 
   loginUser(): void {        

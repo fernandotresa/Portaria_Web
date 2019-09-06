@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-navbar text-center no-border-bottom color="primary">  
+
+  <ion-title> {{dataInfo.appName}} </ion-title> 
+
+  <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+    <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+    <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+  </ion-item>
+
+  <ion-buttons end>
+      <button ion-button menuToggle color="white_">
+        <ion-icon name="menu"></ion-icon></button>
+   </ion-buttons>
+   
+ </ion-navbar>  
+</ion-header>
+  
+  <ion-content padding class="trips detail-bg">
+    
+
+    <div class="trip card" tappable (click)="goPageEmployee()" margin-bottom>
+      <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/colaboradores.png'}">
+        <div class="background-filter rlt">
+          <div class="align-bottom" padding-left padding-right>            
+            <h6 class="pull-right text-white" ion-text>{{dataInfo.titleEmployeers}}</h6>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>     
+    </div>
+  
+    <div class="trip card" tappable (click)="goPageGuests()" margin-bottom>
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/visitantes.jpg'}">
+          <div class="background-filter rlt">
+            <div class="align-bottom" padding-left padding-right>
+              <h6 class="pull-right text-white" ion-text>{{dataInfo.titleGuests}}</h6>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>        
+      </div> 
+  
+      <div class="trip card" tappable (click)="goPageReceptors()" margin-bottom>
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/cancela.png'}">
+          <div class="background-filter rlt">
+            <div class="align-bottom" padding-left padding-right>
+              <h6 class="pull-right text-white" ion-text>Pontos de acesso</h6>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>               
+      </div>  
+
+      <div class="trip card" tappable (click)="goPageMonitors()" margin-bottom>
+        <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/monitoramento.jpg'}">
+          <div class="background-filter rlt">
+            <div class="align-bottom" padding-left padding-right>
+              <h6 class="pull-right text-white" ion-text>Monitoramento</h6>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>               
+      </div>  
+
+      <div class="trip card" tappable (click)="goPageReports()" margin-bottom>
+          <div class="background border-bottom" [ngStyle]="{'background-image': 'url(assets/imgs/reports.jpeg'}">
+            <div class="background-filter rlt">
+              <div class="align-bottom" padding-left padding-right>
+                <h6 class="pull-right text-white" ion-text>Relatórios</h6>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>               
+        </div>
+
+</ion-content>

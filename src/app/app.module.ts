@@ -17,8 +17,11 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { EmployeePageModule } from '../pages/employee/employee.module';
 import { EmployeeAddPageModule } from '../pages/employee-add/employee-add.module';
 import { GuestPageModule } from '../pages/guest/guest.module';
+import { ReceptorPageModule } from '../pages/receptor/receptor.module';
+import { GatekeeperPageModule } from '../pages/gatekeeper/gatekeeper.module';
 import { GuestAddPageModule } from '../pages/guest-add/guest-add.module';
 import { ProfilesPageModule } from '../pages/profiles/profiles.module';
+import { MonitorsPageModule } from '../pages/monitors/monitors.module';
 import { ProfilesAddPageModule } from '../pages/profiles-add/profiles-add.module';
 import { ProfilesLinkPageModule } from '../pages/profiles-link/profiles-link.module';
 import { UsersPageModule } from '../pages/users/users.module';
@@ -35,6 +38,7 @@ import { CamerasPageModule } from '../pages/cameras/cameras.module';
 import { CamerasAddPageModule } from '../pages/cameras-add/cameras-add.module';
 import { ImportsPageModule } from '../pages/imports/imports.module';
 import { SystemsPageModule } from '../pages/systems/systems.module';
+import { ReportsPageModule } from '../pages/reports/reports.module';
 
 import { HttpdProvider } from '../providers/httpd/httpd';
 import { DataInfoProvider } from '../providers/data-info/data-info';
@@ -48,6 +52,8 @@ import { DatetimeUtilsProvider } from '../providers/datetime-utils/datetime-util
 import { ExpireUtilsProvider } from '../providers/expire-utils/expire-utils';
 import { DayweekUtilsProvider } from '../providers/dayweek-utils/dayweek-utils';
 import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-utils';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [
@@ -96,7 +102,11 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     CamerasPageModule,
     CamerasAddPageModule,
     ImportsPageModule,
-    SystemsPageModule
+    SystemsPageModule,
+    ReceptorPageModule,
+    GatekeeperPageModule,
+    MonitorsPageModule,
+    ReportsPageModule
 
   ],
   providers: [
@@ -109,7 +119,8 @@ import { VacationUtilsProvider } from '../providers/vacation-utils/vacation-util
     DatetimeUtilsProvider,
     ExpireUtilsProvider,
     DayweekUtilsProvider,
-    VacationUtilsProvider
+    VacationUtilsProvider,
+    InAppBrowser
   ]
 })
 

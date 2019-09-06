@@ -10,10 +10,8 @@ export class HttpdProvider {
 
   data:any = {};  
   
-  //address : string = 'http://localhost:8085' 
-  
-
-  address : string = 'http://suporte.3a.com.br:8085'    
+  address : string = 'http://localhost:8085'
+  //address : string = 'http://suporte.3a.com.br:8085'    
 
   contentHeader: Headers = new Headers({'Content-Type': 'application/json'});
   
@@ -675,6 +673,29 @@ export class HttpdProvider {
     let myData = JSON.stringify({info: info_});
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     return this.http.post(this.address  + "/delBadge", myData, {headers: headers})
+  }
+
+
+  /**
+   * COMANDOS RECEPTOR
+   */
+
+  getAllReceptors(){
+    let myData = JSON.stringify({id: 1});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAllReceptors", myData, {headers: headers})
+  }
+
+  getAllReceptorByName(name_){
+    let myData = JSON.stringify({id: 1, name: name_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/getAllReceptorByName", myData, {headers: headers})
+  }
+  
+  systemCommand(command_: number, idUser_: number, ipPonto_: number){   
+    let myData = JSON.stringify({id: 1, idUser: idUser_, cmd: command_, ipPonto: ipPonto_});
+    const headers = new HttpHeaders({'Content-Type':'application/json'});
+    return this.http.post(this.address  + "/systemCommand", myData, {headers: headers})
   }
  
 

@@ -1,0 +1,47 @@
+
+<ion-header>
+
+  <ion-navbar text-center no-border-bottom color="primary">  
+  
+  <ion-title>Pontos de acesso</ion-title> 
+
+  <ion-item detail-none no-lines class="backgroundPainel" text-center>  
+    <b>{{dataInfo.titleUsername}}:</b> {{dataInfo.userInfo.name}}                 
+    <b>{{dataInfo.titleTime}}:</b> {{dataInfo.clock}}          
+  </ion-item>
+
+  <ion-buttons end>
+      <button ion-button menuToggle color="white_">
+        <ion-icon name="menu"></ion-icon></button>
+   </ion-buttons>   
+   
+ </ion-navbar>  
+
+ <ion-toolbar color="primary">
+  <ion-searchbar #inputSearch
+    [(ngModel)]="searchTerm"
+    (ionInput)="setFilteredItems()"
+    placeholder= "Procurar...">    
+  </ion-searchbar>
+</ion-toolbar>
+
+</ion-header>
+
+  
+<ion-content padding>
+
+  <ion-list>      
+    
+    <ion-item *ngFor="let receptor of (allReceptors | async)?.success" no-lines>                            
+          {{receptor.name}} {{receptor.ip}}
+
+        <ion-icon name="videocam" (click)="startVideo(receptor)" item-right *ngIf="false"></ion-icon>
+        <ion-icon name="megaphone" (click)="sendAudio(receptor)" item-right *ngIf="false"></ion-icon>
+        <ion-icon name="hand" color="danger" (click)="close(receptor)" item-right></ion-icon>              
+        <ion-icon name="hand" color="secondary" (click)="open(receptor)" item-right></ion-icon>
+
+    </ion-item>    
+    
+  </ion-list>
+
+</ion-content>

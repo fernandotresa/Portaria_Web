@@ -3,7 +3,6 @@ import { Nav, Platform, MenuController } from 'ionic-angular';
 import { SideMenuSettings } from './../shared/side-menu-content/models/side-menu-settings';
 import { SideMenuOption } from './../shared/side-menu-content/models/side-menu-option';
 import { SideMenuContentComponent } from './../shared/side-menu-content/side-menu-content.component';
-
 import { LoginPage } from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import { CompaniesPage } from '../pages/companies/companies';
@@ -19,9 +18,9 @@ import { AccessPointsPage } from '../pages/access-points/access-points';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-	@ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
+  @ViewChild(SideMenuContentComponent) sideMenu: SideMenuContentComponent;
 	
-	rootPage:any = LoginPage;
+   rootPage:any = LoginPage;
 	
   public options: Array<SideMenuOption>;
 
